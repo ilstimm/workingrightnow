@@ -1,0 +1,24 @@
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
+import TabBarController from '../../../components/TabBarController';
+import EPICollectionPage from './EPICollectionPage';
+import EPIPage from './EPIPage';
+const EPINavigator = ({navigation, route}) => {
+  const Stack = createStackNavigator();
+  TabBarController(navigation, route, 'EPICollectionPage');
+  return (
+    <Stack.Navigator initialRoutName="EPIPage">
+      <Stack.Screen
+        name="EPIPage"
+        component={EPIPage}
+        options={{headerLeft: () => null}}
+      />
+      <Stack.Screen name="EPICollectionPage" component={EPICollectionPage} />
+    </Stack.Navigator>
+  );
+};
+
+export default EPINavigator;
+
+const styles = StyleSheet.create({});

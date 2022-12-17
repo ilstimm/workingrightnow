@@ -1,0 +1,18 @@
+export default resumeObgect = {
+  user: '',
+  title: '',
+  name: '',
+  sex: '先生',
+  birth: '',
+  phoneNumber: '',
+  email: '',
+  school: '',
+  department: '',
+  status: '',
+  nature: '',
+  type: '',
+  time: '',
+  salary: '',
+  region: '',
+  introduction: '',
+};
