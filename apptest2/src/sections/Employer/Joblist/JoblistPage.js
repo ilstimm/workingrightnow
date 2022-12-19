@@ -11,7 +11,7 @@ import jobObject from '../../../components/data/resumeJobData.json';
 
 const JoblistPage = ({navigation}) => {
   const onPressHandler = () => {
-    navigation.navigate('AddJobs', jobObject);
+    navigation.navigate('AddJobs', {jobObject: jobObject, mode: 'add'});
   };
   return (
     <View style={styles.body}>

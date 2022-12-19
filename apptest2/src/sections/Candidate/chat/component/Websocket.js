@@ -10,15 +10,22 @@ import {
 import chatDatas from '../assets/Chats';
 
 import {Client} from '@stomp/stompjs';
+import {useSelector} from 'react-redux';
 const client = new Client();
-const websocket = () => {
+
+const websocket = account => {
   const time = new Date();
+  console.log('account: ' + account);
+
   client.configure({
     brokerURL: 'http://localhost:8080/chat',
+    forceBinaryWSFrames: true,
+    appendMissingNULLonIncoming: true,
     onConnect: () => {
+      // const userId = useSelector(state => state.userId);
       console.log('connect');
       client.subscribe(
-        '/chat/single/Vadim', // /chat/single/ + username
+        '/chat/single/' + account, // /chat/single/ + username
         message => {
           let data = JSON.parse(message.body);
           console.log(data); // 收到訊息之後要做的事
@@ -46,11 +53,12 @@ const websocket = () => {
   client.activate();
 };
 
-export function publish(sender, receiver, message) {
+export function publish(receiver, message) {
+  // const userId = useSelector(state => state.userId);
   client.publish({
     destination: '/app/ptp/single/chat',
     body: JSON.stringify({
-      sender: sender, // username
+      sender: '123', // username
       receiver: receiver, // 要寄給誰
       message: message, // 訊息
     }),

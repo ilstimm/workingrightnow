@@ -1,8 +1,8 @@
 export default[{
 	id: 0,
 	users: [{
-		name: 'Vadim',
-		imageUri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg',
+		name: '123',
+		imageUri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/123.jpg',
 	}, {
 		name: 'Elon Musk',
 		imageUri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png',
@@ -10,7 +10,7 @@ export default[{
 	messages: [{
 		content: 'How are you, Elon!',
 		createdAt: '2020-10-10T12:48:00.000Z',
-		name: 'Vadim',
+		name: '123',
 	}, {
 		content: 'I am good, good',
 		createdAt: '2020-10-03T14:49:00.000Z',
@@ -22,11 +22,11 @@ export default[{
 	}, {
 		content: 'Good as well, preparing for the stream now.',
 		createdAt: '2020-10-03T14:50:00.000Z',
-		name: 'Vadim',
+		name: '123',
 	}, {
 		content: 'How is SpaceX doing?',
 		createdAt: '2020-10-03T14:51:00.000Z',
-		name: 'Vadim',
+		name: '123',
 	}, {
 		content: 'going to the Moooooon',
 		createdAt: '2020-10-03T14:49:00.000Z',
@@ -41,8 +41,8 @@ export default[{
 	id: 1,
 	users: [{
 		id: 'u1',
-		name: 'Vadim',
-		imageUri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg',
+		name: '123',
+		imageUri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/123.jpg',
 	}, {
 		id: 'u3',
 		name: 'Jeff',
@@ -51,7 +51,7 @@ export default[{
 	messages: [{
 		content: 'How are you, Elon!',
 		createdAt: '2020-10-10T12:48:00.000Z',
-		name: 'Vadim'
+		name: '123'
 	}, {
 		content: 'I am good!',
 		createdAt: '2020-10-03T14:49:00.000Z',
@@ -63,11 +63,11 @@ export default[{
 	}, {
 		content: 'Good as well, preparing for the stream now.',
 		createdAt: '2020-10-03T14:50:00.000Z',
-		name: 'Vadim',
+		name: '123',
 	}, {
 		content: 'How is SpaceX doing?',
 		createdAt: '2020-10-03T14:51:00.000Z',
-		name: 'Vadim',
+		name: '123',
 	}, {
 		content: 'going to the Moooooon',
 		createdAt: '2020-10-03T14:49:00.000Z',

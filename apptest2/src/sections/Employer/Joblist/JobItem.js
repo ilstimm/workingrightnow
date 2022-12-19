@@ -7,7 +7,7 @@ import {Alert} from 'react-native';
 
 export default function InformationItem({navigation}) {
   const [returnValue, setReturnValue] = useState('');
-  const username = useSelector(state => state.username);
+  const userId = useSelector(state => state.userId);
   const token = useSelector(state => state.token);
   const [pageState, setPageState] = useState(true);
   console.log(pageState);
@@ -64,7 +64,10 @@ export default function InformationItem({navigation}) {
                     },
                     body: {},
                   };
-                  await fetch(url + '/' + user + '/' + createTime, options);
+                  await fetch(
+                    url + '/' + userId.userId + '/' + createTime,
+                    options,
+                  );
                   setPageState(pageState => !pageState);
                 },
               },
@@ -74,7 +77,12 @@ export default function InformationItem({navigation}) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('AddJobs', props.jobObject)}>
+          onPress={() =>
+            navigation.navigate('AddJobs', {
+              jobObject: props.jobObject,
+              mode: 'modify',
+            })
+          }>
           <Text style={{fontSize: 30}}>修改</Text>
         </TouchableOpacity>
       </View>
@@ -82,7 +90,7 @@ export default function InformationItem({navigation}) {
   };
 
   useEffect(() => {
-    const url = 'http://localhost:8080/auth/Jobs/' + username.username;
+    const url = 'http://localhost:8080/auth/Jobs/getUserJobs/' + userId.userId;
     const options = {
       method: 'GET',
       headers: {

@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
+
+import SelectList from 'react-native-dropdown-select-list';
 import {
   FlatList,
   RefreshControl,
@@ -15,22 +17,38 @@ import {
 import {useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import CJobItem from './CJobItem';
+import resumeJobData from '../../../components/data/resumeJobData.json';
+import SelectDropdown from 'react-native-select-dropdown';
 
 export default function SearchPage({navigation}) {
   const token = useSelector(state => state.token);
+  const [search, setSearch] = useState('');
+  const [nature, setNature] = useState('');
   console.log('SearchPage = ' + token.token);
+  console.log('nature: ' + nature);
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.body}>
-        <View style={styles.searchView}>
-          <View>
-            <Text>1</Text>
+        <ScrollView>
+          <View style={styles.searchView}>
+            <TextInput style={styles.searchInput} placeholder={'輸入關鍵字'} />
           </View>
-        </View>
-        <View style={styles.blockView}>
-          <Text>2</Text>
-        </View>
+          <View style={styles.blockView}>
+            {/* <SelectList
+              setSelected={setNature}
+              data={resumeJobData}
+              placeholder={'選擇工作性質'}
+              defaultOption={{key: '0', value: '及時工作'}}
+              boxStyles={styles.selectListBox}
+              dropdownStyles={styles.selectListDropdown}
+            /> */}
+            <SelectDropdown
+              data={resumeJobData.map(item => item.value)}
+              onSelect={nature => setNature(nature)}
+            />
+          </View>
+        </ScrollView>
         <View style={styles.scrollView}>
           <View
             // showsVerticalScrollIndicator={false}
@@ -55,10 +73,39 @@ const styles = StyleSheet.create({
   },
   searchView: {
     flex: 2,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#eeeeee',
   },
   blockView: {
     flex: 1.5,
     backgroundColor: '#ffffff',
+  },
+  searchInput: {
+    height: 40,
+    wight: '70%',
+    fontSize: 15,
+    borderWidth: 1,
+    borderColor: 'gray',
+    paddingLeft: 8,
+    color: 'black',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    margin: 15,
+    borderRadius: 10,
+  },
+  selectListBox: {
+    borderRadius: 2,
+    borderBottomStartRadius: 0,
+    borderBottomEndRadius: 0,
+    borderWidth: 0,
+    borderBottomWidth: 1.5,
+    borderColor: 'gray',
+    // marginTop: 10,
+    // marginBottom: 1,
+    padding: '3%',
+    paddingLeft: 8,
+  },
+  selectListDropdown: {
+    borderRadius: 0,
+    // marginVertical: 10,
   },
 });

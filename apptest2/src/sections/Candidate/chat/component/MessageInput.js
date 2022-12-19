@@ -1,10 +1,12 @@
 import React, {useContext, useLayoutEffect, useState} from 'react';
 import {Text, View, StyleSheet, TextInput, Pressable} from 'react-native';
+import {useSelector} from 'react-redux';
 import chatData from '../assets/Chats';
 import {RefreshContext} from './ChatRoomScreen';
 import {publish} from './Websocket';
 
 const MessageInput = props => {
+  const userId = useSelector(state => state.userId);
   const [message, setMessage] = useState('');
   const [time, setTime] = useState(new Date());
   const dispatch = useContext(RefreshContext);
@@ -13,13 +15,13 @@ const MessageInput = props => {
   const sendMessage = () => {
     // setMessage('');
     // console.log('send', message);
-    publish('Vadim', props.user, message);
+    publish(props.user, message);
     chatData
       .filter(item => item.users[1].name == props.user)[0]
       .messages.unshift({
         content: message,
         createdAt: time.getTime(),
-        name: 'Vadim',
+        name: userId.userId,
       });
     setMessage('');
     props.refresh();

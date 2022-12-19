@@ -1,5 +1,6 @@
 package software.project.project.component.member;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.Email;
@@ -9,11 +10,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Document("memberAccount")
 public class MemberAccount {
     @Id
@@ -29,8 +36,18 @@ public class MemberAccount {
     @Email(message = "信箱格式錯誤")
     @NotNull
     private String email;
+
     @NotNull
     private String password;
 
     private List<String> roles;
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
+    private List<Pair> JobColletList = new ArrayList<>();;
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
+    private List<Pair> ResumeColletList = new ArrayList<>();;
+
 }
+
+
+

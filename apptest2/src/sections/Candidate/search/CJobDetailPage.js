@@ -8,7 +8,10 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 const CJobDetailPage = ({navigation, route}) => {
-  const name = route.params.name[0] + route.params.sex;
+  const name =
+    route.params.name != null
+      ? route.params.name[0] + route.params.sex
+      : '你好';
   // console.log('name: ' + name);
 
   const TextView = props => {

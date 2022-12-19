@@ -11,7 +11,7 @@ import {
 const blue = 'blue';
 const gray = 'lightgray';
 
-const myID = 'Vadim';
+const myID = '123';
 const Message = ({message}) => {
   const isMe = message.name === myID;
 

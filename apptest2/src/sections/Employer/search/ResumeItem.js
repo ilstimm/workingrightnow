@@ -55,6 +55,7 @@ export default function ResumeItem({navigation}) {
   const [returnValue, setReturnValue] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const token = useSelector(state => state.token);
+  const userId = useSelector(state => state.userId);
   const onRefresh = () => {
     setRefreshing(true);
     setTimeout(() => {
@@ -62,7 +63,7 @@ export default function ResumeItem({navigation}) {
     }, 100);
   };
   useEffect(() => {
-    const url = 'http://localhost:8080/auth/Resumes';
+    const url = 'http://localhost:8080/auth/Resumes/' + userId.userId;
     const options = {
       method: 'GET',
       headers: {

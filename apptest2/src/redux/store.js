@@ -1,11 +1,11 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {resumeOrderSlice} from './resumeOrderSlice';
 import {tokenSlice} from './tokenSlice';
-import {usernameSlice} from './usernameSlice';
+import {userIdSlice} from './userIdSlice';
 
 export default configureStore({
   reducer: {
-    username: usernameSlice.reducer,
+    userId: userIdSlice.reducer,
     token: tokenSlice.reducer,
     resumeOrder: resumeOrderSlice.reducer,
   },

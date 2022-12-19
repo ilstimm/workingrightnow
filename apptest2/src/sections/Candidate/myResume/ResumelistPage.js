@@ -14,13 +14,16 @@ import resumeObject from '../../../components/resumeObject';
 
 const ResumelistPage = ({navigation}) => {
   const onPressHandler = () => {
-    navigation.navigate('AddResumes', resumeObject);
+    navigation.navigate('AddResumes', {
+      resumeObject: resumeObject,
+      mode: 'add',
+    });
   };
 
   return (
     <View style={styles.body}>
       <View style={styles.textInputView}>
-        <Text style={styles.text}>Resume</Text>
+        <Text style={styles.text}>My Resume</Text>
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() => {

@@ -12,10 +12,10 @@ const CPIPage = ({navigation}) => {
   const onPressCollect = () => {
     navigation.navigate('CPICollectionPage');
   };
-  const username = useSelector(state => state.username);
+  const userId = useSelector(state => state.userId.userId);
   return (
     <View style={{flex: 1}}>
-      <Text>{username.username}</Text>
+      <Text>{userId}</Text>
       <TouchableOpacity style={styles.buttons} onPress={onPressSwitchMode}>
         <Text style={styles.buttonText}>切換為雇主模式</Text>
       </TouchableOpacity>

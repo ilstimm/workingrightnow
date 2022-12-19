@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Document("resumes")
 public class Resume {
-
+    
     // 基本資料
     private String title; // 主旨
     private String name; // 姓名
@@ -25,7 +25,7 @@ public class Resume {
     // 學經歷
     private String school; // 學校名稱
     private String department; // 科系名稱
-    private String status; // 就學狀態
+    private String status;  // 就學狀態
     private String year; // 年級
 
     // 求職條件
@@ -38,54 +38,54 @@ public class Resume {
 
     // 系統要求
     private String id; // MongoDB ID
-    private String user; // 用戶名
+    private String userID; // 用戶名
     private String createTime; // 創立時間
     private String refreshTime; // 更新時間
-    // private int order; // 序號 ( 最多五個 )
+    private Boolean shelvesStatus; // 上下架狀態
 
     // public Resume(
-    // String title,
-    // String name,
-    // String sex,
-    // String birth,
-    // String phoneNumber,
-    // String email,
-    // String school,
-    // String department,
-    // String status,
-    // String year,
-    // String nature,
-    // String type,
-    // String time,
-    // String salary,
-    // String region,
-    // String introduction,
-    // String id,
-    // String user,
-    // String createTime,
-    // String refreshTime,
-    // int order
+    //     String title,
+    //     String name,
+    //     String sex,
+    //     String birth,
+    //     String phoneNumber,
+    //     String email,
+    //     String school,
+    //     String department,
+    //     String status,
+    //     String year,
+    //     String nature,
+    //     String type,
+    //     String time,
+    //     String salary,
+    //     String region,
+    //     String introduction,
+    //     String id,
+    //     String user
     // ){
-    // this.title = title;
-    // this.name = name;
-    // this.sex = sex;
-    // this.birth = birth;
-    // this.phoneNumber = phoneNumber;
-    // this.email = email;
-    // this.school = school;
-    // this.department = department;
-    // this.status = status;
-    // this.year = year;
-    // this.nature = nature;
-    // this.type = type;
-    // this.time = time;
-    // this.salary = salary;
-    // this.region = region;
-    // this.introduction = introduction;
-    // this.id = id;
-    // this.user = user;
-    // this.createTime = createTime;
-    // this.refreshTime = refreshTime;
-    // this.order = order;
+    //     this.title = title;
+    //     this.name = name;
+    //     this.sex = sex;
+    //     this.birth = birth;
+    //     this.phoneNumber = phoneNumber;
+    //     this.email = email;
+    //     this.school = school;
+    //     this.department = department;
+    //     this.status = status;
+    //     this.year = year;
+    //     this.nature = nature;
+    //     this.type = type;
+    //     this.time = time;
+    //     this.salary = salary;
+    //     this.region = region;
+    //     this.introduction = introduction;
+    //     this.id = id;
+    //     this.user = user;
+    //     this.createTime = createTime;
+    //     this.refreshTime = refreshTime;
+    //     this.order = order;
     // }
 }
+
+
+

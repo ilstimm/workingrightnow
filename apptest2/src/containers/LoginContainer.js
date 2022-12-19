@@ -10,11 +10,10 @@ import {
   Image,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {setUsername} from '../redux/usernameSlice';
+import {setUserId} from '../redux/userIdSlice';
 import {setToken} from '../redux/tokenSlice';
 import md5 from 'react-native-md5';
 import websocket from '../sections/Candidate/chat/component/Websocket';
-const url = 'http://localhost:8080/login';
 
 const LoginContainer = ({navigation}) => {
   const [account, setAccount] = useState('');
@@ -28,7 +27,7 @@ const LoginContainer = ({navigation}) => {
     {
       console.log('password: ' + password);
     }
-    dispatch(setUsername({username: account, password: password}));
+    dispatch(setUserId({userId: account}));
     const options = {
       method: 'POST',
       headers: {
@@ -40,14 +39,14 @@ const LoginContainer = ({navigation}) => {
         password: md5.b64_md5(password),
       }),
     };
-
+    const url = 'http://localhost:8080/login';
     const tokenResponse = await fetch(url, options);
     const tokenObject = await tokenResponse.json();
     console.log('tokenObject: ' + tokenObject);
     if (tokenObject.token != null) {
       console.log('token = ' + tokenObject.token);
       dispatch(setToken({token: tokenObject.token}));
-      websocket();
+      websocket(account);
       navigation.replace('candidatePage');
     } else {
       Alert.alert('錯誤!', '帳號密碼錯誤!', [

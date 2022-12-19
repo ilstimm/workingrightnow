@@ -31,11 +31,11 @@ const InputView = props => (
 
 const AddJobs = ({navigation, route}) => {
   //雇主基本資料
-  const [title, setTitle] = React.useState(route.params.title); //工作主旨
-  const [name, setName] = React.useState(route.params.name); //雇主姓名
-  const [sex, setSex] = React.useState(route.params.sex); //性別
-  const [phone, setPhone] = React.useState(route.params.phoneNumber); //電話
-  const [email, setEmail] = React.useState(route.params.email); //信箱
+  const [title, setTitle] = React.useState(route.params.jobObject.title); //工作主旨
+  const [name, setName] = React.useState(route.params.jobObject.name); //雇主姓名
+  const [sex, setSex] = React.useState(route.params.jobObject.sex); //性別
+  const [phone, setPhone] = React.useState(route.params.jobObject.phoneNumber); //電話
+  const [email, setEmail] = React.useState(route.params.jobObject.email); //信箱
 
   //工作需求條件
   const [jobNature, setJobNature] = React.useState(0); //工作性質
@@ -44,7 +44,7 @@ const AddJobs = ({navigation, route}) => {
   const [date, setDate] = React.useState(''); //工作日期
   const [period1, setPeriod1] = React.useState(''); // 工作時段
   const [period2, setPeriod2] = React.useState(''); // 工作時段
-  const [salary, setSalary] = React.useState(route.params.salary); //薪資待遇
+  const [salary, setSalary] = React.useState(route.params.jobObject.salary); //薪資待遇
   const [place1, setPlace1] = React.useState(1); //工作地點(縣市)
   const [place2, setPlace2] = React.useState(); //工作地點(鄉鎮市區)
 
@@ -58,12 +58,13 @@ const AddJobs = ({navigation, route}) => {
 
   //others
   const [payType, setPayType] = React.useState(0); //支薪方式
-  const [payDate, setPayDate] = React.useState(route.params.salaryDate); //支薪日
+  const [payDate, setPayDate] = React.useState(
+    route.params.jobObject.salaryDate,
+  ); //支薪日
 
   //redux
-  const username = useSelector(state => state.username);
+  const userId = useSelector(state => state.userId);
   const token = useSelector(state => state.token);
-  const user = username.username;
 
   const JobDatePicker = () => {
     return (
@@ -342,7 +343,7 @@ const AddJobs = ({navigation, route}) => {
                       Authorization: 'Bearer ' + token.token,
                     },
                     body: JSON.stringify({
-                      user: user,
+                      userID: userId.userId,
                       title: title,
                       name: name,
                       sex: sex,
@@ -374,7 +375,7 @@ const AddJobs = ({navigation, route}) => {
               },
             ]);
             console.log(
-              'user: ' + user,
+              'userId: ' + userId.userId,
               'title: ' + title,
               'name: ' + name,
               'sex: ' + sex,
@@ -400,7 +401,7 @@ const AddJobs = ({navigation, route}) => {
       </View>
     </ScrollView>
   );
-};
+};;
 
 const styles = StyleSheet.create({
   body: {

@@ -27,32 +27,43 @@ const InputView = props => (
 );
 
 const AddResumes = ({navigation, route}) => {
-  console.log('12: ' + route.params);
+  console.log('123: ' + route.params.resumeObject.mode);
+  console.log('12: ' + JSON.stringify(route.params));
   // 履歷基本資料
-  const [title, onChangTitle] = React.useState(route.params.title); // 履歷主旨
-  const [name, onChangeName] = React.useState(route.params.name); // 應徵者姓名
-  const [sex, setSex] = React.useState(route.params.sex); // 應徵者性別
-  const [birthday, setBirthday] = useState(route.params.birth); // 設定生日
-  const [phone, onChangePhone] = React.useState(route.params.phoneNumber); // 電話
-  const [email, onChangeEmail] = React.useState(route.params.email); // 信箱
+  const [title, onChangTitle] = React.useState(route.params.resumeObject.title); // 履歷主旨
+  const [name, onChangeName] = React.useState(route.params.resumeObject.name); // 應徵者姓名
+  const [sex, setSex] = React.useState(route.params.resumeObject.sex); // 應徵者性別
+  const [birthday, setBirthday] = useState(route.params.resumeObject.birth); // 設定生日
+  const [phone, onChangePhone] = React.useState(
+    route.params.resumeObject.phoneNumber,
+  ); // 電話
+  const [email, onChangeEmail] = React.useState(
+    route.params.resumeObject.email,
+  ); // 信箱
 
   // 學經歷
-  const [schoolName, setSchoolName] = React.useState(route.params.school); // 學校名稱
-  const [department, setDepartment] = React.useState(route.params.department); // 科系名稱
-  const [schoolStatus, setSchoolStatus] = React.useState(route.params.status); // 就學狀態(畢業、肄業、就學中)
+  const [schoolName, setSchoolName] = React.useState(
+    route.params.resumeObject.school,
+  ); // 學校名稱
+  const [department, setDepartment] = React.useState(
+    route.params.resumeObject.department,
+  ); // 科系名稱
+  const [schoolStatus, setSchoolStatus] = React.useState(
+    route.params.resumeObject.status,
+  ); // 就學狀態(畢業、肄業、就學中)
 
   // 求職條件
   const [resumeNature, setResumeNature] = React.useState(0); // 工作性質(工讀、正職...)
   const [type, setType] = React.useState(0); // 應徵工作種類
-  const [period, setPeriod] = React.useState(route.params.time); // 工作時段
+  const [period, setPeriod] = React.useState(route.params.resumeObject.time); // 工作時段
   const [period1, setPeriod1] = React.useState(''); // 工作時段
   const [period2, setPeriod2] = React.useState(''); // 工作時段
   const [region1, setRegion1] = React.useState(1); // 工作地區(縣市)
   const [region2, setRegion2] = React.useState(); // 工作地區(鄉鎮市區)
-  const [salary, setSalary] = React.useState(route.params.salary); // 薪資待遇
+  const [salary, setSalary] = React.useState(route.params.resumeObject.salary); // 薪資待遇
 
   const [introduction, onChangeIntroduction] = React.useState(
-    route.params.introduction,
+    route.params.resumeObject.introduction,
   ); // 自我簡介
 
   // 日期選擇器
@@ -72,9 +83,8 @@ const AddResumes = ({navigation, route}) => {
   // redux
 
   const dispatch = useDispatch();
-  const username = useSelector(state => state.username);
+  const userId = useSelector(state => state.userId.userId);
   const token = useSelector(state => state.token);
-  const user = username.username;
 
   const BirthdayPicker = () => {
     return (
@@ -363,7 +373,7 @@ const AddResumes = ({navigation, route}) => {
                       Authorization: 'Bearer ' + token.token,
                     },
                     body: JSON.stringify({
-                      user: user,
+                      userID: userId,
                       title: title,
                       name: name,
                       sex: sex,
@@ -377,7 +387,7 @@ const AddResumes = ({navigation, route}) => {
                       type: resumeData[resumeNature].type.filter(
                         item => item.key == type,
                       )[0].value,
-                      time: period,
+                      time: period1 + '~' + period2,
                       salary: salary,
                       region:
                         regionData[region1 - 1].value +
@@ -385,6 +395,7 @@ const AddResumes = ({navigation, route}) => {
                           item => item.key == region2,
                         )[0].value,
                       introduction: introduction,
+                      shelvesStatus: true,
                     }),
                   };
                   fetch(url, options)
@@ -397,7 +408,7 @@ const AddResumes = ({navigation, route}) => {
               },
             ]);
             console.log(
-              'user: ' + user,
+              'userId: ' + userId,
               'title: ' + title,
               'name: ' + name,
               'sex: ' + sex,
@@ -426,7 +437,7 @@ const AddResumes = ({navigation, route}) => {
       </View>
     </ScrollView>
   );
-};
+};;;;;;;;;
 
 const styles = StyleSheet.create({
   body: {

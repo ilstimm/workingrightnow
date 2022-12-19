@@ -9,13 +9,11 @@ import {setResumeOrder} from '../../../redux/resumeOrderSlice';
 
 export default function InformationItem({navigation}) {
   const [returnValue, setReturnValue] = useState('');
-  const username = useSelector(state => state.username);
+  const userId = useSelector(state => state.userId);
   const token = useSelector(state => state.token);
-  const resumeOrder = useSelector(state => state.resumeOrder);
-  const dispatch = useDispatch();
   const [pageState, setPageState] = useState(true);
   console.log(pageState);
-  console.log('ResumeItem = ' + token.token);
+  console.log('ResumeItem = ' + userId.userId);
 
   const InformationText = props => {
     const [resumeState, setResumeState] = useState(false);
@@ -37,7 +35,6 @@ export default function InformationItem({navigation}) {
 
   const InformationButton = props => {
     const token = useSelector(state => state.token);
-    const [user, setUser] = useState(props.user);
     const [createTime, setCreateTime] = useState(props.createTime);
     console.log('r: ' + JSON.stringify(props.resumeObject));
     const url = 'http://localhost:8080/auth/Resumes';
@@ -59,7 +56,10 @@ export default function InformationItem({navigation}) {
               {
                 text: 'Ok!',
                 onPress: async () => {
-                  console.log('user = ' + user, 'createTime = ' + createTime);
+                  console.log(
+                    'user = ' + userId.userId,
+                    'createTime = ' + createTime,
+                  );
                   const options = {
                     method: 'Delete',
                     headers: {
@@ -69,7 +69,10 @@ export default function InformationItem({navigation}) {
                     },
                     body: {},
                   };
-                  await fetch(url + '/' + user + '/' + createTime, options);
+                  await fetch(
+                    url + '/' + userId.userId + '/' + createTime,
+                    options,
+                  );
                   setPageState(pageState => !pageState);
                 },
               },
@@ -79,7 +82,12 @@ export default function InformationItem({navigation}) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('AddResumes', props.resumeObject)}>
+          onPress={() =>
+            navigation.navigate('AddResumes', {
+              resumeObject: props.resumeObject,
+              mode: 'modify',
+            })
+          }>
           <Text style={{fontSize: 30}}>修改</Text>
         </TouchableOpacity>
       </View>
@@ -87,7 +95,9 @@ export default function InformationItem({navigation}) {
   };
 
   useEffect(() => {
-    const url = 'http://localhost:8080/auth/Resumes/' + username.username;
+    const url =
+      'http://localhost:8080/auth/Resumes/getUserResumes/' + userId.userId;
+    console.log('url: ' + url);
     const options = {
       method: 'GET',
       headers: {
@@ -116,13 +126,13 @@ export default function InformationItem({navigation}) {
               refreshTime={information.refreshTime}
             />
             <InformationButton
-              user={information.user}
+              user={information.name}
               createTime={information.createTime}
               resumeObject={data[index]}
             />
           </View>
         ));
-        console.log('data: ' + JSON.stringify(data[0]));
+        console.log('data123: ' + JSON.stringify(data));
         setReturnValue(a);
       });
   }, [pageState]);

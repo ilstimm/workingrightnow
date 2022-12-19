@@ -4,6 +4,8 @@ import {useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import {RefreshControl} from 'react-native-gesture-handler';
 import {ActivityIndicator} from 'react-native-paper';
+import {devToolsEnhancer} from '@reduxjs/toolkit/dist/devtoolsExtension';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const JobForm = ({job, navigation}) => {
   console.log('job= ' + JSON.stringify(job));
@@ -35,16 +37,21 @@ const JobForm = ({job, navigation}) => {
     <View>
       <TouchableOpacity style={styles.jobBtn} onPress={onPressjobDetail}>
         <View style={styles.jobFormView}>
-          <View style={[styles.jobItem, {flex: 1}]}>
-            <Text style={styles.jobFormTitle}>{job.title}</Text>
-          </View>
+          <View style={{flex: 1}}>
+            <View style={[styles.jobItem, {flex: 1}]}>
+              <Text style={styles.jobFormTitle}>{job.title}</Text>
+            </View>
 
-          <View style={styles.jobItem}>
-            <RegionSalaryText />
-          </View>
+            <View style={styles.jobItem}>
+              <RegionSalaryText />
+            </View>
 
-          <View style={styles.jobItem}>
-            <BackgroundText />
+            <View style={styles.jobItem}>
+              <BackgroundText />
+            </View>
+          </View>
+          <View style={styles.collectView}>
+            <AntDesign name="heart" style={{color: 'red', fontSize: 20}} />
           </View>
         </View>
       </TouchableOpacity>
@@ -57,6 +64,8 @@ export default function CJobItem({navigation}) {
   const [selectAll, setSelectAll] = useState(true);
   const [returnValue, setReturnValue] = useState('');
   const token = useSelector(state => state.token);
+  const userId = useSelector(state => state.userId);
+
   const onRefresh = () => {
     setRefreshing(true);
     setTimeout(() => {
@@ -73,7 +82,7 @@ export default function CJobItem({navigation}) {
   };
 
   useEffect(() => {
-    const url = 'http://localhost:8080/auth/Jobs';
+    const url = 'http://localhost:8080/auth/Jobs/getAllJobs/' + userId.userId;
     const options = {
       method: 'GET',
       headers: {
@@ -93,6 +102,7 @@ export default function CJobItem({navigation}) {
         //     </View>
         //   ));
         // setReturnValue(a);
+        console.log(data);
         let a = (
           <FlatList
             refreshing={refreshing}
@@ -116,6 +126,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   jobFormView: {
+    flexDirection: 'row',
     height: 110,
     marginVertical: 12,
     marginHorizontal: 7,
@@ -140,5 +151,10 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     marginRight: 10,
     padding: 3,
+  },
+  collectView: {
+    backgroundColor: 'gray',
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
   },
 });
