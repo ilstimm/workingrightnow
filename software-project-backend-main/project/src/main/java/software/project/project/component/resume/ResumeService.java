@@ -158,8 +158,8 @@ public class ResumeService {
             else if (type.equals("關鍵字")) {
                 currentList.addAll(
                         originCurrentList.stream()
-                                .filter((Resume resume) -> resume.getTitle().indexOf(searchStrings[1]) > 1
-                                        || resume.getIntroduction().indexOf(searchStrings[1]) > 1)
+                                .filter((Resume resume) -> resume.getTitle().indexOf(searchStrings[1]) > -1
+                                        || resume.getIntroduction().indexOf(searchStrings[1]) > -1)
                                 .collect(Collectors.toList()));
             }
 

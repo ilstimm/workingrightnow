@@ -1,14 +1,16 @@
 import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 import {RefreshControl} from 'react-native-gesture-handler';
 import {ActivityIndicator} from 'react-native-paper';
 import {devToolsEnhancer} from '@reduxjs/toolkit/dist/devtoolsExtension';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const JobForm = ({job, navigation}) => {
-  console.log('job= ' + JSON.stringify(job));
+const JobForm = ({job, navigation, token, userId}) => {
+  // console.log('job= ' + JSON.stringify(job));
+  const [heart, setHeart] = React.useState(job.collectStatus);
+
   const onPressjobDetail = () => {
     navigation.navigate('CJobDetailPage', job);
   };
@@ -33,6 +35,36 @@ const JobForm = ({job, navigation}) => {
     );
   };
 
+  const change = () => {
+    setHeart(heart => !heart);
+  };
+
+  const ref = useRef(false);
+
+  useEffect(() => {
+    console.log('ref = ' + ref.current);
+    if (ref.current) {
+      console.log('heart: ' + heart);
+      const httpUrl = heart
+        ? 'http://localhost:8080/auth/addJobCollect/'
+        : 'http://localhost:8080/auth/removeJobCollect/';
+      const url =
+        httpUrl + userId.userId + '/' + job.userID + '/' + job.createTime;
+
+      const options = {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json;charset=UTF-8',
+          Authorization: 'Bearer ' + token.token,
+        },
+      };
+      fetch(url, options);
+    } else {
+      ref.current = true;
+    }
+  }, [change]);
+
   return (
     <View>
       <TouchableOpacity style={styles.jobBtn} onPress={onPressjobDetail}>
@@ -50,21 +82,32 @@ const JobForm = ({job, navigation}) => {
               <BackgroundText />
             </View>
           </View>
-          <View style={styles.collectView}>
-            <AntDesign name="heart" style={{color: 'red', fontSize: 20}} />
-          </View>
+          <TouchableOpacity style={styles.collectView} onPress={change}>
+            <View>
+              {heart ? (
+                <AntDesign name="heart" style={{color: 'red', fontSize: 25}} />
+              ) : (
+                <AntDesign
+                  name="hearto"
+                  style={{color: 'gray', fontSize: 25}}
+                />
+              )}
+            </View>
+          </TouchableOpacity>
         </View>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default function CJobItem({navigation}) {
+export default function CJobItem({navigation, searchText}) {
   const [refreshing, setRefreshing] = useState(false);
   const [selectAll, setSelectAll] = useState(true);
   const [returnValue, setReturnValue] = useState('');
   const token = useSelector(state => state.token);
   const userId = useSelector(state => state.userId);
+
+  console.log('search= ' + searchText);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -73,24 +116,34 @@ export default function CJobItem({navigation}) {
     }, 100);
   };
 
-  const renderloader = () => {
-    return (
-      <View>
-        <ActivityIndicator size={'large'} color="#aaa" />
-      </View>
-    );
-  };
-
   useEffect(() => {
-    const url = 'http://localhost:8080/auth/Jobs/getAllJobs/' + userId.userId;
-    const options = {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json;charset=UTF-8',
-        Authorization: 'Bearer ' + token.token,
-      },
-    };
+    let url = 'http://localhost:8080/auth/Jobs/';
+    let options;
+    if (searchText == '') {
+      url = url + 'getAllJobs/' + userId.userId;
+      options = {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json;charset=UTF-8',
+          Authorization: 'Bearer ' + token.token,
+        },
+      };
+    } else {
+      url = url + 'search/' + userId.userId;
+      options = {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json;charset=UTF-8',
+          Authorization: 'Bearer ' + token.token,
+        },
+        body: JSON.stringify({
+          searchCondition: ['關鍵字-' + searchText],
+        }),
+      };
+    }
+
     fetch(url, options)
       .then(response => response.json())
       .then(data => {
@@ -102,14 +155,19 @@ export default function CJobItem({navigation}) {
         //     </View>
         //   ));
         // setReturnValue(a);
-        console.log(data);
+        // console.log(data);
         let a = (
           <FlatList
             refreshing={refreshing}
             onRefresh={onRefresh}
             data={data}
             renderItem={({item}) => (
-              <JobForm job={item} navigation={navigation} />
+              <JobForm
+                job={item}
+                navigation={navigation}
+                token={token}
+                userId={userId}
+              />
             )}
             inverted
             // keyExtractor={data => data.createTime}
@@ -117,7 +175,7 @@ export default function CJobItem({navigation}) {
         );
         setReturnValue(a);
       });
-  }, [refreshing]);
+  }, [refreshing, searchText]);
   return returnValue;
 }
 
@@ -153,7 +211,6 @@ const styles = StyleSheet.create({
     padding: 3,
   },
   collectView: {
-    backgroundColor: 'gray',
     justifyContent: 'flex-end',
     alignSelf: 'flex-end',
   },

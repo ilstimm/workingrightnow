@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SearchPage from './SearchPage';
 import CJobDetailPage from './CJobDetailPage';
 import TabBarController from '../../../components/TabBarController';
+import {StackActions} from '@react-navigation/native';
 
 const SearchScreenNavigator = ({navigation, route}) => {
   const Stack = createStackNavigator();
@@ -18,7 +19,9 @@ const SearchScreenNavigator = ({navigation, route}) => {
       <Stack.Screen
         name="CJobDetailPage"
         component={CJobDetailPage}
-        options={{headerShown: true}}
+        options={{
+          headerShown: true,
+        }}
       />
     </Stack.Navigator>
   );

@@ -1,4 +1,6 @@
-import * as React from 'react';
+import {StackActions, useLinkTo} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {useEffect} from 'react';
 import {
   FlatList,
   Text,
@@ -7,22 +9,53 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import informations from './informations.json';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useSelector} from 'react-redux';
 
-const CollectionItem = ({item}) => {
+const CollectionItem = ({navigation, item, token, userId}) => {
+  const linkTo = useLinkTo();
+  const pushAction = StackActions.push('CJobDetailPage', item);
   const [heart, setHeart] = React.useState(true);
-  const change = () => setHeart(heart => !heart);
+  const change = () => {
+    setHeart(heart => !heart);
+  };
+  useEffect(() => {
+    if (!heart) {
+      console.log('heart: ' + heart);
+      const url =
+        'http://localhost:8080/auth/removeJobCollect/' +
+        userId.userId +
+        '/' +
+        item.userID +
+        '/' +
+        item.createTime;
+
+      const options = {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json;charset=UTF-8',
+          Authorization: 'Bearer ' + token.token,
+        },
+      };
+      fetch(url, options);
+    }
+  }, [change]);
+
+  const toDetailPage = () => {
+    // linkTo('/CJobDetailPage');
+    navigation.dispatch(pushAction);
+  };
 
   return (
-    <TouchableOpacity activeOpacity={0.7}>
-      <View style={styles.item}>
+    <View style={styles.itemView}>
+      <TouchableOpacity activeOpacity={0.5} onPress={toDetailPage}>
         <View style={styles.text}>
-          <Text style={{color: 'black', fontSize: 28}}>{item.title}</Text>
+          <Text style={{color: 'black', fontSize: 20}}>{item.title}</Text>
           <Text>{item.user}</Text>
           <Text>{item.region}</Text>
         </View>
-        <View style={styles.heart}>
+        <View style={styles.heartView}>
           <TouchableOpacity onPress={change}>
             <View>
               {heart ? (
@@ -36,49 +69,65 @@ const CollectionItem = ({item}) => {
             </View>
           </TouchableOpacity>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </View>
   );
 };
+
 const CPICollectionPage = ({navigation}) => {
-  headerComponent = () => {
-    return <Text style={styles.headerline}>收藏</Text>;
-  };
-
-  separator = () => {
-    return <View style={styles.separator} />;
-  };
-
-  return (
-    <SafeAreaView>
-      <FlatList
-        ListHeaderComponent={headerComponent}
-        ListHeaderComponentStyle={styles.header}
-        data={informations}
-        renderItem={({item}) => <CollectionItem item={item} />}
-        ItemSeparatorComponent={separator}
-      />
-    </SafeAreaView>
-  );
+  const [returnValue, setReturnValue] = useState('');
+  const userId = useSelector(state => state.userId);
+  const token = useSelector(state => state.token);
+  useEffect(() => {
+    const url = 'http://localhost:8080/auth/getJobCollect/' + userId.userId;
+    const options = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json;charset=UTF-8',
+        Authorization: 'Bearer ' + token.token,
+      },
+    };
+    fetch(url, options)
+      .then(response => response.json())
+      .then(data => {
+        console.log('data: ' + data);
+        let a = (
+          <SafeAreaView style={{flex: 1}}>
+            <View>
+              <FlatList
+                style={{paddingTop: 15}}
+                data={data}
+                numColumns={2}
+                renderItem={({item}) => (
+                  <CollectionItem
+                    navigation={navigation}
+                    item={item}
+                    token={token}
+                    userId={userId}
+                  />
+                )}
+                inverted
+              />
+            </View>
+          </SafeAreaView>
+        );
+        setReturnValue(a);
+      });
+  }, []);
+  return returnValue;
 };
 
 const styles = StyleSheet.create({
-  item: {
+  itemView: {
     flex: 1,
-    width: '100%',
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
-    marginLeft: 3,
-    alignItems: 'flex-start',
-    flexDirection: 'row',
+    borderRadius: 10,
+    backgroundColor: '#5EA888',
     paddingVertical: 13,
-    elevation: 1,
-  },
-
-  separator: {
-    height: 1,
-    width: '100%',
-    backgroundColor: '#ccc',
+    paddingHorizontal: 5,
+    margin: 3,
   },
 
   header: {
@@ -90,20 +139,19 @@ const styles = StyleSheet.create({
   headerline: {
     color: 'black',
     width: '100%',
-    backgroundColor: 'orange',
-    fontSize: 50,
+    backgroundColor: '#339144',
+    fontSize: 45,
+    padding: 10,
     textAlign: 'center',
   },
   text: {
     flex: 8,
   },
-  heart: {
+  heartView: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center',
-    elevation: 2,
-    // backgroundColor:'black'
+    alignSelf: 'flex-end',
   },
 });
 

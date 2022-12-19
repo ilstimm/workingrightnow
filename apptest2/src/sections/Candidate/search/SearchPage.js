@@ -22,17 +22,34 @@ import SelectDropdown from 'react-native-select-dropdown';
 
 export default function SearchPage({navigation}) {
   const token = useSelector(state => state.token);
+  const [value, setValue] = useState('');
   const [search, setSearch] = useState('');
   const [nature, setNature] = useState('');
   console.log('SearchPage = ' + token.token);
   console.log('nature: ' + nature);
+
+  const searchApi = () => {
+    // setSearch(value);
+    console.log('search: ' + search);
+  };
+
+  useEffect(() => {
+    setSearch(value);
+  }, [searchApi]);
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.body}>
         <ScrollView>
           <View style={styles.searchView}>
-            <TextInput style={styles.searchInput} placeholder={'輸入關鍵字'} />
+            <TextInput
+              style={styles.searchInput}
+              placeholder={'輸入關鍵字'}
+              onChangeText={value => setValue(value)}
+              // onChangeText={search => setSearch(search)}
+              onSubmitEditing={searchApi}
+              value={value}
+            />
           </View>
           <View style={styles.blockView}>
             {/* <SelectList
@@ -53,7 +70,7 @@ export default function SearchPage({navigation}) {
           <View
             // showsVerticalScrollIndicator={false}
             style={styles.resumeFormsListView}>
-            <CJobItem navigation={navigation} />
+            <CJobItem navigation={navigation} searchText={search} />
           </View>
         </View>
       </View>

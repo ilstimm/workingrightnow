@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import software.project.project.component.Condition;
+import software.project.project.component.member.MemberAccount;
+import software.project.project.component.member.MemberRepository;
+import software.project.project.component.member.Pair;
 import software.project.project.component.resume.Resume;
 
 @Service
@@ -33,6 +36,9 @@ public class JobService {
     @Autowired
     private JobRepository jobRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     public Job getJob(String userID, String createTime) {
         return jobRepository.findByUserIDAndCreateTime(userID, createTime);
     }
@@ -45,8 +51,23 @@ public class JobService {
         List<Job> jobsList = jobRepository.findAll();
         jobsList = jobsList.stream().filter((Job job) -> !(job.getUserID().equals(userID)))
                 .collect(Collectors.toList());
-
+        MemberAccount memberAccount = memberRepository.findByUserID(userID);
+        List<Pair> jobCollect = memberAccount.getJobColletList();
+        System.out.println("1");
+        for (Job job : jobsList) {
+            System.out.println("2");
+            System.out.println(job.getUserID() + " " + job.getCreateTime());
+            if (jobColletExist(jobCollect, job.getUserID(), job.getCreateTime())) {
+                System.out.println("3");
+                System.out.println(job.getUserID() + " " + job.getCreateTime());
+                job.setCollectStatus(true);
+            }
+        }
         return jobsList;
+    }
+
+    private Boolean jobColletExist(List<Pair> jobCollect, String userID, String createTime) {
+        return jobCollect.stream().anyMatch((Pair a) -> a.getKey().equals(userID) && a.getValue().equals(createTime));
     }
 
     public Job createJob(Job request) {
@@ -69,7 +90,8 @@ public class JobService {
                 request.getUserID(),
                 time,
                 time,
-                true);
+                true,
+                false);
 
         return jobRepository.insert(Job);
     }
@@ -95,7 +117,8 @@ public class JobService {
                 oldJob.getUserID(),
                 request.getCreateTime(),
                 getLocalTime(),
-                request.getShelvesStatus());
+                request.getShelvesStatus(),
+                request.getCollectStatus());
 
         return jobRepository.save(Job);
     }
@@ -154,8 +177,11 @@ public class JobService {
             else if (type.equals("關鍵字")) {
                 currentList.addAll(
                         originCurrentList.stream()
-                                .filter((Job job) -> job.getTitle().indexOf(searchStrings[1]) > 1
-                                        || job.getContent().indexOf(searchStrings[1]) > 1)
+                                .filter((Job job) -> job.getTitle().indexOf(searchStrings[1]) > -1
+                                        || job.getContent().indexOf(searchStrings[1]) > -1
+                                        || job.getRegion().indexOf(searchStrings[1]) > -1
+                                        || job.getType().indexOf(searchStrings[1]) > -1
+                                        || job.getNature().indexOf(searchStrings[1]) > -1)
                                 .collect(Collectors.toList()));
             }
 

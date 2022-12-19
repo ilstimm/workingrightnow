@@ -6,6 +6,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import {CommonActions, StackActions} from '@react-navigation/native';
 
 const CJobDetailPage = ({navigation, route}) => {
   const name =
@@ -30,6 +31,7 @@ const CJobDetailPage = ({navigation, route}) => {
       </View>
     );
   };
+  // navigation.dispatch(StackActions.pop(1));
 
   return (
     <View style={{flex: 1}}>

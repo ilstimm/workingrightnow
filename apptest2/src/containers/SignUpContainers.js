@@ -1,6 +1,4 @@
 import * as React from 'react';
-import {useCallback} from 'react';
-import {useEffect} from 'react';
 import {useState} from 'react';
 import {
   StyleSheet,
