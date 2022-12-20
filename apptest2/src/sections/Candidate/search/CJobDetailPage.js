@@ -1,5 +1,14 @@
 import * as React from 'react';
-import {View, StyleSheet, ScrollView, Text, Modal} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Text,
+  Modal,
+  Pressable,
+  SafeAreaView,
+  Alert,
+} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -7,8 +16,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {CommonActions, StackActions} from '@react-navigation/native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const CJobDetailPage = ({navigation, route}) => {
+  const [modalVisible, setModalVisible] = React.useState(false);
   const name =
     route.params.name != null
       ? route.params.name[0] + route.params.sex
@@ -34,7 +45,7 @@ const CJobDetailPage = ({navigation, route}) => {
   // navigation.dispatch(StackActions.pop(1));
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <View style={styles.main}>
         <FontAwesome name="star" style={{fontSize: 35, color: 'red'}} />
         <Text style={{fontSize: 28, color: 'black', paddingLeft: 15}}>
@@ -126,24 +137,42 @@ const CJobDetailPage = ({navigation, route}) => {
               </View>
             </View>
           </View>
-
-          {/* <View>
-            <Modal>
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <Text style={styles.modalText}>Hello World!</Text>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}>
-                    <Text style={styles.textStyle}>Hide Modal</Text>
-                  </Pressable>
-                </View>
-              </View>
-            </Modal>
-          </View> */}
         </ScrollView>
       </View>
-    </View>
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Hello World!</Text>
+              <View style={{flexDirection: 'row'}}>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.textStyle}>取消</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => console.log('送出')}>
+                  <Text style={styles.textStyle}>送出</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={() => setModalVisible(true)}>
+          <Text style={styles.textStyle}>我要應徵</Text>
+        </Pressable>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -194,6 +223,50 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: 'gray',
     borderStyle: 'dashed',
+  },
+  centeredView: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    width: '80%',
+    height: '80%',
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    marginHorizontal: 3,
+    borderRadius: 3,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    fontSize: 20,
+    padding: 5,
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });
 export default CJobDetailPage;
