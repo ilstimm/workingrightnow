@@ -23,7 +23,7 @@ const ResumelistPage = ({navigation}) => {
   return (
     <View style={styles.body}>
       <View style={styles.textInputView}>
-        <Text style={styles.text}>My Resume</Text>
+        <Text style={styles.text}>履歷表</Text>
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() => {
@@ -47,25 +47,27 @@ export default ResumelistPage;
 const styles = StyleSheet.create({
   body: {
     flex: 1,
+    backgroundColor: 'rgb(246,247,241)',
   },
   textInputView: {
-    flex: 1,
-    borderWidth: 1,
+    backgroundColor: 'rgb(90,148,148)',
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    paddingVertical: 8,
+    alignItems: 'center',
+    textAlign: 'center',
+    justifyContent: 'space-between',
   },
   text: {
     fontSize: 20,
+    color: 'white',
     fontWeight: 'bold',
     margin: 10,
   },
   informations: {
+    padding: 2,
     flex: 5,
-    borderWidth: 1,
   },
   opacity: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    borderRadius: 10,
   },
 });

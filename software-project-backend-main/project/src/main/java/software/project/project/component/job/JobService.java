@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,13 +54,9 @@ public class JobService {
                 .collect(Collectors.toList());
         MemberAccount memberAccount = memberRepository.findByUserID(userID);
         List<Pair> jobCollect = memberAccount.getJobColletList();
-        System.out.println("1");
         for (Job job : jobsList) {
-            System.out.println("2");
             System.out.println(job.getUserID() + " " + job.getCreateTime());
             if (jobColletExist(jobCollect, job.getUserID(), job.getCreateTime())) {
-                System.out.println("3");
-                System.out.println(job.getUserID() + " " + job.getCreateTime());
                 job.setCollectStatus(true);
             }
         }
@@ -138,31 +135,46 @@ public class JobService {
             }
 
         });
+        Iterator<String> iterator = searchConditions.iterator();
+        while (iterator.hasNext()) {
+            String string = iterator.next();
+            try {
+                String temp = string.split("-")[1];
 
+            } catch (ArrayIndexOutOfBoundsException e) {
+                iterator.remove();
+            }
+        }
         List<Job> currentList = new ArrayList<>();
 
         String pastString = searchConditions.get(0).split("-")[0];
-
         for (String searchString : searchConditions) {
             String[] searchStrings = searchString.split("-");
             String type = searchStrings[0];
-
             if (!type.equals(pastString)) {
                 originCurrentList.clear();
                 originCurrentList.addAll(currentList);
+                currentList.clear();
+
             }
             // 地區查詢
             if (type.equals("地區")) {
                 currentList.addAll(
                         originCurrentList.stream().filter((Job job) -> job.getRegion().equals(searchStrings[1]))
                                 .collect(Collectors.toList()));
+
             }
 
             // 工作種類查詢
             else if (type.equals("工作種類")) {
-                currentList.addAll(
-                        originCurrentList.stream().filter((Job job) -> job.getNature().equals(searchStrings[1]))
-                                .collect(Collectors.toList()));
+                String[] natureStrings = searchStrings[1].split(",");
+
+                for (String nature : natureStrings) {
+                    currentList.addAll(
+                            originCurrentList.stream().filter((Job job) -> job.getNature().equals(nature))
+                                    .collect(Collectors.toList()));
+                }
+
             }
 
             // 評星篩選
@@ -187,7 +199,6 @@ public class JobService {
 
             pastString = searchStrings[0];
         }
-
         return currentList;
     }
 

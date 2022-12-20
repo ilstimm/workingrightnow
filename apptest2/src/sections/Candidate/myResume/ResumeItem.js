@@ -19,16 +19,24 @@ export default function InformationItem({navigation}) {
     const [resumeState, setResumeState] = useState(false);
     const toggleSwitch = () => setResumeState(previousState => !previousState);
     return (
-      <View>
+      <View style={styles.titleFreshtimeInformation}>
         <Text style={{fontSize: 25}}>{props.title}</Text>
         <Text>更新時間: {props.refreshTime}</Text>
-        <Switch
-          trackColor={{false: '#767577', true: '#81b0ff'}}
-          thumbColor={resumeState ? '#f5dd4b' : '#f4f3f4'}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={resumeState}
-        />
+        <View style={styles.statusBar}>
+          <Text style={styles.statusText}>履歷開啟狀態</Text>
+          <View style={[{flexDirection: 'row'}, styles.statusBar]}>
+            <Text style={styles.statusText}>
+              {resumeState ? '開啟中' : '關閉中'}
+            </Text>
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={'white'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={resumeState}
+            />
+          </View>
+        </View>
       </View>
     );
   };
@@ -39,57 +47,55 @@ export default function InformationItem({navigation}) {
     console.log('r: ' + JSON.stringify(props.resumeObject));
     const url = 'http://localhost:8080/auth/Resumes';
     return (
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          // flexWrap: 'wrap',
-        }}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            Alert.alert('刪除', '確認要刪除履歷嗎', [
-              {
-                text: 'Cancel!',
-                onPress: () => {},
-              },
-              {
-                text: 'Ok!',
-                onPress: async () => {
-                  console.log(
-                    'user = ' + userId.userId,
-                    'createTime = ' + createTime,
-                  );
-                  const options = {
-                    method: 'Delete',
-                    headers: {
-                      Accept: 'application/json',
-                      'Content-Type': 'application/json;charset=UTF-8',
-                      Authorization: 'Bearer ' + token.token,
-                    },
-                    body: {},
-                  };
-                  await fetch(
-                    url + '/' + userId.userId + '/' + createTime,
-                    options,
-                  );
-                  setPageState(pageState => !pageState);
+      <View style={styles.buttonContainer}>
+        <View style={[styles.button, {borderRightWidth: 1}]}>
+          <TouchableOpacity
+            onPress={() => {
+              Alert.alert('刪除', '確認要刪除履歷嗎', [
+                {
+                  text: 'Cancel!',
+                  onPress: () => {},
                 },
-              },
-            ]);
-          }}>
-          <Text style={{fontSize: 30}}>刪除</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() =>
-            navigation.navigate('AddResumes', {
-              resumeObject: props.resumeObject,
-              mode: 'modify',
-            })
-          }>
-          <Text style={{fontSize: 30}}>修改</Text>
-        </TouchableOpacity>
+                {
+                  text: 'Ok!',
+                  onPress: async () => {
+                    console.log(
+                      'user = ' + userId.userId,
+                      'createTime = ' + createTime,
+                    );
+                    const options = {
+                      method: 'Delete',
+                      headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json;charset=UTF-8',
+                        Authorization: 'Bearer ' + token.token,
+                      },
+                      body: {},
+                    };
+                    await fetch(
+                      url + '/' + userId.userId + '/' + createTime,
+                      options,
+                    );
+                    setPageState(pageState => !pageState);
+                  },
+                },
+              ]);
+            }}>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>刪除</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.button}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('AddResumes', {
+                resumeObject: props.resumeObject,
+                mode: 'modify',
+              })
+            }>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>修改</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
@@ -110,17 +116,7 @@ export default function InformationItem({navigation}) {
       .then(response => response.json())
       .then(data => {
         let a = data.map((information, index) => (
-          <View
-            key={index}
-            style={{
-              backgroundColor: '#ff6',
-              marginLeft: 10,
-              marginRight: 10,
-              elevation: 5,
-              marginTop: 10,
-              borderWidth: 2,
-              borderColor: 'gray',
-            }}>
+          <View key={index} style={styles.container}>
             <InformationText
               title={information.title}
               refreshTime={information.refreshTime}
@@ -141,12 +137,36 @@ export default function InformationItem({navigation}) {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    width: 160.3,
-    height: 60,
-    alignItems: 'center',
+  container: {
+    backgroundColor: 'rgb(246,247,241)',
+    marginHorizontal: 10,
+    elevation: 5,
+    marginTop: 10,
     borderWidth: 1,
+    borderTopWidth: 4,
+    borderColor: 'rgb(130, 180, 169)',
+  },
+  titleFreshtimeInformation: {
+    paddingHorizontal: 5,
+    marginVertical: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+  },
+  button: {
+    flex: 1,
+    padding: 10,
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderColor: 'rgb(130, 180, 169)',
     textAlign: 'center',
-    justifyContent: 'center',
+  },
+  statusBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  statusText: {
+    color: 'black',
   },
 });

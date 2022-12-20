@@ -14,6 +14,7 @@ import {setUserId} from '../redux/userIdSlice';
 import {setToken} from '../redux/tokenSlice';
 import md5 from 'react-native-md5';
 import websocket from '../sections/Candidate/chat/component/Websocket';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const LoginContainer = ({navigation}) => {
   const [account, setAccount] = useState('');
@@ -63,31 +64,7 @@ const LoginContainer = ({navigation}) => {
     console.log('forgotPassword!');
   };
   return (
-    // <SafeAreaView style={{flex: 1}}>
-    //   <View style={styles.body}>
-    //     <Text style={styles.text}>馬上上工</Text>
-    //     <TextInput
-    //       style={styles.input}
-    //       placeholder=" Phone number or email"
-    //       onChangeText={value => setAccount(value)}
-    //     />
-    //     <TextInput
-    //       style={styles.input}
-    //       placeholder=" Password"
-    //       secureTextEntry={true}
-    //       onChangeText={value => setPassword(value)}
-    //     />
-    //     <View style={styles.buttonView}>
-    //       <TouchableOpacity style={styles.button} onPress={onPressRegister}>
-    //         <Text style={styles.buttonText}>register</Text>
-    //       </TouchableOpacity>
-    //       <TouchableOpacity style={styles.button} onPress={onPressLogin}>
-    //         <Text style={styles.buttonText}>Login</Text>
-    //       </TouchableOpacity>
-    //     </View>
-    //   </View>
-    // </SafeAreaView>
-    <SafeAreaView style={styles.page}>
+    <ScrollView contentContainerStyle={styles.page}>
       <Image
         source={require('../assets/theme-2.png')}
         style={styles.themeImage}
@@ -118,7 +95,7 @@ const LoginContainer = ({navigation}) => {
           </Text>
         </Text>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

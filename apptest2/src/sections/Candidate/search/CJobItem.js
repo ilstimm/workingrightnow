@@ -100,14 +100,14 @@ const JobForm = ({job, navigation, token, userId}) => {
   );
 };
 
-export default function CJobItem({navigation, searchText}) {
+export default function CJobItem({navigation, searchText, filter}) {
   const [refreshing, setRefreshing] = useState(false);
   const [selectAll, setSelectAll] = useState(true);
   const [returnValue, setReturnValue] = useState('');
   const token = useSelector(state => state.token);
   const userId = useSelector(state => state.userId);
 
-  console.log('search= ' + searchText);
+  console.log('search= ' + searchText + '  filter= ' + filter);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -119,7 +119,7 @@ export default function CJobItem({navigation, searchText}) {
   useEffect(() => {
     let url = 'http://localhost:8080/auth/Jobs/';
     let options;
-    if (searchText == '') {
+    if (searchText == '' && filter == '') {
       url = url + 'getAllJobs/' + userId.userId;
       options = {
         method: 'GET',
@@ -131,6 +131,7 @@ export default function CJobItem({navigation, searchText}) {
       };
     } else {
       url = url + 'search/' + userId.userId;
+      console.log('123456789: ' + '關鍵字-' + searchText, '工作種類-' + filter);
       options = {
         method: 'POST',
         headers: {
@@ -139,7 +140,7 @@ export default function CJobItem({navigation, searchText}) {
           Authorization: 'Bearer ' + token.token,
         },
         body: JSON.stringify({
-          searchCondition: ['關鍵字-' + searchText],
+          searchCondition: ['關鍵字-' + searchText, '工作種類-' + filter],
         }),
       };
     }
@@ -175,7 +176,7 @@ export default function CJobItem({navigation, searchText}) {
         );
         setReturnValue(a);
       });
-  }, [refreshing, searchText]);
+  }, [refreshing, searchText, filter]);
   return returnValue;
 }
 

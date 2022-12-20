@@ -4,7 +4,7 @@ import {RadioButton} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {CheckBox, Tile} from 'react-native-elements';
-import SelectList from 'react-native-dropdown-select-list';
+import {SelectList} from 'react-native-dropdown-select-list';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Post} from './ResumeMethod.js';
 import {useDispatch, useSelector} from 'react-redux';
@@ -319,7 +319,7 @@ const AddResumes = ({navigation, route}) => {
           setSelected={setRegion1}
           data={regionData}
           placeholder={'選擇地區'}
-          save={'value'}
+          // save={'value'}
           defaultOption={{key: '1', value: '台北市'}}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
@@ -328,7 +328,7 @@ const AddResumes = ({navigation, route}) => {
           setSelected={setRegion2}
           data={regionData[region1 - 1].districts}
           placeholder={'選擇地區'}
-          save={'value'}
+          // save={'value'}
           defaultOption={regionData[region1 - 1].districts[0]}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
@@ -437,7 +437,7 @@ const AddResumes = ({navigation, route}) => {
       </View>
     </ScrollView>
   );
-};;;;;;;;;
+};
 
 const styles = StyleSheet.create({
   body: {

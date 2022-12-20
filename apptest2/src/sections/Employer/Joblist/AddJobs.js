@@ -12,7 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SwitchSelector from 'react-native-switch-selector';
 import {CheckBox} from 'react-native-elements';
-import SelectList from 'react-native-dropdown-select-list';
+import {SelectList} from 'react-native-dropdown-select-list';
 import {ScrollView} from 'react-native-gesture-handler';
 import DatePicker from 'react-native-date-picker';
 
@@ -275,16 +275,19 @@ const AddJobs = ({navigation, route}) => {
           setSelected={setPlace1}
           data={regionData}
           placeholder={'選擇地區'}
-          save={'value'}
+          // save={'value'}
           defaultOption={{key: '1', value: '台北市'}}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
         <SelectList
           setSelected={setPlace2}
+          {...console.log(
+            'place+ ' + JSON.stringify(regionData[place1 - 1].districts),
+          )}
           data={regionData[place1 - 1].districts}
           placeholder={'選擇地區'}
-          save={'value'}
+          // save={'value'}
           defaultOption={regionData[place1 - 1].districts[0]}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}

@@ -3,6 +3,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import TabBarController from '../../../components/TabBarController';
 import EPICollectionPage from './EPICollectionPage';
+import EmployerResumeDetailScreen from '../search/EmployerResumeDetailScreen';
 import EPIPage from './EPIPage';
 const EPINavigator = ({navigation, route}) => {
   const Stack = createStackNavigator();
@@ -15,6 +16,10 @@ const EPINavigator = ({navigation, route}) => {
         options={{headerLeft: () => null}}
       />
       <Stack.Screen name="EPICollectionPage" component={EPICollectionPage} />
+      <Stack.Screen
+        name="EmployerResumeDetailScreen"
+        component={EmployerResumeDetailScreen}
+      />
     </Stack.Navigator>
   );
 };

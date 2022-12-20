@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,6 +19,9 @@ import org.springframework.stereotype.Service;
 
 import software.project.project.component.Condition;
 import software.project.project.component.job.Job;
+import software.project.project.component.member.MemberAccount;
+import software.project.project.component.member.MemberRepository;
+import software.project.project.component.member.Pair;
 
 @Service
 public class ResumeService {
@@ -32,6 +36,8 @@ public class ResumeService {
     @Autowired
     private ResumeRepository resumeRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
     public Resume getResume(String userID, String createTime) {
         return resumeRepository.findByUserIDAndCreateTime(userID, createTime);
     }
@@ -45,7 +51,21 @@ public class ResumeService {
         resumesList = resumesList.stream().filter((Resume resume) -> !(resume.getUserID().equals(userID)))
                 .collect(Collectors.toList());
 
+        MemberAccount memberAccount = memberRepository.findByUserID(userID);
+        List<Pair> resumeCollect = memberAccount.getResumeColletList();
+        for (Resume resume : resumesList) {
+            System.out.println(resume.getUserID() + " " + resume.getCreateTime());
+            if (resumeColletExist(resumeCollect, resume.getUserID(), resume.getCreateTime())) {
+                resume.setCollectStatus(true);
+            }
+        }
+
         return resumesList;
+    }
+
+    private boolean resumeColletExist(List<Pair> resumeCollect, String userID, String createTime) {
+        return resumeCollect.stream()
+                .anyMatch((Pair a) -> a.getKey().equals(userID) && a.getValue().equals(createTime));
     }
 
     public Resume createResume(Resume request) {
@@ -70,14 +90,14 @@ public class ResumeService {
                 request.getUserID(),
                 time,
                 time,
-                true);
+                true,
+                false);
 
         return resumeRepository.insert(Resume);
     }
 
     public Resume replaceResume(String userID, String createTime, Resume request) {
         Resume oldResume = getResume(userID, createTime);
-
         Resume Resume = new Resume(request.getTitle(),
                 request.getName(),
                 request.getSex(),
@@ -98,7 +118,8 @@ public class ResumeService {
                 oldResume.getUserID(),
                 request.getCreateTime(),
                 getLocalTime(),
-                request.getShelvesStatus());
+                request.getShelvesStatus(),
+                request.getCollectStatus());
 
         return resumeRepository.save(Resume);
     }
@@ -118,6 +139,18 @@ public class ResumeService {
             }
 
         });
+
+        Iterator<String> iterator = searchConditions.iterator();
+        while (iterator.hasNext()) {
+            String string = iterator.next();
+            try {
+                String temp = string.split("-")[1];
+
+            } catch (ArrayIndexOutOfBoundsException e) {
+                iterator.remove();
+            }
+        }
+
         List<Resume> currentList = new ArrayList<>();
 
         String pastString = searchConditions.get(0).split("-")[0];
@@ -129,6 +162,7 @@ public class ResumeService {
             if (!type.equals(pastString)) {
                 originCurrentList.clear();
                 originCurrentList.addAll(currentList);
+                currentList.clear();
             }
             // 地區查詢
             if (type.equals("地區")) {
@@ -136,14 +170,19 @@ public class ResumeService {
                         originCurrentList.stream()
                                 .filter((Resume resume) -> resume.getRegion().equals(searchStrings[1]))
                                 .collect(Collectors.toList()));
+
             }
 
             // 工作種類查詢
             else if (type.equals("工作種類")) {
-                currentList.addAll(
-                        originCurrentList.stream()
-                                .filter((Resume resume) -> resume.getNature().equals(searchStrings[1]))
-                                .collect(Collectors.toList()));
+                String[] natureStrings = searchStrings[1].split(",");
+
+                for (String nature : natureStrings) {
+                    currentList.addAll(
+                            originCurrentList.stream()
+                                    .filter((Resume resume) -> resume.getNature().equals(nature))
+                                    .collect(Collectors.toList()));
+                }
             }
 
             // 評星篩選
@@ -159,8 +198,11 @@ public class ResumeService {
                 currentList.addAll(
                         originCurrentList.stream()
                                 .filter((Resume resume) -> resume.getTitle().indexOf(searchStrings[1]) > -1
-                                        || resume.getIntroduction().indexOf(searchStrings[1]) > -1)
+                                        || resume.getIntroduction().indexOf(searchStrings[1]) > -1
+                                        || resume.getType().indexOf(searchStrings[1]) > -1
+                                        || resume.getNature().indexOf(searchStrings[1]) > -1)
                                 .collect(Collectors.toList()));
+
             }
 
             pastString = searchStrings[0];
