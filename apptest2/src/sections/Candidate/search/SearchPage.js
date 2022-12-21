@@ -23,13 +23,16 @@ import SelectDropdown from 'react-native-select-dropdown';
 
 export default function SearchPage({navigation}) {
   const token = useSelector(state => state.token);
+  const userResumeData = useSelector(state => state.userResumeData);
   const [value, setValue] = useState('');
   const [search, setSearch] = useState('');
   const [nature, setNature] = useState([]);
   const [filter, setFilter] = useState([]);
   const [state, setState] = useState(true);
   console.log('SearchPage = ' + token.token);
-  console.log('nature: ' + nature);
+  console.log(
+    'userResumeData: ' + JSON.stringify(userResumeData.userResumeData),
+  );
 
   const searchApi = () => {
     // setSearch(value);

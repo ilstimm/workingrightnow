@@ -9,10 +9,11 @@ import React, {useState} from 'react';
 import ResumeItem from './ResumeItem';
 import {useContext} from 'react';
 import {OrderContext} from './ResumelistNavigator';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import resumeObject from '../../../components/resumeObject';
 
 const ResumelistPage = ({navigation}) => {
+  const dispatch = useDispatch();
   const onPressHandler = () => {
     navigation.navigate('AddResumes', {
       resumeObject: resumeObject,
@@ -35,7 +36,7 @@ const ResumelistPage = ({navigation}) => {
       </View>
       <View style={styles.informations}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <ResumeItem navigation={navigation} />
+          <ResumeItem navigation={navigation} dispatch={dispatch} />
         </ScrollView>
       </View>
     </View>

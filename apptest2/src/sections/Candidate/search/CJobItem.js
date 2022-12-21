@@ -170,8 +170,8 @@ export default function CJobItem({navigation, searchText, filter}) {
                 userId={userId}
               />
             )}
-            inverted
-            // keyExtractor={data => data.createTime}
+            // inverted={true}
+            keyExtractor={data => data.createTime}
           />
         );
         setReturnValue(a);

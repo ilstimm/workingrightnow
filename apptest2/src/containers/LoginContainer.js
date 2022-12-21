@@ -15,6 +15,7 @@ import {setToken} from '../redux/tokenSlice';
 import md5 from 'react-native-md5';
 import websocket from '../sections/Candidate/chat/component/Websocket';
 import {ScrollView} from 'react-native-gesture-handler';
+import userResumeDataInitial from './userResumeInitial';
 
 const LoginContainer = ({navigation}) => {
   const [account, setAccount] = useState('');
@@ -47,6 +48,7 @@ const LoginContainer = ({navigation}) => {
     if (tokenObject.token != null) {
       console.log('token = ' + tokenObject.token);
       dispatch(setToken({token: tokenObject.token}));
+      userResumeDataInitial(account, tokenObject.token, dispatch);
       websocket(account);
       navigation.replace('candidatePage');
     } else {

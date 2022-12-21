@@ -8,6 +8,7 @@ import {
   Pressable,
   SafeAreaView,
   Alert,
+  Switch,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -17,9 +18,37 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {CommonActions, StackActions} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
+
+const InformationText = props => {
+  const [resumeState, setResumeState] = React.useState(false);
+  const toggleSwitch = () => setResumeState(previousState => !previousState);
+  return (
+    <View style={styles.titleFreshtimeInformation}>
+      <Text style={{fontSize: 25}}>{props.title}</Text>
+      <Text>更新時間: {props.refreshTime}</Text>
+      <View style={styles.statusBar}>
+        <Text style={styles.statusText}>履歷開啟狀態</Text>
+        <View style={[{flexDirection: 'row'}, styles.statusBar]}>
+          <Text style={styles.statusText}>
+            {resumeState ? '開啟中' : '關閉中'}
+          </Text>
+          <Switch
+            trackColor={{false: '#767577', true: '#81b0ff'}}
+            thumbColor={'white'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={resumeState}
+          />
+        </View>
+      </View>
+    </View>
+  );
+};
 
 const CJobDetailPage = ({navigation, route}) => {
   const [modalVisible, setModalVisible] = React.useState(false);
+  const information = useSelector(state => state.userResumeData.userResumeData);
   const name =
     route.params.name != null
       ? route.params.name[0] + route.params.sex
@@ -59,14 +88,14 @@ const CJobDetailPage = ({navigation, route}) => {
               <Ionicons name="person-outline" style={{fontSize: 30}} />
               <Text style={styles.text}>基本資料</Text>
             </View>
-            <View style={styles.textview}>
+            <View style={styles.basic}>
               <TextView text={'雇主稱呼'} content={name} />
               <TextView text={'電話'} content={route.params.phoneNumber} />
               <TextView text={'信箱'} content={route.params.email} />
             </View>
             <View style={styles.separater}></View>
           </View>
-          <View style={styles.condition}>
+          <View style={styles.basic}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <MaterialCommunityIcons
                 name="content-paste"
@@ -74,17 +103,17 @@ const CJobDetailPage = ({navigation, route}) => {
               />
               <Text style={styles.text}>工作內容</Text>
             </View>
-            <View style={styles.textview}>
+            <View style={styles.basic}>
               <Textview content={route.params.content} />
             </View>
             <View style={styles.separater}></View>
           </View>
-          <View style={styles.condition}>
+          <View style={styles.basic}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <MaterialIcons name="work-outline" style={{fontSize: 30}} />
               <Text style={styles.text}>工作資訊</Text>
             </View>
-            <View style={styles.textview}>
+            <View style={styles.basic}>
               <View style={styles.icon}>
                 <SimpleLineIcons name="briefcase" style={{fontSize: 20}} />
                 <Text> </Text>
@@ -113,12 +142,12 @@ const CJobDetailPage = ({navigation, route}) => {
             </View>
             <View style={styles.separater}></View>
           </View>
-          <View style={styles.condition}>
+          <View style={styles.basic}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <MaterialIcons name="work-outline" style={{fontSize: 30}} />
               <Text style={styles.text}>支薪</Text>
             </View>
-            <View style={styles.textview}>
+            <View style={styles.basic}>
               <View style={styles.icon}>
                 <MaterialCommunityIcons
                   name="hand-coin-outline"
@@ -139,7 +168,7 @@ const CJobDetailPage = ({navigation, route}) => {
           </View>
         </ScrollView>
       </View>
-      <View style={styles.centeredView}>
+      <View style={views.submit}>
         <Modal
           animationType="slide"
           transparent={true}
@@ -148,26 +177,22 @@ const CJobDetailPage = ({navigation, route}) => {
             Alert.alert('Modal has been closed.');
             setModalVisible(!modalVisible);
           }}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Hello World!</Text>
-              <View style={{flexDirection: 'row'}}>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}>
-                  <Text style={styles.textStyle}>取消</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => console.log('送出')}>
-                  <Text style={styles.textStyle}>送出</Text>
-                </Pressable>
-              </View>
+          {information.map((information, index) => (
+            <View key={index} style={styles.container}>
+              <InformationText
+                title={information.title}
+                refreshTime={information.refreshTime}
+              />
+              {/* <InformationButton
+              user={information.name}
+              createTime={information.createTime}
+              resumeObject={data[index]}
+            /> */}
             </View>
-          </View>
+          ))}
         </Modal>
         <Pressable
-          style={[styles.button, styles.buttonOpen]}
+          style={[styles.button]}
           onPress={() => setModalVisible(true)}>
           <Text style={styles.textStyle}>我要應徵</Text>
         </Pressable>
@@ -175,6 +200,35 @@ const CJobDetailPage = ({navigation, route}) => {
     </SafeAreaView>
   );
 };
+
+const views = StyleSheet.create({
+  submit: {
+    height: 50,
+    justifyContent: 'center',
+  },
+  centeredView: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    width: '80%',
+    height: '80%',
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    padding: 5,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 80,
+    elevation: 30,
+  },
+});
 
 const styles = StyleSheet.create({
   main: {
@@ -187,17 +241,6 @@ const styles = StyleSheet.create({
   },
   basic: {
     flex: 1,
-    padding: '5%',
-  },
-  content: {
-    flex: 1,
-    padding: '5%',
-  },
-  condition: {
-    flex: 1,
-    padding: '5%',
-  },
-  textview: {
     padding: '5%',
   },
   text: {
@@ -224,49 +267,65 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderStyle: 'dashed',
   },
-  centeredView: {
-    flex: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalView: {
-    width: '80%',
-    height: '80%',
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
+
   button: {
     marginHorizontal: 3,
     borderRadius: 3,
-    elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: '#F194FF',
+    backgroundColor: 'rgb(49, 110, 99)',
   },
   buttonClose: {
+    height: 50,
+    marginHorizontal: 5,
     backgroundColor: '#2196F3',
   },
   textStyle: {
+    height: '100%',
     fontSize: 20,
     padding: 5,
     color: 'white',
+    backgroundColor: 'rgb(49, 110, 99)',
     fontWeight: 'bold',
     textAlign: 'center',
+    textAlignVertical: 'center',
   },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+  },
+
+  container: {
+    backgroundColor: 'rgb(246,247,241)',
+    marginHorizontal: 10,
+    elevation: 5,
+    marginTop: 10,
+    borderWidth: 1,
+    borderTopWidth: 4,
+    borderColor: 'rgb(130, 180, 169)',
+  },
+  titleFreshtimeInformation: {
+    paddingHorizontal: 5,
+    marginVertical: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+  },
+  button: {
+    flex: 1,
+    padding: 10,
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderColor: 'rgb(130, 180, 169)',
+    textAlign: 'center',
+  },
+  statusBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  statusText: {
+    color: 'black',
   },
 });
 export default CJobDetailPage;

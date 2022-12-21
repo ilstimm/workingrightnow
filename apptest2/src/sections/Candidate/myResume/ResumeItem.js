@@ -6,8 +6,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import {Alert} from 'react-native';
 import {setResumeOrder} from '../../../redux/resumeOrderSlice';
+import {setUserResumeData} from '../../../redux/UserResumeDataSlice';
 
-export default function InformationItem({navigation}) {
+export default function InformationItem({navigation, dispatch}) {
   const [returnValue, setReturnValue] = useState('');
   const userId = useSelector(state => state.userId);
   const token = useSelector(state => state.token);
@@ -115,6 +116,7 @@ export default function InformationItem({navigation}) {
     fetch(url, options)
       .then(response => response.json())
       .then(data => {
+        dispatch(setUserResumeData({userResumeData: data}));
         let a = data.map((information, index) => (
           <View key={index} style={styles.container}>
             <InformationText
