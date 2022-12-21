@@ -8,98 +8,117 @@ import {Alert} from 'react-native';
 import {setResumeOrder} from '../../../redux/resumeOrderSlice';
 import {setUserResumeData} from '../../../redux/UserResumeDataSlice';
 
-export default function InformationItem({navigation, dispatch}) {
+const InformationText = props => {
+  const [shelvesStatus, setShelvesStatus] = useState(props.shelvesStatus);
+  const statusChange = () => {
+    setShelvesStatus(shelvesStatus => !shelvesStatus);
+    const url =
+      'http://localhost:8080/auth/Resumes/changeShelvesStatus/' +
+      props.userId +
+      '/' +
+      props.createTime;
+    console.log('url: ' + url);
+    const options = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json;charset=UTF-8',
+        Authorization: 'Bearer ' + props.token,
+      },
+    };
+    fetch(url, options);
+  };
+
+  return (
+    <View style={styles.titleFreshtimeInformation}>
+      <Text style={{fontSize: 25}}>{props.title}</Text>
+      <Text>更新時間: {props.refreshTime}</Text>
+      <View style={styles.statusBar}>
+        <Text style={styles.statusText}>履歷開啟狀態</Text>
+        <View style={[{flexDirection: 'row'}, styles.statusBar]}>
+          <Text style={styles.statusText}>
+            {shelvesStatus ? '開啟中' : '關閉中'}
+          </Text>
+          <Switch
+            trackColor={{false: '#767577', true: '#81b0ff'}}
+            thumbColor={'white'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={statusChange}
+            value={shelvesStatus}
+          />
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const InformationButton = props => {
+  const token = useSelector(state => state.token);
+  const userId = useSelector(state => state.userId);
+  const [createTime, setCreateTime] = useState(props.createTime);
+  console.log('r: ' + JSON.stringify(props.resumeObject));
+  const url = 'http://localhost:8080/auth/Resumes';
+  return (
+    <View style={styles.buttonContainer}>
+      <View style={[styles.button, {borderRightWidth: 1}]}>
+        <TouchableOpacity
+          onPress={() => {
+            Alert.alert('刪除', '確認要刪除履歷嗎', [
+              {
+                text: 'Cancel!',
+                onPress: () => {},
+              },
+              {
+                text: 'Ok!',
+                onPress: async () => {
+                  console.log(
+                    'user = ' + userId.userId,
+                    'createTime = ' + createTime,
+                  );
+                  const options = {
+                    method: 'Delete',
+                    headers: {
+                      Accept: 'application/json',
+                      'Content-Type': 'application/json;charset=UTF-8',
+                      Authorization: 'Bearer ' + token.token,
+                    },
+                    body: {},
+                  };
+                  await fetch(
+                    url + '/' + userId.userId + '/' + createTime,
+                    options,
+                  );
+                  props.setPageState(pageState => !pageState);
+                },
+              },
+            ]);
+          }}>
+          <Text style={{fontSize: 18, fontWeight: 'bold'}}>刪除</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.button}>
+        <TouchableOpacity
+          onPress={() =>
+            props.navigation.navigate('AddResumes', {
+              resumeObject: props.resumeObject,
+              mode: 'modify',
+            })
+          }>
+          <Text style={{fontSize: 18, fontWeight: 'bold'}}>修改</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+export default function ResumeItem({navigation, dispatch}) {
   const [returnValue, setReturnValue] = useState('');
   const userId = useSelector(state => state.userId);
   const token = useSelector(state => state.token);
   const [pageState, setPageState] = useState(true);
   console.log(pageState);
   console.log('ResumeItem = ' + userId.userId);
-
-  const InformationText = props => {
-    const [resumeState, setResumeState] = useState(false);
-    const toggleSwitch = () => setResumeState(previousState => !previousState);
-    return (
-      <View style={styles.titleFreshtimeInformation}>
-        <Text style={{fontSize: 25}}>{props.title}</Text>
-        <Text>更新時間: {props.refreshTime}</Text>
-        <View style={styles.statusBar}>
-          <Text style={styles.statusText}>履歷開啟狀態</Text>
-          <View style={[{flexDirection: 'row'}, styles.statusBar]}>
-            <Text style={styles.statusText}>
-              {resumeState ? '開啟中' : '關閉中'}
-            </Text>
-            <Switch
-              trackColor={{false: '#767577', true: '#81b0ff'}}
-              thumbColor={'white'}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch}
-              value={resumeState}
-            />
-          </View>
-        </View>
-      </View>
-    );
-  };
-
-  const InformationButton = props => {
-    const token = useSelector(state => state.token);
-    const [createTime, setCreateTime] = useState(props.createTime);
-    console.log('r: ' + JSON.stringify(props.resumeObject));
-    const url = 'http://localhost:8080/auth/Resumes';
-    return (
-      <View style={styles.buttonContainer}>
-        <View style={[styles.button, {borderRightWidth: 1}]}>
-          <TouchableOpacity
-            onPress={() => {
-              Alert.alert('刪除', '確認要刪除履歷嗎', [
-                {
-                  text: 'Cancel!',
-                  onPress: () => {},
-                },
-                {
-                  text: 'Ok!',
-                  onPress: async () => {
-                    console.log(
-                      'user = ' + userId.userId,
-                      'createTime = ' + createTime,
-                    );
-                    const options = {
-                      method: 'Delete',
-                      headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json;charset=UTF-8',
-                        Authorization: 'Bearer ' + token.token,
-                      },
-                      body: {},
-                    };
-                    await fetch(
-                      url + '/' + userId.userId + '/' + createTime,
-                      options,
-                    );
-                    setPageState(pageState => !pageState);
-                  },
-                },
-              ]);
-            }}>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>刪除</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.button}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('AddResumes', {
-                resumeObject: props.resumeObject,
-                mode: 'modify',
-              })
-            }>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>修改</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
 
   useEffect(() => {
     const url =
@@ -120,13 +139,19 @@ export default function InformationItem({navigation, dispatch}) {
         let a = data.map((information, index) => (
           <View key={index} style={styles.container}>
             <InformationText
+              userId={userId.userId}
+              token={token.token}
+              createTime={information.createTime}
               title={information.title}
               refreshTime={information.refreshTime}
+              shelvesStatus={information.shelvesStatus}
             />
             <InformationButton
               user={information.name}
               createTime={information.createTime}
               resumeObject={data[index]}
+              setPageState={setPageState}
+              navigation={navigation}
             />
           </View>
         ));

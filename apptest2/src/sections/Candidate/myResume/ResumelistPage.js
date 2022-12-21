@@ -7,8 +7,6 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import ResumeItem from './ResumeItem';
-import {useContext} from 'react';
-import {OrderContext} from './ResumelistNavigator';
 import {useDispatch, useSelector} from 'react-redux';
 import resumeObject from '../../../components/resumeObject';
 

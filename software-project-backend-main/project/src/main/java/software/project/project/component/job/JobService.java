@@ -51,6 +51,7 @@ public class JobService {
     public List<Job> getAllJobs(String userID) {
         List<Job> jobsList = jobRepository.findAll();
         jobsList = jobsList.stream().filter((Job job) -> !(job.getUserID().equals(userID)))
+                .filter((Job job) -> (job.getShelvesStatus()))
                 .collect(Collectors.toList());
         MemberAccount memberAccount = memberRepository.findByUserID(userID);
         List<Pair> jobCollect = memberAccount.getJobColletList();

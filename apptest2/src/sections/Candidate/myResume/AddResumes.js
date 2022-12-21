@@ -27,8 +27,8 @@ const InputView = props => (
 );
 
 const AddResumes = ({navigation, route}) => {
-  console.log('123: ' + route.params.resumeObject.mode);
-  console.log('12: ' + JSON.stringify(route.params));
+  // console.log('123: ' + route.params.resumeObject.mode);
+  // console.log('12: ' + JSON.stringify(route.params));
   // 履歷基本資料
   const [title, onChangTitle] = React.useState(route.params.resumeObject.title); // 履歷主旨
   const [name, onChangeName] = React.useState(route.params.resumeObject.name); // 應徵者姓名
@@ -260,24 +260,25 @@ const AddResumes = ({navigation, route}) => {
       <View style={{padding: '3%'}}>
         <Text>工作性質</Text>
         <SelectList
-          setSelected={setResumeNature}
-          onSelect={console.log('Select!')}
+          setSelected={resumeNature => setResumeNature(resumeNature)}
           data={resumeData}
           placeholder={'選擇工作性質'}
           defaultOption={{key: '0', value: '及時工作'}}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
+        {console.log('nature: ' + resumeNature)}
         <Text>工作種類</Text>
         <SelectList
           setSelected={type => setType(type)}
           data={resumeData[resumeNature].type}
-          save={'value'}
           placeholder={'選擇工作種類'}
+          save={'value'}
           defaultOption={resumeData[resumeNature].type[0]}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
+        {console.log('type: ' + type)}
       </View>
 
       <View style={{padding: '3%'}}>
@@ -319,20 +320,22 @@ const AddResumes = ({navigation, route}) => {
           setSelected={setRegion1}
           data={regionData}
           placeholder={'選擇地區'}
-          // save={'value'}
+          save={'key'}
           defaultOption={{key: '1', value: '台北市'}}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
+        {console.log('縣市: ' + region1)}
         <SelectList
           setSelected={setRegion2}
           data={regionData[region1 - 1].districts}
           placeholder={'選擇地區'}
-          // save={'value'}
+          save={'value'}
           defaultOption={regionData[region1 - 1].districts[0]}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
+        {console.log('地區: ' + region2)}
       </View>
       <InputView
         text={'自我簡介'}
@@ -355,7 +358,7 @@ const AddResumes = ({navigation, route}) => {
         <Button
           title="送出"
           style={styles.button}
-          onPress={async () => {
+          onPress={async () => {{
             Alert.alert('新增', '確認要新增履歷嗎', [
               {
                 text: 'Cancel!',
@@ -380,20 +383,14 @@ const AddResumes = ({navigation, route}) => {
                       birth: birthday,
                       phoneNumber: phone,
                       email: email,
-                      school: schoolData[schoolName - 1].value,
+                      school: schoolName,
                       department: department,
                       status: schoolStatus,
                       nature: resumeData[resumeNature].value,
-                      type: resumeData[resumeNature].type.filter(
-                        item => item.key == type,
-                      )[0].value,
+                      type: type,
                       time: period1 + '~' + period2,
                       salary: salary,
-                      region:
-                        regionData[region1 - 1].value +
-                        regionData[region1 - 1].districts.filter(
-                          item => item.key == region2,
-                        )[0].value,
+                      region: regionData[region1 - 1].value + region2,
                       introduction: introduction,
                       shelvesStatus: true,
                     }),
@@ -415,24 +412,20 @@ const AddResumes = ({navigation, route}) => {
               'birth: ' + birthday,
               'phoneNumber: ' + phone,
               'email: ' + email,
-              'school: ' + schoolData[schoolName - 1].value,
+              'school: ' + schoolName,
               'department: ' + department,
               'status: ' + schoolStatus,
               'nature: ' + resumeData[resumeNature].value,
-              'type: ' +
-                resumeData[resumeNature].type.filter(
-                  item => item.key == type,
-                )[0].value,
+              'type: ' +  type,
               'region: ' +
                 (regionData[region1 - 1].value +
-                  regionData[region1 - 1].districts.filter(
-                    item => item.key == region2,
-                  )[0].value),
+                  region2),
               'time: ' + period,
               'salary: ' + salary,
               'introduction: ' + introduction,
             );
           }}
+        }
         />
       </View>
     </ScrollView>

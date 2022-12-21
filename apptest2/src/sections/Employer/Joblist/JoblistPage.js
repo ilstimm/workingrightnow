@@ -8,8 +8,10 @@ import {
 import React from 'react';
 import JobItem from './JobItem';
 import jobObject from '../../../components/data/resumeJobData.json';
+import {useDispatch} from 'react-redux';
 
 const JoblistPage = ({navigation}) => {
+  const dispatch = useDispatch();
   const onPressHandler = () => {
     navigation.navigate('AddJobs', {jobObject: jobObject, mode: 'add'});
   };
@@ -28,7 +30,7 @@ const JoblistPage = ({navigation}) => {
       </View>
       <View style={styles.informations}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <JobItem navigation={navigation} />
+          <JobItem navigation={navigation} dispatch={dispatch} />
         </ScrollView>
       </View>
     </View>

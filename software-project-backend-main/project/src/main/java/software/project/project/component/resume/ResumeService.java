@@ -49,6 +49,7 @@ public class ResumeService {
     public List<Resume> getAllResumes(String userID) {
         List<Resume> resumesList = resumeRepository.findAll();
         resumesList = resumesList.stream().filter((Resume resume) -> !(resume.getUserID().equals(userID)))
+                .filter((Resume resume) -> (resume.getShelvesStatus()))
                 .collect(Collectors.toList());
 
         MemberAccount memberAccount = memberRepository.findByUserID(userID);

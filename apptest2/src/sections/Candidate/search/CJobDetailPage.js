@@ -177,19 +177,21 @@ const CJobDetailPage = ({navigation, route}) => {
             Alert.alert('Modal has been closed.');
             setModalVisible(!modalVisible);
           }}>
-          {information.map((information, index) => (
-            <View key={index} style={styles.container}>
-              <InformationText
-                title={information.title}
-                refreshTime={information.refreshTime}
-              />
-              {/* <InformationButton
+          <View style={views.centeredView}>
+            {information.map((information, index) => (
+              <View key={index} style={styles.container}>
+                <InformationText
+                  title={information.title}
+                  refreshTime={information.refreshTime}
+                />
+                {/* <InformationButton
               user={information.name}
               createTime={information.createTime}
               resumeObject={data[index]}
             /> */}
-            </View>
-          ))}
+              </View>
+            ))}
+          </View>
         </Modal>
         <Pressable
           style={[styles.button]}

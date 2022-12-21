@@ -10,6 +10,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 const EmployerResumeDetailScreen = ({navigation, route}) => {
   const name = route.params.name + '  ' + route.params.sex;
   console.log('name: ' + name);
+  console.log('status: ' + route.params.shelvesStatus);
 
   const TextView = props => {
     return (
