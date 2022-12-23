@@ -33,11 +33,7 @@ const ChatRoomHeader = props => {
     <View
       style={{
         flex: 1,
-        // justifyContent: 'center',
-
         padding: 10,
-        // alignItems: 'center',
-        // backgroundColor: 'red'
       }}>
       <Text
         style={{

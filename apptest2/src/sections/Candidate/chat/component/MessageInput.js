@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useContext, useLayoutEffect, useState} from 'react';
 import {Text, View, StyleSheet, TextInput, Pressable} from 'react-native';
 import {useSelector} from 'react-redux';
@@ -9,23 +10,33 @@ const MessageInput = props => {
   const userId = useSelector(state => state.userId);
   const [message, setMessage] = useState('');
   const [time, setTime] = useState(new Date());
+  // const [chat, setChat] = useState(chatData);
+  const chat = chatData;
   const dispatch = useContext(RefreshContext);
-  console.log('123456: ' + props.user);
+  // console.log('123456: ' + JSON.stringify(chat));
 
   const sendMessage = () => {
     // setMessage('');
     // console.log('send', message);
     publish(props.user, message);
-    chatData
+    chat
       .filter(item => item.users[1].name == props.user)[0]
       .messages.unshift({
         content: message,
         createdAt: time.getTime(),
         name: userId.userId,
       });
+    storeChatData(chat);
     setMessage('');
     props.refresh();
   };
+
+  const storeChatData = async value => {
+    try {
+      await AsyncStorage.setItem('chatdata', JSON.stringify(value));
+    } catch (error) {}
+  };
+
   const onPlusClicked = () => {
     console.log('plus');
   };

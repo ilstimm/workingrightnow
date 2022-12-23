@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useEffect} from 'react';
 import {Alert} from 'react-native';
 import {setResumeOrder} from '../../../redux/resumeOrderSlice';
-import {setUserResumeData} from '../../../redux/UserResumeDataSlice';
+import {setUserResumeData} from '../../../redux/userResumeDataSlice';
 
 const InformationText = props => {
   const [shelvesStatus, setShelvesStatus] = useState(props.shelvesStatus);

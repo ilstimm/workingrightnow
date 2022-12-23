@@ -1,0 +1,44 @@
+[
+  {
+    "id": "1",
+    "users": [
+      {
+        "id": "u1",
+        "name": "123",
+        "imageUri": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/123.jpg"
+      },
+      {
+        "id": "u2",
+        "name": "Elon Musk",
+        "imageUri": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png"
+      }
+    ],
+    "lastMessage": {
+      "id": "m1",
+      "content": "btw, SpaceX is interested in buying notJust.dev!",
+      "createdAt": "2020-10-03T14:48:00.000Z"
+    },
+    "newMessages": 4
+  },
+  {
+    "id": "231231231231231",
+    "users": [
+      {
+        "id": "u1",
+        "name": "123",
+        "imageUri": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/.jpg"
+      },
+      {
+        "id": "u3",
+        "name": "Jeff",
+        "imageUri": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/jeff.jpeg"
+      }
+    ],
+    "lastMessage": {
+      "id": "m2",
+      "content": "Why did you reject our offer?",
+      "createdAt": "2020-10-02T15:40:00.000Z"
+    },
+    "newMessages": 5
+  }
+]

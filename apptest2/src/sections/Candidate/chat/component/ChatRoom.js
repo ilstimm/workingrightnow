@@ -8,10 +8,12 @@ import {
   View,
   Alert,
   Nevigator,
+  TouchableOpacity,
 } from 'react-native';
 import ChatRoomItem from './ChatRoomItem';
 import ChatRoomsData from '../assets/ChatRooms';
 import ChatRoomScreen from './ChatRoomScreen';
+import {Pressable} from 'react-native';
 var stompClient = null;
 
 const chatRoom1 = ChatRoomsData[5];
@@ -19,6 +21,10 @@ const chatRoom1 = ChatRoomsData[5];
 const ChatRoom = ({navigation}) => {
   return (
     <View style={styles.page}>
+      <TextInput />
+      <TouchableOpacity>
+        <Text style={{backgroundColor: 'gray', fontSize: 30}}>新增聊天室</Text>
+      </TouchableOpacity>
       <FlatList
         data={ChatRoomsData}
         renderItem={props => (

@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {setUserResumeData} from '../redux/UserResumeDataSlice';
+import {setUserResumeData} from '../redux/userResumeDataSlice';
 
 export default function userResumeDataInitial(userId, token, dispatch) {
   console.log('444444444444444445555555555');
