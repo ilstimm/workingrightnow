@@ -337,7 +337,7 @@ const AddJobs = ({navigation, route}) => {
               {
                 text: 'Ok!',
                 onPress: () => {
-                  const url = 'http://localhost:8080/auth/Jobs';
+                  const url = 'http://tim.ils.tw:80/project/auth/Jobs';
                   const options = {
                     method: 'POST',
                     headers: {

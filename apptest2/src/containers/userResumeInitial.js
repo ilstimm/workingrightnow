@@ -6,7 +6,8 @@ import {setUserResumeData} from '../redux/userResumeDataSlice';
 export default function userResumeDataInitial(userId, token, dispatch) {
   console.log('444444444444444445555555555');
   //   useEffect(() => {
-  const url = 'http://localhost:8080/auth/Resumes/getUserResumes/' + userId;
+  const url =
+    'http://tim.ils.tw:80/project/auth/Resumes/getUserResumes/' + userId;
   console.log('url: ' + url);
   const options = {
     method: 'GET',

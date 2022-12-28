@@ -11,37 +11,49 @@ import {
 import {useNavigation} from '@react-navigation/core';
 
 const ChatRoomItem = ({navigation, chatRoom}) => {
-  const user = chatRoom.users[1]; //對方
+  const otheruser = chatRoom.users[1].name; //對方
+  // console.log('otheruser:  ' + otheruser);
+  // console.log('storechatRoomdata: ' + JSON.stringify(chatRoom));
 
   const onPress = () => {
     navigation.navigate('ChatRoomScreen', {
-      id: chatRoom.id,
       chatRoom: chatRoom,
-      user: user,
+      messages: chatRoom.messages,
+      otheruser: otheruser,
     });
-    console.log('press', chatRoom.id);
+    // console.log('press', chatRoom.id);
     // navigation.navigate('ChatRoom', id: chatRoom.id);
   };
 
   return (
-    <Pressable onPress={onPress} style={styles.container}>
-      <Image source={require('../assets/userimage.jpg')} style={styles.image} />
-      {chatRoom.newMessages ? (
-        <View style={styles.badgeContainer}>
-          <Text style={styles.badgeText}>{chatRoom.newMessages}</Text>
-        </View>
-      ) : null}
-      <View style={styles.rightContainer}>
-        <View style={styles.row}>
-          <Text style={styles.name}>{user.name}</Text>
-          <Text style={styles.text}>{chatRoom.lastMessage.createdAt}</Text>
-        </View>
-        <Text numberOfLines={1} style={styles.text}>
-          {chatRoom.lastMessage.content}
-        </Text>
-      </View>
-    </Pressable>
+    <>
+      {otheruser != '' ? (
+        <Pressable onPress={onPress} style={styles.container}>
+          <Image
+            source={require('../assets/userimage.jpg')}
+            style={styles.image}
+          />
+          {/* {chatRoom.newMessages ? (
+    <View style={styles.badgeContainer}>
+      <Text style={styles.badgeText}>{chatRoom.newMessages}</Text>
+    </View>
+  ) : null} */}
+          <View style={styles.rightContainer}>
+            <View style={styles.row}>
+              <Text style={styles.name}>{otheruser}</Text>
+              {/* <Text style={styles.text}>{chatRoom.lastMessage.createdAt}</Text> */}
+            </View>
+            <Text numberOfLines={1} style={styles.text}>
+              {/* {chatRoom.lastMessage.content} */}
+            </Text>
+          </View>
+        </Pressable>
+      ) : (
+        <></>
+      )}
+    </>
   );
+
 };
 
 const styles = StyleSheet.create({

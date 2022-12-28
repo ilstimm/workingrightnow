@@ -10,7 +10,7 @@ const InformationText = props => {
   const statusChange = () => {
     setShelvesStatus(shelvesStatus => !shelvesStatus);
     const url =
-      'http://localhost:8080/auth/Jobs/changeShelvesStatus/' +
+      'http://tim.ils.tw:80/project/auth/Jobs/changeShelvesStatus/' +
       props.userId +
       '/' +
       props.createTime;
@@ -53,7 +53,7 @@ const InformationButton = props => {
   const token = useSelector(state => state.token);
   const userId = useSelector(state => state.userId);
   const [createTime, setCreateTime] = useState(props.createTime);
-  const url = 'http://localhost:8080/auth/Jobs';
+  const url = 'http://tim.ils.tw:80/project/auth/Jobs';
   return (
     <View style={styles.buttonContainer}>
       <View style={[styles.button, {borderRightWidth: 1}]}>
@@ -116,7 +116,8 @@ export default function JobItem({navigation}) {
   console.log('JobItem = ' + token.token);
 
   useEffect(() => {
-    const url = 'http://localhost:8080/auth/Jobs/getUserJobs/' + userId.userId;
+    const url =
+      'http://tim.ils.tw:80/project/auth/Jobs/getUserJobs/' + userId.userId;
     const options = {
       method: 'GET',
       headers: {

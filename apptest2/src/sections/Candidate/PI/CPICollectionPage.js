@@ -23,7 +23,7 @@ const CollectionItem = ({navigation, item, token, userId}) => {
     if (!heart) {
       console.log('heart: ' + heart);
       const url =
-        'http://localhost:8080/auth/removeJobCollect/' +
+        'http://tim.ils.tw:80/project/auth/removeJobCollect/' +
         userId.userId +
         '/' +
         item.userID +
@@ -79,7 +79,8 @@ const CPICollectionPage = ({navigation}) => {
   const userId = useSelector(state => state.userId);
   const token = useSelector(state => state.token);
   useEffect(() => {
-    const url = 'http://localhost:8080/auth/getJobCollect/' + userId.userId;
+    const url =
+      'http://tim.ils.tw:80/project/auth/getJobCollect/' + userId.userId;
     const options = {
       method: 'GET',
       headers: {

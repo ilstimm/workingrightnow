@@ -14,7 +14,7 @@ function setConnected(connected) {
 
 function connect() {
 	var from = $("#from").val();
-	var socket = new SockJS('http://localhost:8080/chat');
+	var socket = new SockJS("http://tim.ils.tw:80/project/chat");
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);

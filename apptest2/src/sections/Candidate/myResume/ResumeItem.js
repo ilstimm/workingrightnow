@@ -13,7 +13,7 @@ const InformationText = props => {
   const statusChange = () => {
     setShelvesStatus(shelvesStatus => !shelvesStatus);
     const url =
-      'http://localhost:8080/auth/Resumes/changeShelvesStatus/' +
+      'http://tim.ils.tw:80/project/auth/Resumes/changeShelvesStatus/' +
       props.userId +
       '/' +
       props.createTime;
@@ -57,7 +57,7 @@ const InformationButton = props => {
   const userId = useSelector(state => state.userId);
   const [createTime, setCreateTime] = useState(props.createTime);
   console.log('r: ' + JSON.stringify(props.resumeObject));
-  const url = 'http://localhost:8080/auth/Resumes';
+  const url = 'http://tim.ils.tw:80/project/auth/Resumes';
   return (
     <View style={styles.buttonContainer}>
       <View style={[styles.button, {borderRightWidth: 1}]}>
@@ -122,7 +122,8 @@ export default function ResumeItem({navigation, dispatch}) {
 
   useEffect(() => {
     const url =
-      'http://localhost:8080/auth/Resumes/getUserResumes/' + userId.userId;
+      'http://tim.ils.tw:80/project/auth/Resumes/getUserResumes/' +
+      userId.userId;
     console.log('url: ' + url);
     const options = {
       method: 'GET',

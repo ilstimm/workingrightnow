@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
-const url = 'http://localhost:8080/auth/Resumes';
+const url = 'http://tim.ils.tw:80/project/auth/Resumes';
 const token = useSelector(state => state.token);
 
 export function Post(props) {

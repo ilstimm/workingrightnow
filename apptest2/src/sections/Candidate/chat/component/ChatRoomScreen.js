@@ -8,7 +8,6 @@ import React, {
 import {StyleSheet, FlatList, SafeAreaView} from 'react-native';
 import {useRoute, useNavigation} from '@react-navigation/core';
 import Message from './Message';
-import chatRoomData from '../assets/Chats';
 import MessageInput from './MessageInput';
 import {Button} from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,26 +24,27 @@ const ChatRoomScreen = ({navigation, route, user}) => {
     setTimeout(() => {
       setRefreshing(false);
     }, 100);
+    console.log("refresh")
     getChatData();
   };
 
   const getChatData = async () => {
     try {
-      let chat = await AsyncStorage.getItem('chatdata');
+       chat = await AsyncStorage.getItem('@chatdata');
       console.log('test');
       setChatData(
         JSON.parse(chat).filter(
-          item => item.users[1].name == route.params.user.name,
+          item => item.users[1].name == route.params.otheruser,
         )[0].messages,
       );
-      console.log(
-        'chatdata= ' +
-          // JSON.parse(
-          JSON.stringify(
-            chatData,
-            // ),
-          ),
-      );
+      // console.log(
+      //   'chatdata= ' +
+      //     // JSON.parse(
+      //     JSON.stringify(
+      //       chatData,
+      //       // ),
+      //     ),
+      // );
     } catch (error) {}
   };
 
@@ -62,10 +62,16 @@ const ChatRoomScreen = ({navigation, route, user}) => {
         renderItem={({item}) => <Message message={item} />}
         inverted
       />
-      <MessageInput user={route.params.user.name} refresh={onRefresh} />
+      <MessageInput
+      // {...console.log('message:  ' + JSON.stringify(route.params.messages))}
+        otheruser={route.params.otheruser}
+        refresh={onRefresh}
+        chatData={route.params.messages}
+      />
     </SafeAreaView>
   );
-};
+  
+};;
 const styles = StyleSheet.create({
   page: {
     backgroundColor: 'white',

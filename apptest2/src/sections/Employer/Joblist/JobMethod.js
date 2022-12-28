@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
-const url = 'http://localhost:8080/auth/Jobs';
+const url = 'http://tim.ils.tw:80/project/auth/Jobs';
 const token = useSelector(state => state.token);
 // export default function InformationMethod(props){
 //     if({ props.method } == "POST"){

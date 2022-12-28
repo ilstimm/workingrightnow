@@ -5,8 +5,10 @@ import SearchPage from './SearchPage';
 import CJobDetailPage from './CJobDetailPage';
 import TabBarController from '../../../components/TabBarController';
 import {StackActions} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 const SearchScreenNavigator = ({navigation, route}) => {
+
   const Stack = createStackNavigator();
   TabBarController(navigation, route, 'CJobDetailPage');
   return (

@@ -43,8 +43,8 @@ const ResumeForm = ({resume, navigation, token, userId}) => {
     if (ref.current) {
       console.log('heart: ' + heart);
       const httpUrl = heart
-        ? 'http://localhost:8080/auth/addResumeCollect/'
-        : 'http://localhost:8080/auth/removeResumeCollect/';
+        ? 'http://tim.ils.tw:80/project/auth/addResumeCollect/'
+        : 'http://tim.ils.tw:80/project/auth/removeResumeCollect/';
       const url =
         httpUrl + userId.userId + '/' + resume.userID + '/' + resume.createTime;
 
@@ -113,7 +113,7 @@ export default function ResumeItem({navigation, searchText, filter}) {
   };
 
   useEffect(() => {
-    let url = 'http://localhost:8080/auth/Resumes/';
+    let url = 'http://tim.ils.tw:80/project/auth/Resumes/';
     let options;
     if (searchText == '' && filter == '') {
       url = url + 'getAllResumes/' + userId.userId;

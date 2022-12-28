@@ -16,6 +16,7 @@ import md5 from 'react-native-md5';
 import websocket from '../sections/Candidate/chat/component/Websocket';
 import {ScrollView} from 'react-native-gesture-handler';
 import userResumeDataInitial from './userResumeInitial';
+import chatDataInitial from './chatDataInitial';
 
 const LoginContainer = ({navigation}) => {
   const [account, setAccount] = useState('');
@@ -41,7 +42,7 @@ const LoginContainer = ({navigation}) => {
         password: md5.b64_md5(password),
       }),
     };
-    const url = 'http://localhost:8080/login';
+    const url = 'http://tim.ils.tw:80/project/login';
     const tokenResponse = await fetch(url, options);
     const tokenObject = await tokenResponse.json();
     console.log('tokenObject: ' + tokenObject);
@@ -49,7 +50,8 @@ const LoginContainer = ({navigation}) => {
       console.log('token = ' + tokenObject.token);
       dispatch(setToken({token: tokenObject.token}));
       userResumeDataInitial(account, tokenObject.token, dispatch);
-      websocket(account);
+      chatDataInitial(dispatch);
+      websocket(account, '', '');
       navigation.replace('candidatePage');
     } else {
       Alert.alert('錯誤!', '帳號密碼錯誤!', [
@@ -65,6 +67,7 @@ const LoginContainer = ({navigation}) => {
   const forgotPassword = () => {
     console.log('forgotPassword!');
   };
+
   return (
     <ScrollView contentContainerStyle={styles.page}>
       <Image

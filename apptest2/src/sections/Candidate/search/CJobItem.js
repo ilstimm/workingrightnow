@@ -46,8 +46,8 @@ const JobForm = ({job, navigation, token, userId}) => {
     if (ref.current) {
       console.log('heart: ' + heart);
       const httpUrl = heart
-        ? 'http://localhost:8080/auth/addJobCollect/'
-        : 'http://localhost:8080/auth/removeJobCollect/';
+        ? 'http://tim.ils.tw:80/project/auth/addJobCollect/'
+        : 'http://tim.ils.tw:80/project/auth/removeJobCollect/';
       const url =
         httpUrl + userId.userId + '/' + job.userID + '/' + job.createTime;
 
@@ -117,7 +117,7 @@ export default function CJobItem({navigation, searchText, filter}) {
   };
 
   useEffect(() => {
-    let url = 'http://localhost:8080/auth/Jobs/';
+    let url = 'http://tim.ils.tw:80/project/auth/Jobs/';
     let options;
     if (searchText == '' && filter == '') {
       url = url + 'getAllJobs/' + userId.userId;

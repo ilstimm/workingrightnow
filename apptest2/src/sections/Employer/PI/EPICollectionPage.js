@@ -23,7 +23,7 @@ const CollectionItem = ({navigation, item, token, userId}) => {
     if (!heart) {
       console.log('heart: ' + heart);
       const url =
-        'http://localhost:8080/auth/removeResumeCollect/' +
+        'http://tim.ils.tw:80/project/auth/removeResumeCollect/' +
         userId.userId +
         '/' +
         item.userID +
@@ -80,7 +80,8 @@ const EPICollectionPage = ({navigation}) => {
   const token = useSelector(state => state.token);
 
   useEffect(() => {
-    const url = 'http://localhost:8080/auth/getResumeCollect/' + userId.userId;
+    const url =
+      'http://tim.ils.tw:80/project/auth/getResumeCollect/' + userId.userId;
     const options = {
       method: 'GET',
       headers: {

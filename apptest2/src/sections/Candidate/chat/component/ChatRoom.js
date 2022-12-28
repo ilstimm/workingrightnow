@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -14,24 +14,79 @@ import ChatRoomItem from './ChatRoomItem';
 import ChatRoomsData from '../assets/ChatRooms';
 import ChatRoomScreen from './ChatRoomScreen';
 import {Pressable} from 'react-native';
-var stompClient = null;
-
-const chatRoom1 = ChatRoomsData[5];
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSelector} from 'react-redux';
 
 const ChatRoom = ({navigation}) => {
+  const user = useSelector(state => state.userId.userId);
+  const [chatData, setChatData] = useState([]);
+  // const [chatRoomData, setChatRoomData] = useState();
+  const [chatRoomName, setChatRoomName] = useState('');
+
+  useLayoutEffect(() => {
+    getChatData();
+  }, []);
+
+  async function getChatData() {
+    try {
+      const result = await AsyncStorage.getItem('@chatdata');
+      setChatData(JSON.parse(result));
+      // console.log('chatdata1111:  ' + JSON.stringify(chatData));
+    } catch (error) {}
+  }
+
+  function storeChatData(chatData) {
+    const chat = chatData;
+    console.log('111111111' + JSON.stringify(chat));
+    chat.unshift({
+      users: [
+        {
+          name: user,
+          imageUri:
+            'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/123.jpg',
+        },
+        {
+          name: chatRoomName,
+          imageUri:
+            'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png',
+        },
+      ],
+      messages: [],
+    });
+    setChatData(chat);
+    AsyncStorage.setItem('@chatdata', JSON.stringify(chat));
+  }
+
+  const newChatRoom = () => {
+    storeChatData(chatData);
+    setChatRoomName('');
+  };
+
+  // console.log('storechatdata: ' + JSON.stringify(chatData));
+
   return (
     <View style={styles.page}>
-      <TextInput />
-      <TouchableOpacity>
+      <TextInput
+        value={chatRoomName}
+        onChangeText={chatRoomName => setChatRoomName(chatRoomName)}
+      />
+      <TouchableOpacity activeOpacity={0.5} onPress={newChatRoom}>
         <Text style={{backgroundColor: 'gray', fontSize: 30}}>新增聊天室</Text>
       </TouchableOpacity>
-      <FlatList
-        data={ChatRoomsData}
-        renderItem={props => (
-          <ChatRoomItem navigation={navigation} chatRoom={props.item} />
-        )}
-        // ListHeaderComponent = {() => <Text style = { styles.header }>聊天室</Text>}
-      />
+      {chatData == undefined ? (
+        <></>
+      ) : (
+        <FlatList
+          // refreshing={refreshing}
+          // extraData={chatData}
+          // {...console.log('chatRoomData: ' + chatData)}
+          data={chatData}
+          renderItem={props => (
+            <ChatRoomItem navigation={navigation} chatRoom={props.item} />
+          )}
+          // ListHeaderComponent = {() => <Text style = { styles.header }>聊天室</Text>}
+        />
+      )}
     </View>
   );
 };

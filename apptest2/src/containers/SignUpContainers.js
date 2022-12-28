@@ -30,7 +30,7 @@ const InputView = props => {
   );
 };
 
-const url = 'http://localhost:8080';
+const url = 'http://tim.ils.tw:80/project';
 
 const SignUpContainer = ({navigation}) => {
   const [account, onChangeAccount] = useState('');
@@ -42,7 +42,7 @@ const SignUpContainer = ({navigation}) => {
   const [accountWrongState, setAccountWrongState] = useState(true);
   const [passwordWrongState, setPasswordWrongState] = useState(true);
   const [password2WrongState, setPassword2WrongState] = useState(true);
-  const [vertifyState, setVertifyState] = useState(false);
+  const [vertifyState, setVertifyState] = useState(true);
   const [confirm, setConfirm] = useState(false);
   // const token = useSelector(state => state.token);
 
@@ -84,22 +84,22 @@ const SignUpContainer = ({navigation}) => {
   };
 
   const submitButton = async () => {
-    const options = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      body: JSON.stringify({
-        verifyCode: vertification,
-        email: mail,
-      }),
-    };
-    const a = await fetch(url + '/mail/check', options);
-    const b = await a.json();
-    console.log('status = ' + b.status);
-    console.log(b.status === true);
-    setVertifyState(true);
+    // const options = {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json;charset=UTF-8',
+    //   },
+    //   body: JSON.stringify({
+    //     verifyCode: vertification,
+    //     email: mail,
+    //   }),
+    // };
+    // const a = await fetch(url + '/mail/check', options);
+    // const b = await a.json();
+    // console.log('status = ' + b.status);
+    // console.log(b.status === true);
+    // setVertifyState(true);
     // setVertifyState(b.status);
     Alert.alert('註冊', '確認要註冊嗎', [
       {
@@ -239,14 +239,12 @@ const SignUpContainer = ({navigation}) => {
             />
             <TouchableOpacity
               style={[styles.button, {width: '20%', borderRadius: 10}]}
-              onPress={console.log('VF')}>
+              onPress={vertifyButton}>
               <Text style={styles.buttonText}>取得驗證碼</Text>
             </TouchableOpacity>
           </View>
           <View style={{marginTop: 30}}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => console.log('submit')}>
+            <TouchableOpacity style={styles.button} onPress={submitButton}>
               <Text style={styles.buttonText}>送出</Text>
             </TouchableOpacity>
           </View>

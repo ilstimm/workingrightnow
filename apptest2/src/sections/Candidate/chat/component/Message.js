@@ -13,6 +13,7 @@ const gray = 'lightgray';
 
 const myID = '123';
 const Message = ({message}) => {
+  // console.log('message:  ' + JSON.stringify(message));
   const isMe = message.name === myID;
 
   return (
