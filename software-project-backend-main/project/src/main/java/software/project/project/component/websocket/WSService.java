@@ -35,6 +35,7 @@ public class WSService {
     }
 
     public void sendChatMessage(InMessage message) {
+        System.out.println(message.toString());
         messagingTemplate.convertAndSend("/chat/single/" + message.getReceiver(), message);
     }
 

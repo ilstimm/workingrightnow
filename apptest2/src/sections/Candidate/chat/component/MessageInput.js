@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 import {RefreshContext} from './ChatRoomScreen';
 import publish from './Websocket';
 
-const MessageInput = props => {
+export default function MessageInput(props) {
   const userId = useSelector(state => state.userId); //自己
   const [message, setMessage] = useState('');
   const [time, setTime] = useState(new Date());
@@ -25,19 +25,21 @@ const MessageInput = props => {
     } catch (error) {}
   }
 
-  const sendMessage = () => {
+  const sendMessage = async message => {
     // setMessage('');
     // console.log('chatData:       ', chatData);
-    publish(props.otheruser, message, props.refresh);
-    const value = chatData;
-    
-    value.filter(item => item.users[1].name == props.otheruser)[0]
-    .messages.unshift({
-      content: message,
-      createdAt: time.getTime(),
-      name: userId.userId,
-    });
-    
+    // getChatData();
+    // publish(props.otheruser, message, userId.userId);
+    let value = JSON.parse(await AsyncStorage.getItem('@chatdata'));
+
+    value
+      .filter(item => item.users[1].name == props.otheruser)[0]
+      .messages.unshift({
+        content: message,
+        createdAt: time.getTime(),
+        name: userId.userId,
+      });
+
     // console.log("value:   " + JSON.stringify(value));
     // chat
     //   .unshift({
@@ -50,11 +52,11 @@ const MessageInput = props => {
     props.refresh();
   };
 
-  const storeChatData = async value => {
+  async function storeChatData(value) {
     try {
       await AsyncStorage.setItem('@chatdata', JSON.stringify(value));
     } catch (error) {}
-  };
+  }
 
   const onPlusClicked = () => {
     console.log('plus');
@@ -62,7 +64,7 @@ const MessageInput = props => {
 
   const onPress = () => {
     if (message) {
-      sendMessage();
+      sendMessage(message);
     } else {
       onPlusClicked();
     }
@@ -88,7 +90,7 @@ const MessageInput = props => {
       </Pressable>
     </View>
   );
-};;
+}
 const styles = StyleSheet.create({
   root: {
     flexDirection: 'row',
@@ -116,4 +118,6 @@ const styles = StyleSheet.create({
     fontSize: 35,
   },
 });
-export default MessageInput;
+// export default MessageInput;
+
+export function onRefresh2() {}

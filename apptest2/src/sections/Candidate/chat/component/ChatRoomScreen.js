@@ -11,26 +11,25 @@ import Message from './Message';
 import MessageInput from './MessageInput';
 import {Button} from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-export const RefreshContext = React.createContext();
+import websocket from './Websocket';
 
 const ChatRoomScreen = ({navigation, route, user}) => {
-  const [chatData, setChatData] = useState();
   const [refreshing, setRefreshing] = useState(false);
+  const [chatData, setChatData] = useState();
   // console.log('outside: ' + JSON.parse(chatData));
 
-  const onRefresh = () => {
+  function onRefresh() {
+    getChatData();
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
     }, 100);
-    console.log("refresh")
-    getChatData();
-  };
+    console.log('refresh');
+  }
 
   const getChatData = async () => {
     try {
-       chat = await AsyncStorage.getItem('@chatdata');
+      chat = await AsyncStorage.getItem('@chatdata');
       console.log('test');
       setChatData(
         JSON.parse(chat).filter(
@@ -53,6 +52,13 @@ const ChatRoomScreen = ({navigation, route, user}) => {
     getChatData();
   }, []);
 
+  useEffect(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 100);
+  }, [websocket]);
+
   return (
     <SafeAreaView style={styles.page}>
       <FlatList
@@ -63,14 +69,13 @@ const ChatRoomScreen = ({navigation, route, user}) => {
         inverted
       />
       <MessageInput
-      // {...console.log('message:  ' + JSON.stringify(route.params.messages))}
+        // {...console.log('message:  ' + JSON.stringify(route.params.chatRoom))}
         otheruser={route.params.otheruser}
         refresh={onRefresh}
         chatData={route.params.messages}
       />
     </SafeAreaView>
   );
-  
 };;
 const styles = StyleSheet.create({
   page: {

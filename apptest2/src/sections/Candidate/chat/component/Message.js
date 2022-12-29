@@ -7,13 +7,16 @@ import {
   TextInput,
   SafeAreaView,
 } from 'react-native';
+import {useSelector} from 'react-redux';
+import userIdSlice from '../../../../redux/userIdSlice';
 
 const blue = 'blue';
 const gray = 'lightgray';
 
-const myID = '123';
+// const myID = '123';
 const Message = ({message}) => {
   // console.log('message:  ' + JSON.stringify(message));
+  const myID = useSelector(state => state.userId.userId);
   const isMe = message.name === myID;
 
   return (

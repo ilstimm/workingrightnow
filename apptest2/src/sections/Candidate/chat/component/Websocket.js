@@ -15,26 +15,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const client = new Client();
 let value;
 
-export default async function websocket(account, refresh) {
+export async function websocket(account) {
   // let chatData;
   const time = new Date();
   // const user =
   console.log('account1223: ' + JSON.stringify(account));
-
-  // useLayoutEffect(() => {
-  //   getChatData();
-  // }, []);
-
-  // async function getChatData() {
-  // try {
-  //   const result = await AsyncStorage.getItem('@chatdata');
-  //   // setChatData(JSON.parse(result));
-  //   // chatData = JSON.parse(result);
-  //   console.log('chatdata1111:  ' + JSON.stringify(chatData));
-  //   chatData = result;
-  // } catch (error) {}
-  // }
-
   client.configure({
     brokerURL: 'http://tim.ils.tw:80/project/chat',
     forceBinaryWSFrames: true,
@@ -44,7 +29,7 @@ export default async function websocket(account, refresh) {
       console.log('connect');
 
       client.subscribe(
-        '/chat/single/' + account, // /chat/single/ + username
+        'chat/single/123', // /chat/single/ + username
         async message => {
           value = JSON.parse(await AsyncStorage.getItem('@chatdata'));
           let data = JSON.parse(message.body);
@@ -67,7 +52,6 @@ export default async function websocket(account, refresh) {
 
           console.log('chatdata156498:  ' + JSON.stringify(value));
           AsyncStorage.setItem('@chatdata', JSON.stringify(value));
-          // props.refresh();
         },
         {},
       );
@@ -85,10 +69,10 @@ export default async function websocket(account, refresh) {
   client.activate();
 }
 
-export function publish(receiver, message, refresh) {
-  const userId = useSelector(state => state.userId);
+export function publish(receiver, message, userId) {
+  // const userId = useSelector(state => state.userId);
   client.publish({
-    destination: '/app/ptp/single/chat',
+    destination: 'app/ptp/single/chat',
     body: JSON.stringify({
       sender: userId, // username
       receiver: receiver, // 要寄給誰
