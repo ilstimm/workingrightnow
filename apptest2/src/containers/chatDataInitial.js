@@ -6,8 +6,8 @@ import chatData from '../components/data/Chats.json';
 
 export default async function chatDataInitial(dispatch) {
   try {
+    AsyncStorage.removeItem('@chatdata');
     const storekey = await AsyncStorage.getAllKeys();
-    // AsyncStorage.removeItem('@chatdata');
     console.log('\n\nstorekey:\n\n' + storekey);
     if (!storekey.includes('@chatroomdata')) {
       AsyncStorage.setItem('@chatroomdata', JSON.stringify([]));

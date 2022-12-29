@@ -30,12 +30,15 @@ const InputView = props => (
 );
 
 const AddJobs = ({navigation, route}) => {
+  const mode = route.params.mode;
   //雇主基本資料
-  const [title, setTitle] = React.useState(route.params.jobObject.title); //工作主旨
-  const [name, setName] = React.useState(route.params.jobObject.name); //雇主姓名
-  const [sex, setSex] = React.useState(route.params.jobObject.sex); //性別
-  const [phone, setPhone] = React.useState(route.params.jobObject.phoneNumber); //電話
-  const [email, setEmail] = React.useState(route.params.jobObject.email); //信箱
+  const [title, setTitle] = React.useState(
+    mode != 'add' ? route.params.jobObject.title : null,
+  ); //工作主旨
+  const [name, setName] = React.useState( mode != 'add' ? route.params.jobObject.name: null); //雇主姓名
+  const [sex, setSex] = React.useState( mode != 'add' ? route.params.jobObject.sex: 0); //性別
+  const [phone, setPhone] = React.useState( mode != 'add' ? route.params.jobObject.phoneNumber: null); //電話
+  const [email, setEmail] = React.useState(mode != 'add' ?route.params.jobObject.email: null); //信箱
 
   //工作需求條件
   const [jobNature, setJobNature] = React.useState(0); //工作性質
@@ -404,7 +407,7 @@ const AddJobs = ({navigation, route}) => {
       </View>
     </ScrollView>
   );
-};;
+};;;
 
 const styles = StyleSheet.create({
   body: {

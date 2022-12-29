@@ -10,6 +10,7 @@ import {
   Alert,
   Switch,
 } from 'react-native';
+import {RadioButton} from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -25,23 +26,11 @@ const InformationText = props => {
   const toggleSwitch = () => setResumeState(previousState => !previousState);
   return (
     <View style={styles.titleFreshtimeInformation}>
-      <Text style={{fontSize: 25}}>{props.title}</Text>
-      <Text>更新時間: {props.refreshTime}</Text>
-      <View style={styles.statusBar}>
-        <Text style={styles.statusText}>履歷開啟狀態</Text>
-        <View style={[{flexDirection: 'row'}, styles.statusBar]}>
-          <Text style={styles.statusText}>
-            {resumeState ? '開啟中' : '關閉中'}
-          </Text>
-          <Switch
-            trackColor={{false: '#767577', true: '#81b0ff'}}
-            thumbColor={'white'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={resumeState}
-          />
-        </View>
+      <View style={{justifyContent: 'center'}}>
+        <Text style={{fontSize: 25}}>{props.title}</Text>
+        <Text>更新時間: {props.refreshTime}</Text>
       </View>
+      <RadioButton value={props.index} />
     </View>
   );
 };
@@ -53,7 +42,10 @@ const CJobDetailPage = ({navigation, route}) => {
     route.params.name != null
       ? route.params.name[0] + route.params.sex
       : '你好';
-  // console.log('name: ' + name);
+  console.log('name: ' + route.params.name);
+
+  const [value, setFocus] = React.useState('first'); // 履歷radio button
+  const [isEmpty, setIsEmpty] = React.useState(true); // 履歷是否為空
 
   const TextView = props => {
     return (
@@ -71,7 +63,6 @@ const CJobDetailPage = ({navigation, route}) => {
       </View>
     );
   };
-  // navigation.dispatch(StackActions.pop(1));
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -169,35 +160,69 @@ const CJobDetailPage = ({navigation, route}) => {
         </ScrollView>
       </View>
       <View style={views.submit}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-            setModalVisible(!modalVisible);
-          }}>
-          <View style={views.centeredView}>
-            {information.map((information, index) => (
-              <View key={index} style={styles.container}>
-                <InformationText
-                  title={information.title}
-                  refreshTime={information.refreshTime}
-                />
-                {/* <InformationButton
-              user={information.name}
-              createTime={information.createTime}
-              resumeObject={data[index]}
-            /> */}
-              </View>
-            ))}
-          </View>
-        </Modal>
         <Pressable
           style={[styles.button]}
           onPress={() => setModalVisible(true)}>
           <Text style={styles.textStyle}>我要應徵</Text>
         </Pressable>
+      </View>
+      <View>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            // Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={views.centeredView}>
+            <View style={views.modalView}>
+              <View style={{alignItems: 'flex-end', justifyContent: 'center'}}>
+                <AntDesign
+                  name="close"
+                  style={{fontSize: 20}}
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                />
+              </View>
+              <ScrollView>
+                <RadioButton.Group
+                  onValueChange={value => setFocus(value)}
+                  value={value}>
+                  {information.map((information, index) => (
+                    <View key={index} style={styles.resumeListContainer}>
+                      <InformationText
+                        title={information.title}
+                        refreshTime={information.refreshTime}
+                        index={index}
+                      />
+                      {/* <InformationButton
+                          user={information.name}
+                          createTime={information.createTime}
+                          resumeObject={data[index]}
+                          /> */}
+                    </View>
+                  ))}
+                </RadioButton.Group>
+              </ScrollView>
+
+              <View style={styles.sendResumeButton}>
+                <Pressable
+                  // style={[styles.button]}
+                  onPress={() => console.log('新增履歷')}>
+                  <AntDesign name="addfile" style={{fontSize: 30}} />
+                </Pressable>
+                <Text>{isEmpty ? '履歷空空如也~' : null}</Text>
+                <Pressable
+                  // style={[styles.button]}
+                  onPress={() => console.log('送出履歷')}>
+                  <Text style={[styles.textStyle]}>送出履歷</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </SafeAreaView>
   );
@@ -212,22 +237,15 @@ const views = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
+    // backgroundColor: 'red',
   },
   modalView: {
-    width: '80%',
+    width: '90%',
     height: '80%',
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: 'rgb(246,247,241)',
     borderRadius: 5,
     padding: 5,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 80,
     elevation: 30,
   },
 });
@@ -283,9 +301,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#2196F3',
   },
   textStyle: {
-    height: '100%',
-    fontSize: 20,
-    padding: 5,
+    fontSize: 18,
+    padding: 3,
     color: 'white',
     backgroundColor: 'rgb(49, 110, 99)',
     fontWeight: 'bold',
@@ -297,9 +314,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  container: {
+  resumeListContainer: {
     backgroundColor: 'rgb(246,247,241)',
     marginHorizontal: 10,
+    borderRadius: 10,
     elevation: 5,
     marginTop: 10,
     borderWidth: 1,
@@ -307,6 +325,9 @@ const styles = StyleSheet.create({
     borderColor: 'rgb(130, 180, 169)',
   },
   titleFreshtimeInformation: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 5,
     marginVertical: 5,
   },
@@ -321,13 +342,17 @@ const styles = StyleSheet.create({
     borderColor: 'rgb(130, 180, 169)',
     textAlign: 'center',
   },
-  statusBar: {
+
+  statusText: {
+    color: 'black',
+  },
+  sendResumeButton: {
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  statusText: {
-    color: 'black',
+    alignSelf: 'flex-end',
+    marginTop: 5,
   },
 });
 export default CJobDetailPage;
