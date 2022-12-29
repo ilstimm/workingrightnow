@@ -7,48 +7,32 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
+// import chatDatas from '../assets/Chats';
 
 import {Client} from '@stomp/stompjs';
-import {useSelector} from 'react-redux';
-import {useLayoutEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const client = new Client();
-let value;
-
-export async function websocket(account) {
-  // let chatData;
+const websocket = (account) => {
+  let value;
   const time = new Date();
-  // const user =
-  console.log('account1223: ' + JSON.stringify(account));
   client.configure({
     brokerURL: 'http://tim.ils.tw:80/project/chat',
-    forceBinaryWSFrames: true,
-    appendMissingNULLonIncoming: true,
-    onConnect: async () => {
-      // const userId = useSelector(state => state.userId);
+    onConnect: () => {
       console.log('connect');
-
+      console.log('account=   '+ account)
       client.subscribe(
-        'chat/single/123', // /chat/single/ + username
+        '/chat/single/' + account, // /chat/single/ + username
         async message => {
           value = JSON.parse(await AsyncStorage.getItem('@chatdata'));
           let data = JSON.parse(message.body);
-          console.log('聊天訊息: ' + JSON.stringify(data)); // 收到訊息之後要做的事
-          // console.log(
-          //   'value:  ' +
-          //     JSON.stringify(
-          //       JSON.parse(value).filter(
-          //         item => item.users[1].name == data.sender,
-          //       )[0].messages,
-          //     ),
-          // );
+          console.log(data); // 收到訊息之後要做的事
           value
-            .filter(item => item.users[1].name == data.sender)[0]
-            .messages.unshift({
-              content: data.message,
-              createdAt: time.getTime(),
-              name: data.sender,
-            });
+          .filter(item => item.users[1].name == data.sender)[0]
+          .messages.unshift({
+            content: data.message,
+            createdAt: time.getTime(),
+            name: data.sender,
+          });
 
           console.log('chatdata156498:  ' + JSON.stringify(value));
           AsyncStorage.setItem('@chatdata', JSON.stringify(value));
@@ -57,7 +41,7 @@ export async function websocket(account) {
       );
     },
     debug: function (str) {
-      console.log(str);
+      console.log("str = " + str);
     },
     connectHeaders: {},
 
@@ -67,16 +51,17 @@ export async function websocket(account) {
   });
   client.forceBinaryWSFrames = true;
   client.activate();
-}
+};
 
-export function publish(receiver, message, userId) {
-  // const userId = useSelector(state => state.userId);
+export function publish(sender, receiver, message) {
+  console.log("###############");
   client.publish({
-    destination: 'app/ptp/single/chat',
+    destination: '/app/ptp/single/chat',
     body: JSON.stringify({
-      sender: userId, // username
+      sender: sender, // username
       receiver: receiver, // 要寄給誰
       message: message, // 訊息
     }),
   });
 }
+export default websocket;

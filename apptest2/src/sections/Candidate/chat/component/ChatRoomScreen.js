@@ -12,8 +12,10 @@ import MessageInput from './MessageInput';
 import {Button} from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import websocket from './Websocket';
+import {useSelector} from 'react-redux';
 
 const ChatRoomScreen = ({navigation, route, user}) => {
+  const userId = useSelector(state => state.userId.userId);
   const [refreshing, setRefreshing] = useState(false);
   const [chatData, setChatData] = useState();
   // console.log('outside: ' + JSON.parse(chatData));
@@ -57,7 +59,7 @@ const ChatRoomScreen = ({navigation, route, user}) => {
     setTimeout(() => {
       setRefreshing(false);
     }, 100);
-  }, [websocket]);
+  }, []);
 
   return (
     <SafeAreaView style={styles.page}>

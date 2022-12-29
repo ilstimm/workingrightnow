@@ -13,7 +13,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setUserId} from '../redux/userIdSlice';
 import {setToken} from '../redux/tokenSlice';
 import md5 from 'react-native-md5';
-import {websocket} from '../sections/Candidate/chat/component/Websocket';
+import websocket from '../sections/Candidate/chat/component/Websocket';
 import {ScrollView} from 'react-native-gesture-handler';
 import userResumeDataInitial from './userResumeInitial';
 import chatDataInitial from './chatDataInitial';
