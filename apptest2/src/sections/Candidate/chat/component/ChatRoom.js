@@ -16,29 +16,14 @@ import ChatRoomScreen from './ChatRoomScreen';
 import {Pressable} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector} from 'react-redux';
+import chats from '../../../../components/data/Chats.json';
 
 const ChatRoom = ({navigation}) => {
   const user = useSelector(state => state.userId.userId);
-  const [chatData, setChatData] = useState([]);
-  // const [chatRoomData, setChatRoomData] = useState();
   const [chatRoomName, setChatRoomName] = useState('');
 
-  useLayoutEffect(() => {
-    getChatData();
-  }, []);
-
-  async function getChatData() {
-    try {
-      const result = await AsyncStorage.getItem('@chatdata');
-      setChatData(JSON.parse(result));
-      // console.log('chatdata1111:  ' + JSON.stringify(chatData));
-    } catch (error) {}
-  }
-
-  function storeChatData(chatData) {
-    const chat = chatData;
-    console.log('111111111' + JSON.stringify(chat));
-    chat.unshift({
+  function storeChatData() {
+    chats.unshift({
       users: [
         {
           name: user,
@@ -53,16 +38,14 @@ const ChatRoom = ({navigation}) => {
       ],
       messages: [],
     });
-    setChatData(chat);
-    AsyncStorage.setItem('@chatdata', JSON.stringify(chat));
+    AsyncStorage.setItem('@chatdata', JSON.stringify(chats));
   }
 
   const newChatRoom = () => {
-    storeChatData(chatData);
+    storeChatData();
     setChatRoomName('');
+    // await AsyncStorage.setItem('@chatdata', JSON.stringify(chats));
   };
-
-  // console.log('storechatdata: ' + JSON.stringify(chatData));
 
   return (
     <View style={styles.page}>
@@ -73,18 +56,14 @@ const ChatRoom = ({navigation}) => {
       <TouchableOpacity activeOpacity={0.5} onPress={newChatRoom}>
         <Text style={{backgroundColor: 'gray', fontSize: 30}}>新增聊天室</Text>
       </TouchableOpacity>
-      {chatData == undefined ? (
+      {chats == undefined ? (
         <></>
       ) : (
         <FlatList
-          // refreshing={refreshing}
-          // extraData={chatData}
-          // {...console.log('chatRoomData: ' + chatData)}
-          data={chatData}
+          data={chats.filter(item => item.users[0].name == user)} //篩選當前使用者的聊天資料
           renderItem={props => (
             <ChatRoomItem navigation={navigation} chatRoom={props.item} />
           )}
-          // ListHeaderComponent = {() => <Text style = { styles.header }>聊天室</Text>}
         />
       )}
     </View>

@@ -4,6 +4,8 @@ import {Text, View, StyleSheet, TextInput, Pressable} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RefreshContext} from './ChatRoomScreen';
 import {publish} from './Websocket';
+import chats from '../../../../components/data/Chats.json';
+// import onRefresh from './ChatRoomScreen';
 
 export default function MessageInput(props) {
   const userId = useSelector(state => state.userId); //自己
@@ -11,31 +13,23 @@ export default function MessageInput(props) {
   const [time, setTime] = useState(new Date());
   const [chatData, setChatData] = useState([]);
 
-  useLayoutEffect(() => {
-    getChatData();
-  }, []);
-
-  async function getChatData() {
-    try {
-      const result = await AsyncStorage.getItem('@chatdata');
-      setChatData(JSON.parse(result));
-      // console.log('chatdata1111:  ' + JSON.stringify(chatData));
-    } catch (error) {}
-  }
+  // useLayoutEffect(() => {
+  //   getChatData();
+  // }, []);
 
   const sendMessage = async message => {
-    publish(userId.userId, props.otheruser, message);
-    let value = JSON.parse(await AsyncStorage.getItem('@chatdata'));
+    publish(userId.userId, props.otheruser, message, 'message');
 
-    value
+    chats
       .filter(item => item.users[1].name == props.otheruser)[0]
       .messages.unshift({
         content: message,
         createdAt: time.getTime(),
         name: userId.userId,
+        type: 'message',
       });
 
-    storeChatData(value);
+    storeChatData(chats);
     setMessage('');
     props.refresh();
   };
@@ -108,4 +102,3 @@ const styles = StyleSheet.create({
 });
 // export default MessageInput;
 
-export function onRefresh2() {}

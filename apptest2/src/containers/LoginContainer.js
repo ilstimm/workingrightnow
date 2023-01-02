@@ -17,6 +17,7 @@ import websocket from '../sections/Candidate/chat/component/Websocket';
 import {ScrollView} from 'react-native-gesture-handler';
 import userResumeDataInitial from './userResumeInitial';
 import chatDataInitial from './chatDataInitial';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginContainer = ({navigation}) => {
   const [account, setAccount] = useState('');
@@ -50,7 +51,7 @@ const LoginContainer = ({navigation}) => {
       console.log('token = ' + tokenObject.token);
       dispatch(setToken({token: tokenObject.token}));
       userResumeDataInitial(account, tokenObject.token, dispatch);
-      chatDataInitial(dispatch);
+      chatDataInitial(account, tokenObject.token);
       websocket(account);
       navigation.replace('candidatePage');
     } else {
@@ -66,6 +67,20 @@ const LoginContainer = ({navigation}) => {
   };
   const forgotPassword = () => {
     console.log('forgotPassword!');
+  };
+
+  const onPressDelete = () => {
+    Alert.alert('確認!', '確認要刪除資料嗎!', [
+      {
+        text: 'cancel',
+      },
+      {
+        text: 'Ok',
+        onPress: () => {
+          AsyncStorage.removeItem('@chatdata');
+        },
+      },
+    ]);
   };
 
   return (
@@ -88,6 +103,9 @@ const LoginContainer = ({navigation}) => {
       />
       <Text style={styles.loginButton} onPress={onPressLogin}>
         Log in
+      </Text>
+      <Text style={styles.loginButton} onPress={onPressDelete}>
+        清除資料
       </Text>
       <Text style={styles.forgotPassword} onPress={forgotPassword}>
         Forgot Password?

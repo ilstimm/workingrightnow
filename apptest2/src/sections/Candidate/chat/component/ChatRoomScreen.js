@@ -13,15 +13,27 @@ import {Button} from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import websocket from './Websocket';
 import {useSelector} from 'react-redux';
+import chats from '../../../../components/data/Chats.json';
 
-const ChatRoomScreen = ({navigation, route, user}) => {
+// export const onRefresh = () => {
+//   const [refreshing, setRefreshing] = useState(false);
+//   setRefreshing(true);
+//   setTimeout(() => {
+//     setRefreshing(false);
+//   }, 100);
+//   console.log('refresh');
+// };
+
+const ChatRoomScreen = ({navigation, route}) => {
   const userId = useSelector(state => state.userId.userId);
   const [refreshing, setRefreshing] = useState(false);
   const [chatData, setChatData] = useState();
-  // console.log('outside: ' + JSON.parse(chatData));
+  const messageLength = chats.filter(
+    item => item.users[1].name == route.params.otheruser,
+  )[0].messages;
 
   function onRefresh() {
-    getChatData();
+    // getChatData();
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
@@ -29,44 +41,26 @@ const ChatRoomScreen = ({navigation, route, user}) => {
     console.log('refresh');
   }
 
-  const getChatData = async () => {
-    try {
-      chat = await AsyncStorage.getItem('@chatdata');
-      console.log('test');
-      setChatData(
-        JSON.parse(chat).filter(
-          item => item.users[1].name == route.params.otheruser,
-        )[0].messages,
-      );
-      // console.log(
-      //   'chatdata= ' +
-      //     // JSON.parse(
-      //     JSON.stringify(
-      //       chatData,
-      //       // ),
-      //     ),
-      // );
-    } catch (error) {}
-  };
+  console.log('====================================');
+  console.log('refresh: ' + JSON.stringify(messageLength));
+  console.log('====================================');
 
   useLayoutEffect(() => {
+    // websocket(userId, onRefresh);
     navigation.setOptions({title: route.params.chatRoom.users[1].name});
-    getChatData();
-  }, []);
-
-  useEffect(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 100);
-  }, []);
+    // getChatData();
+  });
 
   return (
     <SafeAreaView style={styles.page}>
       <FlatList
         refreshing={refreshing}
+        extraData={messageLength}
         // onRefresh={onRefresh}
-        data={chatData}
+        data={
+          chats.filter(item => item.users[1].name == route.params.otheruser)[0]
+            .messages
+        }
         renderItem={({item}) => <Message message={item} />}
         inverted
       />
@@ -74,15 +68,19 @@ const ChatRoomScreen = ({navigation, route, user}) => {
         // {...console.log('message:  ' + JSON.stringify(route.params.chatRoom))}
         otheruser={route.params.otheruser}
         refresh={onRefresh}
-        chatData={route.params.messages}
+        chatData={
+          chats.filter(item => item.users[1].name == route.params.otheruser)[0]
+            .messages
+        }
       />
     </SafeAreaView>
   );
-};;
+};
 const styles = StyleSheet.create({
   page: {
     backgroundColor: 'white',
     flex: 1,
   },
 });
+
 export default ChatRoomScreen;

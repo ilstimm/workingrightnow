@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(246,247,241)',
   },
   textInputView: {
-    backgroundColor: 'rgb(90,148,148)',
+    backgroundColor: 'rgb(238,169,112)',
     flexDirection: 'row',
     paddingVertical: 8,
     alignItems: 'center',

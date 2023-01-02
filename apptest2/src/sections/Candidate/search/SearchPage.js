@@ -29,10 +29,10 @@ export default function SearchPage({navigation}) {
   const [nature, setNature] = useState([]);
   const [filter, setFilter] = useState([]);
   const [state, setState] = useState(true);
-  console.log('SearchPage = ' + token.token);
-  console.log(
-    'userResumeData: ' + JSON.stringify(userResumeData.userResumeData),
-  );
+  // console.log('SearchPage = ' + token.token);
+  // console.log(
+  //   'userResumeData: ' + JSON.stringify(userResumeData.userResumeData),
+  // );
 
   const searchApi = () => {
     // setSearch(value);

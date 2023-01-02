@@ -2,22 +2,96 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useState} from 'react';
 import {useEffect} from 'react';
 import {setChat} from '../redux/chatSlice';
-import chatData from '../components/data/Chats.json';
+import chats from '../components/data/Chats.json';
 
-export default async function chatDataInitial(dispatch) {
-  try {
-    AsyncStorage.removeItem('@chatdata');
-    const storekey = await AsyncStorage.getAllKeys();
-    console.log('\n\nstorekey:\n\n' + storekey);
-    if (!storekey.includes('@chatroomdata')) {
-      AsyncStorage.setItem('@chatroomdata', JSON.stringify([]));
-    } else if (!storekey.includes('@chatdata')) {
-      AsyncStorage.setItem('@chatdata', JSON.stringify([]));
-    } else {
-      chatData.unshift(JSON.parse(await AsyncStorage.getItem('@chatdata'))[0],0);
-      console.log('chatdata13216546: ' + JSON.stringify(chatData));
-    }
-  } catch (error) {}
-  // const test = await AsyncStorage.getItem('@chatdata');
-  // console.log('\n\ntest:\n\n' + test);
+export default async function chatDataInitial(userId, token) {
+  const options = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json;charset=UTF-8',
+      Authorization: 'Bearer ' + token,
+    },
+  };
+  const url = 'http://tim.ils.tw:80/project/auth/getChatData/' + userId;
+  const offlinechats = await fetch(url, options);
+  const offlineChats = await offlinechats.json();
+  console.log('離線data: ' + offlineChats);
+  // AsyncStorage.removeItem('@chatdata');
+  if (offlineChats.length != 0) {
+    //如果有離線資料
+    try {
+      // AsyncStorage.removeItem('@chatdata');
+      const storekey = await AsyncStorage.getAllKeys();
+      console.log('\n\nstorekey:\n\n' + storekey);
+      if (!storekey.includes('@chatdata')) {
+        chats.splice(0);
+        AsyncStorage.setItem('@chatdata', JSON.stringisfy([]));
+      } else {
+        chats.splice(0);
+        JSON.parse(await AsyncStorage.getItem('@chatdata')).forEach(element => {
+          chats.unshift(element);
+        });
+        console.log('chatdata13216546: ' + JSON.stringify(chatData));
+      }
+    } catch (error) {}
+    offlineChats.map(offlineChatsdata => {
+      chats.map(data => {
+        if (data.users[1].name === offlineChatsdata.sender) {
+          console.log('==========================');
+          data.messages.unshift({
+            content: offlineChatsdata.message,
+            createdAt: offlineChatsdata.createTime,
+            name: offlineChatsdata.sender,
+            type: offlineChatsdata.type,
+          });
+        } else {
+          console.log('**************************');
+          chats.unshift({
+            users: [
+              {
+                name: userId,
+                imageUri:
+                  'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png',
+              },
+              {
+                name: offlineChatsdata.sender,
+                imageUri:
+                  'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png',
+              },
+            ],
+            messages: [
+              {
+                content: offlineChatsdata.message,
+                createdAt: offlineChatsdata.createTime,
+                name: offlineChatsdata.sender,
+                type: offlineChatsdata.type,
+              },
+            ],
+          });
+          console.log('====================================');
+          console.log('chats:  ' + chats);
+          console.log('====================================');
+        }
+      });
+    });
+  } else {
+    try {
+      // AsyncStorage.removeItem('@chatdata');
+      console.log('33333333333333333333333');
+      const storekey = await AsyncStorage.getAllKeys();
+      console.log('\n\nstorekey:\n\n' + storekey);
+      if (!storekey.includes('@chatdata')) {
+        chats.splice(0);
+        AsyncStorage.setItem('@chatdata', JSON.stringisfy([]));
+      } else {
+        chats.splice(0);
+        JSON.parse(await AsyncStorage.getItem('@chatdata')).forEach(element => {
+          chats.unshift(element);
+        });
+        console.log('chatdata13216546: ' + JSON.stringify(chats));
+      }
+    } catch (error) {}
+  }
+  AsyncStorage.setItem('@chatdata', JSON.stringify(chats));
 }

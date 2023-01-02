@@ -1,0 +1,54 @@
+[
+  {
+    "users": [
+      {
+        "name": "123",
+        "imageUri": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/123.jpg"
+      },
+      {
+        "name": "C",
+        "imageUri": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png"
+      }
+    ],
+    "messages": []
+  },
+  {
+    "users": [
+      {
+        "name": "123",
+        "imageUri": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/123.jpg"
+      },
+      {
+        "name": "B",
+        "imageUri": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png"
+      }
+    ],
+    "messages": []
+  },
+  {
+    "users": [
+      {
+        "name": "123",
+        "imageUri": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/123.jpg"
+      },
+      {
+        "name": "",
+        "imageUri": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png"
+      }
+    ],
+    "messages": []
+  },
+  {
+    "users": [
+      {
+        "name": "123",
+        "imageUri": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/123.jpg"
+      },
+      {
+        "name": "A",
+        "imageUri": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png"
+      }
+    ],
+    "messages": []
+  }
+]

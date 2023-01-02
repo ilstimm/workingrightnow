@@ -53,9 +53,9 @@ const AddJobs = ({navigation, route}) => {
 
   //日期選擇器
   const [date0, setDate0] = React.useState(new Date()); // datepicker日期參數
-  const [openJobDate, setOpenJobDate] = React.useState(false);
   const [date1, setDate1] = React.useState(new Date(1995, 1, 1, 9, 0, 0)); // datepicker日期參數
   const [date2, setDate2] = React.useState(new Date(1995, 1, 1, 10, 0, 0)); // datepicker日期參數
+  const [openJobDate, setOpenJobDate] = React.useState(false);
   const [openTime1, setOpenTime1] = React.useState(false); // datepicker開啟狀態
   const [openTime2, setOpenTime2] = React.useState(false); // datepicker開啟狀態
 
@@ -74,7 +74,7 @@ const AddJobs = ({navigation, route}) => {
       <DatePicker
         modal
         mode="date"
-        title="BIRTHDAY"
+        title="工作日期"
         open={openJobDate}
         date={date0}
         onConfirm={date => {
@@ -198,8 +198,7 @@ const AddJobs = ({navigation, route}) => {
       <View style={{padding: '3%'}}>
         <Text>工作性質</Text>
         <SelectList
-          setSelected={setJobNature}
-          onSelect={console.log('Select!')}
+          setSelected={jobNature => setJobNature(jobNature)}
           data={jobData}
           placeholder={'選擇工作性質'}
           defaultOption={{key: '0', value: '及時工作'}}
@@ -278,23 +277,22 @@ const AddJobs = ({navigation, route}) => {
           setSelected={setPlace1}
           data={regionData}
           placeholder={'選擇地區'}
-          // save={'value'}
+          save={'key'}
           defaultOption={{key: '1', value: '台北市'}}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
+        {console.log('縣市: ' + place1)}
         <SelectList
           setSelected={setPlace2}
-          {...console.log(
-            'place+ ' + JSON.stringify(regionData[place1 - 1].districts),
-          )}
           data={regionData[place1 - 1].districts}
           placeholder={'選擇地區'}
-          // save={'value'}
+          save={'value'}
           defaultOption={regionData[place1 - 1].districts[0]}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
+        {console.log('地區: ' + place2)}
       </View>
 
       <View style={styles.headers}>
@@ -356,17 +354,11 @@ const AddJobs = ({navigation, route}) => {
                       phoneNumber: phone,
                       email: email,
                       nature: jobData[jobNature].value,
-                      type: jobData[jobNature].type.filter(
-                        item => item.key == type,
-                      )[0].value,
+                      type: type,
                       time: period1 + '~' + period2,
                       salary: salary,
-                      region:
-                        regionData[place1 - 1].value +
-                        regionData[place1 - 1].districts.filter(
-                          item => item.key == place2,
-                        )[0].value,
-                      salaryMethod: payTypeData[payType].value,
+                      region: regionData[place1 - 1].value + place2,
+                      salaryMethod: payType,
                       salaryDate: payDate,
                       content: content,
                     }),
@@ -380,28 +372,28 @@ const AddJobs = ({navigation, route}) => {
                 },
               },
             ]);
-            console.log(
-              'userId: ' + userId.userId,
-              'title: ' + title,
-              'name: ' + name,
-              'sex: ' + sex,
-              'phoneNumber: ' + phone,
-              'email: ' + email,
-              'nature: ' + jobData[jobNature].value,
-              'type: ' +
-                jobData[jobNature].type.filter(item => item.key == type)[0]
-                  .value,
-              'time: ' + period1 + period2,
-              'salary: ' + salary,
-              'region: ' +
-                regionData[place1 - 1].value +
-                regionData[place1 - 1].districts.filter(
-                  item => item.key == place2,
-                )[0].value,
-              'salaryMethod: ' + payTypeData[payType].value,
-              'salaryDate: ' + payDate,
-              'content: ' + content,
-            );
+            // console.log(
+            //   'userId: ' + userId.userId,
+            //   'title: ' + title,
+            //   'name: ' + name,
+            //   'sex: ' + sex,
+            //   'phoneNumber: ' + phone,
+            //   'email: ' + email,
+            //   'nature: ' + jobData[jobNature].value,
+            //   'type: ' +
+            //     jobData[jobNature].type.filter(item => item.key == type)[0]
+            //       .value,
+            //   'time: ' + period1 + period2,
+            //   'salary: ' + salary,
+            //   'region: ' +
+            //     regionData[place1 - 1].value +
+            //     regionData[place1 - 1].districts.filter(
+            //       item => item.key == place2,
+            //     )[0].value,
+            //   'salaryMethod: ' + payTypeData[payType].value,
+            //   'salaryDate: ' + payDate,
+            //   'content: ' + content,
+            // );
           }}
         />
       </View>

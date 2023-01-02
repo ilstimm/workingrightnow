@@ -20,12 +20,16 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {CommonActions, StackActions} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
+import {useState} from 'react';
+import {publish} from '../chat/component/Websocket';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import chats from '../../../components/data/Chats.json';
 
-const InformationText = props => {
+const UserResumeText = props => {
   const [resumeState, setResumeState] = React.useState(false);
   const toggleSwitch = () => setResumeState(previousState => !previousState);
   return (
-    <View style={styles.titleFreshtimeInformation}>
+    <View style={styles.titleFreshtimeuserResume}>
       <View style={{justifyContent: 'center'}}>
         <Text style={{fontSize: 25}}>{props.title}</Text>
         <Text>更新時間: {props.refreshTime}</Text>
@@ -36,15 +40,18 @@ const InformationText = props => {
 };
 
 const CJobDetailPage = ({navigation, route}) => {
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const information = useSelector(state => state.userResumeData.userResumeData);
+  const time = new Date();
+  const userResume = useSelector(state => state.userResumeData.userResumeData); //使用者履歷
+  const userId = useSelector(state => state.userId.userId); //使用者自己
+  const otheruser = route.params.userID; //雇主ID
   const name =
     route.params.name != null
       ? route.params.name[0] + route.params.sex
-      : '你好';
-  console.log('name: ' + route.params.name);
+      : '你好'; //工作需求雇主名稱
 
-  const [value, setFocus] = React.useState('first'); // 履歷radio button
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const [value, setFocus] = React.useState(); // 履歷radio button
+  const [resumeItem, setResumeItem] = useState(); //要傳送的履歷資料(userId, createTime)
   const [isEmpty, setIsEmpty] = React.useState(true); // 履歷是否為空
 
   const TextView = props => {
@@ -62,6 +69,60 @@ const CJobDetailPage = ({navigation, route}) => {
         <Text style={styles.text2}>{props.content}</Text>
       </View>
     );
+  };
+
+  const submitResume = () => {
+    Alert.alert('確認', '確認要送出履歷嗎', [
+      {
+        text: 'Cancel!',
+        onPress: () => {},
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          console.log('resumeItem:  ' + JSON.stringify(resumeItem));
+          publish(userId, otheruser, JSON.stringify(resumeItem), 'resume');
+          if (
+            chats.filter(item => item.users[1].name == otheruser).length != 0
+            // true
+          ) {
+            chats
+              .filter(item => item.users[1].name == otheruser)[0]
+              .messages.unshift({
+                content: userResume[value],
+                createdAt: time.getTime(),
+                name: userId,
+                type: 'resume',
+              });
+          } else {
+            chats.unshift({
+              users: [
+                {
+                  name: userId,
+                  imageUri:
+                    'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png',
+                },
+                {
+                  name: otheruser,
+                  imageUri:
+                    'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png',
+                },
+              ],
+              messages: [
+                {
+                  content: userResume[value],
+                  createdAt: time.getTime(),
+                  name: userId,
+                  type: 'resume',
+                },
+              ],
+            });
+          }
+
+          AsyncStorage.setItem('@chatdata', JSON.stringify(chats));
+        },
+      },
+    ]);
   };
 
   return (
@@ -188,20 +249,23 @@ const CJobDetailPage = ({navigation, route}) => {
               </View>
               <ScrollView>
                 <RadioButton.Group
-                  onValueChange={value => setFocus(value)}
+                  onValueChange={value => {
+                    setFocus(value);
+                    setResumeItem({
+                      userID: userResume[value].userID,
+                      createTime: userResume[value].createTime,
+                    });
+                  }}
                   value={value}>
-                  {information.map((information, index) => (
+                  {userResume.map((userResume, index) => (
                     <View key={index} style={styles.resumeListContainer}>
-                      <InformationText
-                        title={information.title}
-                        refreshTime={information.refreshTime}
+                      <UserResumeText
+                        title={userResume.title}
+                        refreshTime={userResume.refreshTime}
+                        userId={userResume.userId}
+                        createTime={userResume.createTime}
                         index={index}
                       />
-                      {/* <InformationButton
-                          user={information.name}
-                          createTime={information.createTime}
-                          resumeObject={data[index]}
-                          /> */}
                     </View>
                   ))}
                 </RadioButton.Group>
@@ -216,7 +280,7 @@ const CJobDetailPage = ({navigation, route}) => {
                 <Text>{isEmpty ? '履歷空空如也~' : null}</Text>
                 <Pressable
                   // style={[styles.button]}
-                  onPress={() => console.log('送出履歷')}>
+                  onPress={() => submitResume()}>
                   <Text style={[styles.textStyle]}>送出履歷</Text>
                 </Pressable>
               </View>
@@ -324,7 +388,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 4,
     borderColor: 'rgb(130, 180, 169)',
   },
-  titleFreshtimeInformation: {
+  titleFreshtimeuserResume: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

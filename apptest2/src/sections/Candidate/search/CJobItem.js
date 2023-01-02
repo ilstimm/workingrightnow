@@ -42,9 +42,9 @@ const JobForm = ({job, navigation, token, userId}) => {
   const ref = useRef(false);
 
   useEffect(() => {
-    console.log('ref = ' + ref.current);
+    // console.log('ref = ' + ref.current);
     if (ref.current) {
-      console.log('heart: ' + heart);
+      // console.log('heart: ' + heart);
       const httpUrl = heart
         ? 'http://tim.ils.tw:80/project/auth/addJobCollect/'
         : 'http://tim.ils.tw:80/project/auth/removeJobCollect/';

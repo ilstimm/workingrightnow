@@ -11,18 +11,18 @@ import {
 import {useNavigation} from '@react-navigation/core';
 
 const ChatRoomItem = ({navigation, chatRoom}) => {
+  // const otheruser = chatRoom != null ? chatRoom.users[1].name : null; //對方
+  // const messages = chatRoom != null ? chatRoom.messages : null;
+  // const user = chatRoom.users[0].name; //自己使用者
   const otheruser = chatRoom.users[1].name; //對方
-  // console.log('otheruser:  ' + otheruser);
-  // console.log('storechatRoomdata: ' + JSON.stringify(chatRoom));
+  const messages = chatRoom.messages;
 
   const onPress = () => {
     navigation.navigate('ChatRoomScreen', {
       chatRoom: chatRoom,
-      messages: chatRoom.messages,
+      messages: messages,
       otheruser: otheruser,
     });
-    // console.log('press', chatRoom.id);
-    // navigation.navigate('ChatRoom', id: chatRoom.id);
   };
 
   return (
@@ -33,11 +33,6 @@ const ChatRoomItem = ({navigation, chatRoom}) => {
             source={require('../assets/userimage.jpg')}
             style={styles.image}
           />
-          {/* {chatRoom.newMessages ? (
-    <View style={styles.badgeContainer}>
-      <Text style={styles.badgeText}>{chatRoom.newMessages}</Text>
-    </View>
-  ) : null} */}
           <View style={styles.rightContainer}>
             <View style={styles.row}>
               <Text style={styles.name}>{otheruser}</Text>
@@ -53,7 +48,6 @@ const ChatRoomItem = ({navigation, chatRoom}) => {
       )}
     </>
   );
-
 };
 
 const styles = StyleSheet.create({
