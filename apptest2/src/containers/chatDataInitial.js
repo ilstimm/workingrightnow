@@ -16,7 +16,7 @@ export default async function chatDataInitial(userId, token) {
   const url = 'http://tim.ils.tw:80/project/auth/getChatData/' + userId;
   const offlinechats = await fetch(url, options);
   const offlineChats = await offlinechats.json();
-  console.log('離線data: ' + offlineChats);
+  console.log('離線data: ' + JSON.stringify(offlineChats));
   // AsyncStorage.removeItem('@chatdata');
   if (offlineChats.length != 0) {
     //如果有離線資料
@@ -26,6 +26,27 @@ export default async function chatDataInitial(userId, token) {
       console.log('\n\nstorekey:\n\n' + storekey);
       if (!storekey.includes('@chatdata')) {
         chats.splice(0);
+        chats.unshift({
+          users: [
+            {
+              name: '',
+              imageUri: '',
+            },
+            {
+              name: '',
+              imageUri: '',
+            },
+          ],
+          messages: [
+            {
+              content: '',
+              createdAt: '',
+              name: '',
+              type: '',
+            },
+          ],
+        });
+        console.log('chatsdata:   ' + JSON.stringify(chats));
         AsyncStorage.setItem('@chatdata', JSON.stringisfy([]));
       } else {
         chats.splice(0);
@@ -69,9 +90,6 @@ export default async function chatDataInitial(userId, token) {
               },
             ],
           });
-          console.log('====================================');
-          console.log('chats:  ' + chats);
-          console.log('====================================');
         }
       });
     });
@@ -93,5 +111,6 @@ export default async function chatDataInitial(userId, token) {
       }
     } catch (error) {}
   }
+  console.log('chatdata0000000000000000: ' + JSON.stringify(chats));
   AsyncStorage.setItem('@chatdata', JSON.stringify(chats));
 }
