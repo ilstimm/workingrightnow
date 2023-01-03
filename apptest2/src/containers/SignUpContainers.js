@@ -42,8 +42,9 @@ const SignUpContainer = ({navigation}) => {
   const [accountWrongState, setAccountWrongState] = useState(true);
   const [passwordWrongState, setPasswordWrongState] = useState(true);
   const [password2WrongState, setPassword2WrongState] = useState(true);
-  const [vertifyState, setVertifyState] = useState(true);
-  const [confirm, setConfirm] = useState(false);
+  let vertifyState = false;
+  // const [vertifyState, setVertifyState] = useState(false);
+  // const [confirm, setConfirm] = useState(false);
   // const token = useSelector(state => state.token);
 
   const inputAccount = account => {
@@ -84,34 +85,40 @@ const SignUpContainer = ({navigation}) => {
   };
 
   const submitButton = async () => {
-    // const options = {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json;charset=UTF-8',
-    //   },
-    //   body: JSON.stringify({
-    //     verifyCode: vertification,
-    //     email: mail,
-    //   }),
-    // };
-    // const a = await fetch(url + '/mail/check', options);
-    // const b = await a.json();
-    // console.log('status = ' + b.status);
-    // console.log(b.status === true);
-    // setVertifyState(true);
-    // setVertifyState(b.status);
+    const options = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      body: JSON.stringify({
+        verifyCode: vertification,
+        email: mail,
+      }),
+    };
+    const a = await fetch(url + '/mail/check', options);
+    const b = await a.text();
+
+    // React.useEffect(() => {
+      console.log('status = ' + b);
+      console.log(b === 'success');
+      vertifyState = (b === 'success');
+    // }, []);
+
     Alert.alert('註冊', '確認要註冊嗎', [
       {
         text: 'Cancel!',
         onPress: () => {
-          setConfirm(false);
+          // setVertifyState(false);
         },
       },
       {
         text: 'Ok!',
         onPress: () => {
-          setConfirm(true);
+          console.log('====================================');
+          console.log('confirmstatus:  ' + vertifyState);
+          console.log('====================================');
+          // setConfirm(true);
           signUpCheck();
         },
       },
@@ -124,7 +131,7 @@ const SignUpContainer = ({navigation}) => {
       accountWrongState &&
       passwordWrongState &&
       password2WrongState &&
-      vertifyState == false
+      vertifyState
     ) {
       Alert.alert('錯誤!!', '', [
         {text: 'Ok!', onPress: () => console.log('Ok')},
@@ -252,7 +259,7 @@ const SignUpContainer = ({navigation}) => {
       </View>
     </ScrollView>
   );
-};
+};;;;;
 
 const styles = StyleSheet.create({
   titleContainer: {

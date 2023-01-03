@@ -7,7 +7,8 @@ import CPIPage from './CPIPage';
 import CJobDetailPage from '../search/CJobDetailPage';
 const CPINavigator = ({navigation, route}) => {
   const Stack = createStackNavigator();
-  TabBarController(navigation, route, 'CPICollectionPage', 'CJobDetailPage');
+  TabBarController(navigation, route, 'CJobDetailPage' );
+  
   return (
     <Stack.Navigator>
       <Stack.Screen

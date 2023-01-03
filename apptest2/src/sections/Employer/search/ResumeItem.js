@@ -6,7 +6,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 // import {FlatList, RefreshControl} from 'react-native-gesture-handler';
 
 const ResumeForm = ({resume, navigation, token, userId}) => {
-  const [heart, setHeart] = React.useState(resume.collectStatus);
+  const [heart, setHeart] = useState(resume.collectStatus); //後端判斷
+  const [heartView, setHeartView] = useState(resume.collectStatus); //前端顯示
 
   const onPressJobDetail = () => {
     navigation.navigate('resumeDetailScreen', resume);
@@ -34,6 +35,7 @@ const ResumeForm = ({resume, navigation, token, userId}) => {
 
   const change = () => {
     setHeart(heart => !heart);
+    setHeartView(heartView => !heartView);
   };
 
   const ref = useRef(false);
@@ -57,10 +59,11 @@ const ResumeForm = ({resume, navigation, token, userId}) => {
         },
       };
       fetch(url, options);
+      // setHeart(heart => !heart);
     } else {
       ref.current = true;
     }
-  }, [change]);
+  }, [heartView]);
 
   return (
     <View>
@@ -82,7 +85,7 @@ const ResumeForm = ({resume, navigation, token, userId}) => {
 
           <TouchableOpacity style={styles.collectView} onPress={change}>
             <View>
-              {heart ? (
+              {heartView ? (
                 <AntDesign name="heart" style={{color: 'red', fontSize: 25}} />
               ) : (
                 <AntDesign
@@ -166,7 +169,6 @@ export default function ResumeItem({navigation, searchText, filter}) {
                 userId={userId}
               />
             )}
-            inverted
             // keyExtractor={data => data.createTime}
           />
         );

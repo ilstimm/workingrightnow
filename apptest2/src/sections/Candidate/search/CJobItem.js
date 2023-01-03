@@ -10,6 +10,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 const JobForm = ({job, navigation, token, userId}) => {
   // console.log('job= ' + JSON.stringify(job));
   const [heart, setHeart] = React.useState(job.collectStatus);
+  const [heartView, setHeartView] = useState(job.collectStatus); //前端顯示
 
   const onPressjobDetail = () => {
     navigation.navigate('CJobDetailPage', job);
@@ -37,6 +38,7 @@ const JobForm = ({job, navigation, token, userId}) => {
 
   const change = () => {
     setHeart(heart => !heart);
+    setHeartView(heartView => !heartView);
   };
 
   const ref = useRef(false);
@@ -60,10 +62,11 @@ const JobForm = ({job, navigation, token, userId}) => {
         },
       };
       fetch(url, options);
+      // setHeart(heart => !heart);
     } else {
       ref.current = true;
     }
-  }, [change]);
+  }, [heartView]);
 
   return (
     <View>
@@ -84,7 +87,7 @@ const JobForm = ({job, navigation, token, userId}) => {
           </View>
           <TouchableOpacity style={styles.collectView} onPress={change}>
             <View>
-              {heart ? (
+              {heartView ? (
                 <AntDesign name="heart" style={{color: 'red', fontSize: 25}} />
               ) : (
                 <AntDesign

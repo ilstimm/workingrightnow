@@ -3,9 +3,9 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EmployerSearchNavigator from '../sections/Employer/search/EmployerSearchNavigator';
-import EmployerChatPage from '../sections/Employer/EmployerChatPage';
 import JoblistNavigator from '../sections/Employer/Joblist/JoblistNavigator';
 import EPINavigator from '../sections/Employer/PI/EPINavigator';
+import ChatPage from '../sections/Candidate/chat/ChatPage';
 
 const Tab = createBottomTabNavigator();
 const EmployerContainer = () => {
@@ -33,7 +33,7 @@ const EmployerContainer = () => {
         tabBarInactiveTintColor: 'gray',
       })}>
       <Tab.Screen name="Search" component={EmployerSearchNavigator} />
-      <Tab.Screen name="Chat" component={EmployerChatPage} />
+      <Tab.Screen name="Chat" component={ChatPage} />
       <Tab.Screen name="Joblist" component={JoblistNavigator} />
       <Tab.Screen name="我是雇主" component={EPINavigator} />
     </Tab.Navigator>

@@ -5,12 +5,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
 import {color} from 'react-native-elements/dist/helpers';
-
+import {logout} from '../chat/component/Websocket';
 const CPIPage = ({navigation}) => {
   const onPressSwitchMode = () => {
     navigation.replace('employerPage');
   };
   const onPressLogout = () => {
+    logout();
     navigation.replace('loginPage');
   };
   const onPressCollect = () => {

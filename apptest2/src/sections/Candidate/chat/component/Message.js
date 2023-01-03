@@ -64,7 +64,6 @@ const Message = ({message}) => {
       </View>
     );
   } else if (type == 'interview') {
-    return <View></View>;
   }
   // else {
   //   return (

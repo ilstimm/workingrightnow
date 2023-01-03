@@ -43,12 +43,18 @@ const CollectionItem = ({navigation, item, token, userId}) => {
   }, [change]);
 
   const toDetailPage = () => {
-    // linkTo('/CJobDetailPage');
-    navigation.dispatch(pushAction);
+    if(item.shelvesStatus){
+      navigation.dispatch(pushAction);
+  }
+  else{
+    Alert.alert('錯誤!!', '該需求已關閉', [
+      {text: 'Ok!', onPress: () => {console.log('cancel')}}
+    ]);
+  }
   };
 
   return (
-    <View style={styles.itemView}>
+    <View style={item.shelvesStatus? styles.itemView : styles.itemCloseView}>
       <TouchableOpacity activeOpacity={0.5} onPress={toDetailPage}>
         <View style={styles.text}>
           <Text style={{color: 'black', fontSize: 20}}>{item.title}</Text>
@@ -127,6 +133,17 @@ const styles = StyleSheet.create({
     borderBottomColor: 'gray',
     borderRadius: 10,
     backgroundColor: '#5EA888',
+    paddingVertical: 13,
+    paddingHorizontal: 5,
+    margin: 3,
+  },
+  
+  itemCloseView:{
+    flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+    borderRadius: 10,
+    backgroundColor: '#cccccc',
     paddingVertical: 13,
     paddingHorizontal: 5,
     margin: 3,

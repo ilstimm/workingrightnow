@@ -8,7 +8,8 @@ const TabBarController = (navigation, route, routename) => {
     console.log(routeName);
     if (routeName == routename) {
       navigation.setOptions({tabBarStyle: {display: 'none'}});
-    } else {
+    }
+    else {
       navigation.setOptions({tabBarStyle: {display: 'flex'}});
     }
   }, [navigation, route]);

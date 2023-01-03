@@ -107,4 +107,8 @@ export function publish(sender, receiver, message, type) {
     }),
   });
 }
+
+export function logout() {
+  client.onWebSocketClose();
+}
 export default websocket;

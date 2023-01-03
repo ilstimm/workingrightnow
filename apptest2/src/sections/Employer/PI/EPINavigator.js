@@ -7,7 +7,7 @@ import EmployerResumeDetailScreen from '../search/EmployerResumeDetailScreen';
 import EPIPage from './EPIPage';
 const EPINavigator = ({navigation, route}) => {
   const Stack = createStackNavigator();
-  TabBarController(navigation, route, 'EPICollectionPage');
+  TabBarController(navigation, route, 'EmployerResumeDetailScreen');
   return (
     <Stack.Navigator initialRoutName="EPIPage">
       <Stack.Screen
