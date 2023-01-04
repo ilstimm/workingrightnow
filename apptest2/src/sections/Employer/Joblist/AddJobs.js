@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   View,
@@ -32,38 +32,42 @@ const InputView = props => (
 const AddJobs = ({navigation, route}) => {
   const mode = route.params.mode;
   //雇主基本資料
-  const [title, setTitle] = React.useState(
-    mode != 'add' ? route.params.jobObject.title : null,
-  ); //工作主旨
-  const [name, setName] = React.useState( mode != 'add' ? route.params.jobObject.name: null); //雇主姓名
-  const [sex, setSex] = React.useState( mode != 'add' ? route.params.jobObject.sex: 0); //性別
-  const [phone, setPhone] = React.useState( mode != 'add' ? route.params.jobObject.phoneNumber: null); //電話
-  const [email, setEmail] = React.useState(mode != 'add' ?route.params.jobObject.email: null); //信箱
+  const [title, setTitle] = useState(route.params.jobObject.title); //工作主旨
+  const [name, setName] = useState(route.params.jobObject.name); //雇主姓名
+  const [sex, setSex] = useState(route.params.jobObject.sex); //性別
+  const [phone, setPhone] = useState(route.params.jobObject.phoneNumber); //電話
+  const [email, setEmail] = useState(route.params.jobObject.email); //信箱
 
   //工作需求條件
-  const [jobNature, setJobNature] = React.useState(0); //工作性質
-  const [type, setType] = React.useState(0); //工作需求種類
-  const [content, setContent] = React.useState(''); //工作內容
-  const [date, setDate] = React.useState(''); //工作日期
-  const [period1, setPeriod1] = React.useState(''); // 工作時段
-  const [period2, setPeriod2] = React.useState(''); // 工作時段
-  const [salary, setSalary] = React.useState(route.params.jobObject.salary); //薪資待遇
-  const [place1, setPlace1] = React.useState(1); //工作地點(縣市)
-  const [place2, setPlace2] = React.useState(); //工作地點(鄉鎮市區)
+  let nature = route.params.jobObject.nature; // 工作性質(工讀、正職...)傳值
+  const [jobNature, setJobNature] = useState(0); //工作性質
+  let type = route.params.jobObject.type; // 應徵工作種類傳值
+  const [jobType, setJobType] = useState(); //工作需求種類
+  const [content, setContent] = useState(route.params.jobObject.content); //工作內容
+  const [date, setDate] = useState(route.params.jobObject.date); //工作日期
+  let period = route.params.jobObject.time; // 工作時段
+  const [period1, setPeriod1] = useState(
+    route.params.jobObject.time.split('~', 2)[0],
+  ); // 工作時段
+  const [period2, setPeriod2] = useState(
+    route.params.jobObject.time.split('~', 2)[1],
+  ); // 工作時段
+  let place = route.params.jobObject.region; // 工作地區(縣市)
+  const [place1, setPlace1] = useState(1); //工作地點(縣市)
+  const [place2, setPlace2] = useState(); //工作地點(鄉鎮市區)
+  const [salary, setSalary] = useState(route.params.jobObject.salary); //薪資待遇
 
   //日期選擇器
-  const [date0, setDate0] = React.useState(new Date()); // datepicker日期參數
-  const [date1, setDate1] = React.useState(new Date(1995, 1, 1, 9, 0, 0)); // datepicker日期參數
-  const [date2, setDate2] = React.useState(new Date(1995, 1, 1, 10, 0, 0)); // datepicker日期參數
-  const [openJobDate, setOpenJobDate] = React.useState(false);
-  const [openTime1, setOpenTime1] = React.useState(false); // datepicker開啟狀態
-  const [openTime2, setOpenTime2] = React.useState(false); // datepicker開啟狀態
+  const [date0, setDate0] = useState(new Date()); // datepicker日期參數
+  const [date1, setDate1] = useState(new Date(1995, 1, 1, 9, 0, 0)); // datepicker日期參數
+  const [date2, setDate2] = useState(new Date(1995, 1, 1, 10, 0, 0)); // datepicker日期參數
+  const [openJobDate, setOpenJobDate] = useState(false);
+  const [openTime1, setOpenTime1] = useState(false); // datepicker開啟狀態
+  const [openTime2, setOpenTime2] = useState(false); // datepicker開啟狀態
 
   //others
-  const [payType, setPayType] = React.useState(0); //支薪方式
-  const [payDate, setPayDate] = React.useState(
-    route.params.jobObject.salaryDate,
-  ); //支薪日
+  const [payType, setPayType] = useState(route.params.jobObject.salaryMethod); //支薪方式
+  const [payDate, setPayDate] = useState(route.params.jobObject.salaryDate); //支薪日
 
   //redux
   const userId = useSelector(state => state.userId);
@@ -200,18 +204,18 @@ const AddJobs = ({navigation, route}) => {
         <SelectList
           setSelected={jobNature => setJobNature(jobNature)}
           data={jobData}
-          placeholder={'選擇工作性質'}
-          defaultOption={{key: '0', value: '及時工作'}}
+          placeholder={nature}
+          // defaultOption={{key: '0', value: '及時工作'}}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
         <Text>工作種類</Text>
         <SelectList
-          setSelected={type => setType(type)}
+          setSelected={jobType => setJobType(jobType)}
           data={jobData[jobNature].type}
           save={'value'}
-          placeholder={'選擇工作種類'}
-          defaultOption={jobData[jobNature].type[0]}
+          placeholder={type}
+          // defaultOption={jobData[jobNature].type[0]}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
@@ -254,7 +258,7 @@ const AddJobs = ({navigation, route}) => {
             }}>
             <View style={styles.timeView}>
               <TimePicker />
-              <Text style={{fontSize: 15}}>{period1}</Text>
+              <Text style={{fontSize: 15}}>{period}</Text>
             </View>
           </TouchableOpacity>
           <Text style={{fontSize: 30}}>{'  ~  '}</Text>
@@ -265,7 +269,7 @@ const AddJobs = ({navigation, route}) => {
             }}>
             <View style={styles.timeView}>
               <TimePicker2 />
-              <Text style={{fontSize: 15}}>{period2}</Text>
+              <Text style={{fontSize: 15}}>{period}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -276,19 +280,23 @@ const AddJobs = ({navigation, route}) => {
         <SelectList
           setSelected={setPlace1}
           data={regionData}
-          placeholder={'選擇地區'}
+          placeholder={place}
           save={'key'}
-          defaultOption={{key: '1', value: '台北市'}}
+          // defaultOption={{key: '1', value: '台北市'}}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
         {console.log('縣市: ' + place1)}
         <SelectList
           setSelected={setPlace2}
-          data={regionData[place1 - 1].districts}
-          placeholder={'選擇地區'}
+          data={
+            place1 != null
+              ? regionData[place1 - 1].districts
+              : regionData[1].districts
+          }
+          placeholder={place}
           save={'value'}
-          defaultOption={regionData[place1 - 1].districts[0]}
+          // defaultOption={regionData[place1 - 1].districts[0]}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
@@ -311,9 +319,9 @@ const AddJobs = ({navigation, route}) => {
           setSelected={setPayType}
           onSelect={console.log('Select!')}
           data={payTypeData}
-          placeholder={'選擇支薪方式'}
+          placeholder={payType}
           save={'value'}
-          defaultOption={{key: '0', value: '現金'}}
+          // defaultOption={{key: '0', value: '現金'}}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
@@ -330,6 +338,7 @@ const AddJobs = ({navigation, route}) => {
           title="送出"
           style={styles.button}
           onPress={async () => {
+            period = period1 + '~' + period2;
             Alert.alert('新增', '確認要新增需求嗎', [
               {
                 text: 'Cancel!',
@@ -339,8 +348,22 @@ const AddJobs = ({navigation, route}) => {
                 text: 'Ok!',
                 onPress: () => {
                   const url = 'http://tim.ils.tw:80/project/auth/Jobs';
+                  let httpUrl;
+                  let method;
+                  if (mode == 'add') {
+                    httpUrl = url;
+                    method = 'POST';
+                  } else {
+                    httpUrl =
+                      url +
+                      '/' +
+                      userId +
+                      '/' +
+                      route.params.jobObject.createTime;
+                    method = 'PUT';
+                  }
                   const options = {
-                    method: 'POST',
+                    method: method,
                     headers: {
                       Accept: 'application/json',
                       'Content-Type': 'application/json;charset=UTF-8',
@@ -352,12 +375,13 @@ const AddJobs = ({navigation, route}) => {
                       name: name,
                       sex: sex,
                       phoneNumber: phone,
+                      date: date,
                       email: email,
-                      nature: jobData[jobNature].value,
+                      nature: nature,
                       type: type,
-                      time: period1 + '~' + period2,
+                      time: period,
                       salary: salary,
-                      region: regionData[place1 - 1].value + place2,
+                      region: place,
                       salaryMethod: payType,
                       salaryDate: payDate,
                       content: content,
@@ -399,7 +423,7 @@ const AddJobs = ({navigation, route}) => {
       </View>
     </ScrollView>
   );
-};;;
+};
 
 const styles = StyleSheet.create({
   body: {

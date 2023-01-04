@@ -1,4 +1,6 @@
-package software.project.project.controller;
+package software.project.project.component.member;
+
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +11,6 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class temp {
-    private String userID;
+public class Condition {
+    List<String> searchCondition;
 }

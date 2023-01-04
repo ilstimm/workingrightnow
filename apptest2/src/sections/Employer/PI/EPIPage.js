@@ -3,12 +3,14 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import React from 'react';
+import {logout} from '../../Candidate/chat/component/Websocket';
 
 const EPIPage = ({navigation}) => {
   const onPressSwitchMode = () => {
     navigation.replace('candidatePage');
   };
   const onPressLogout = () => {
+    logout();
     navigation.replace('loginPage');
   };
   const onPressCollect = () => {
@@ -22,7 +24,7 @@ const EPIPage = ({navigation}) => {
         <View style={[styles.buttonIconContainer]}>
           <FontAwesome5 name="exchange-alt" style={styles.buttonIcon} />
         </View>
-        <Text style={styles.buttonText}>切換為雇主模式</Text>
+        <Text style={styles.buttonText}>切換為應徵者模式</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.buttonContainer} onPress={onPressCollect}>
         <View style={[styles.buttonIconContainer]}>

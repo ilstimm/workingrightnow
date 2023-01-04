@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import software.project.project.component.Condition;
+import software.project.project.component.member.Condition;
 import software.project.project.component.member.MemberAccount;
 import software.project.project.component.member.MemberRepository;
 import software.project.project.component.member.Pair;
@@ -54,18 +54,18 @@ public class JobService {
                 .filter((Job job) -> (job.getShelvesStatus()))
                 .collect(Collectors.toList());
         MemberAccount memberAccount = memberRepository.findByUserID(userID);
-        List<Pair> jobCollect = memberAccount.getJobColletList();
+        List<Pair> jobCollect = memberAccount.getJobCollectList();
         for (Job job : jobsList) {
             System.out.println(job.getUserID() + " " + job.getCreateTime());
-            if (jobColletExist(jobCollect, job.getUserID(), job.getCreateTime())) {
+            if (jobCollectExist(jobCollect, job.getUserID(), job.getCreateTime())) {
                 job.setCollectStatus(true);
             }
         }
         return jobsList;
     }
 
-    private Boolean jobColletExist(List<Pair> jobCollect, String userID, String createTime) {
-        return jobCollect.stream().anyMatch((Pair a) -> a.getKey().equals(userID) && a.getValue().equals(createTime));
+    private Boolean jobCollectExist(List<Pair> jobCollect, String userID, String createTime) {
+        return jobCollect.stream().anyMatch((Pair a) -> a.getUserID().equals(userID) && a.getCreateTime().equals(createTime));
     }
 
     public Job createJob(Job request) {
@@ -184,6 +184,7 @@ public class JobService {
                 // originCurrentList.stream().filter((Resume resume) ->
                 // resume.getNature().equals(searchStrings[1])).collect(Collectors.toList())
                 // );
+                
             }
 
             // 關鍵字查詢

@@ -11,13 +11,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import software.project.project.component.chat.Message;
+import software.project.project.component.chat.MessageService;
+import software.project.project.component.member.Pair;
+import software.project.project.component.redis.RedisService;
+import software.project.project.component.resume.Resume;
+import software.project.project.component.resume.ResumeService;
+
 @Service
 public class WSService {
+
+    @Autowired
+    private RedisService redisService;
+    
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private ResumeService resumeService;
 
     private final SimpMessagingTemplate messagingTemplate;
     private Map<String, String> online = new ConcurrentHashMap<>();
 
-    @Autowired
     public WSService(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
@@ -34,15 +53,31 @@ public class WSService {
 
     }
 
-    public void sendChatMessage(InMessage message) {
+    public void sendChatMessage(Message message) throws JsonMappingException, JsonProcessingException {
         System.out.println(message.toString());
-        messagingTemplate.convertAndSend("/chat/single/" + message.getReceiver(), message);
+        
+        if(message.getType().equals("resume")){
+            ObjectMapper mapper = new ObjectMapper();
+            Pair pair = mapper.readValue(message.getMessage(), Pair.class);
+            Resume resume = resumeService.getResume(pair.getUserID(), pair.getCreateTime());
+            message.setMessage(mapper.writeValueAsString(resume));
+        }
+
+        if(online.containsValue(message.getReceiver())){
+            messagingTemplate.convertAndSend("/chat/single/" + message.getReceiver(), message);
+        }
+        else{
+            // store in redis
+            redisService.setChatDataRedis(message);
+        }
+        // store in database
+        messageService.saveMessage(message);
     }
 
     public void addUser(String userID, String sessionID) {
         online.put(sessionID, userID);
         System.out.println(online);
-        sendAll(userID);
+        // sendAll(userID);
     }
 
     public void sendAll(String userID) {

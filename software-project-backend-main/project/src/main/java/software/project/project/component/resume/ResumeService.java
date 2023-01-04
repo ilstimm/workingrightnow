@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import software.project.project.component.Condition;
 import software.project.project.component.job.Job;
+import software.project.project.component.member.Condition;
 import software.project.project.component.member.MemberAccount;
 import software.project.project.component.member.MemberRepository;
 import software.project.project.component.member.Pair;
@@ -53,10 +53,10 @@ public class ResumeService {
                 .collect(Collectors.toList());
 
         MemberAccount memberAccount = memberRepository.findByUserID(userID);
-        List<Pair> resumeCollect = memberAccount.getResumeColletList();
+        List<Pair> resumeCollect = memberAccount.getResumeCollectList();
         for (Resume resume : resumesList) {
             System.out.println(resume.getUserID() + " " + resume.getCreateTime());
-            if (resumeColletExist(resumeCollect, resume.getUserID(), resume.getCreateTime())) {
+            if (resumeCollectExist(resumeCollect, resume.getUserID(), resume.getCreateTime())) {
                 resume.setCollectStatus(true);
             }
         }
@@ -64,9 +64,9 @@ public class ResumeService {
         return resumesList;
     }
 
-    private boolean resumeColletExist(List<Pair> resumeCollect, String userID, String createTime) {
+    private boolean resumeCollectExist(List<Pair> resumeCollect, String userID, String createTime) {
         return resumeCollect.stream()
-                .anyMatch((Pair a) -> a.getKey().equals(userID) && a.getValue().equals(createTime));
+                .anyMatch((Pair a) -> a.getUserID().equals(userID) && a.getCreateTime().equals(createTime));
     }
 
     public Resume createResume(Resume request) {
@@ -99,6 +99,8 @@ public class ResumeService {
 
     public Resume replaceResume(String userID, String createTime, Resume request) {
         Resume oldResume = getResume(userID, createTime);
+        System.out.println("oldResume userID = " + oldResume.getUserID() + "\n");
+        System.out.println("oldResume createTime = " + oldResume.getCreateTime() + "\n");
         Resume Resume = new Resume(request.getTitle(),
                 request.getName(),
                 request.getSex(),

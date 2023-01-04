@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {Text, View, TextInput, StyleSheet, Button, Picker} from 'react-native';
 import {RadioButton} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -10,7 +10,6 @@ import {Post} from './ResumeMethod.js';
 import {useDispatch, useSelector} from 'react-redux';
 import SwitchSelector from 'react-native-switch-selector';
 import {TouchableOpacity} from 'react-native';
-import {useState} from 'react';
 import DatePicker from 'react-native-date-picker';
 import resumeData from '../../../components/data/resumeJobData';
 import regionData from '../../../components/data/縣市.json';
@@ -27,42 +26,47 @@ const InputView = props => (
 );
 
 const AddResumes = ({navigation, route}) => {
-  // console.log('123: ' + route.params.resumeObject.mode);
+  const mode = route.params.mode;
   // console.log('12: ' + JSON.stringify(route.params));
   // 履歷基本資料
-  const [title, onChangTitle] = React.useState(route.params.resumeObject.title); // 履歷主旨
-  const [name, onChangeName] = React.useState(route.params.resumeObject.name); // 應徵者姓名
-  const [sex, setSex] = React.useState(route.params.resumeObject.sex); // 應徵者性別
+  const [title, onChangTitle] = useState(route.params.resumeObject.title); // 履歷主旨
+  const [name, onChangeName] = useState(route.params.resumeObject.name); // 應徵者姓名
+  const [sex, setSex] = useState(route.params.resumeObject.sex); // 應徵者性別
   const [birthday, setBirthday] = useState(route.params.resumeObject.birth); // 設定生日
-  const [phone, onChangePhone] = React.useState(
+  const [phone, onChangePhone] = useState(
     route.params.resumeObject.phoneNumber,
   ); // 電話
-  const [email, onChangeEmail] = React.useState(
-    route.params.resumeObject.email,
-  ); // 信箱
+  const [email, onChangeEmail] = useState(route.params.resumeObject.email); // 信箱
 
   // 學經歷
-  const [schoolName, setSchoolName] = React.useState(
+  const [schoolName, setSchoolName] = useState(
     route.params.resumeObject.school,
   ); // 學校名稱
-  const [department, setDepartment] = React.useState(
+  const [department, setDepartment] = useState(
     route.params.resumeObject.department,
   ); // 科系名稱
-  const [schoolStatus, setSchoolStatus] = React.useState(
+  const [schoolStatus, setSchoolStatus] = useState(
     route.params.resumeObject.status,
   ); // 就學狀態(畢業、肄業、就學中)
 
   // 求職條件
-  const [resumeNature, setResumeNature] = React.useState(0); // 工作性質(工讀、正職...)
-  const [type, setType] = React.useState(0); // 應徵工作種類
-  const [period, setPeriod] = React.useState(route.params.resumeObject.time); // 工作時段
-  const [period1, setPeriod1] = React.useState(''); // 工作時段
-  const [period2, setPeriod2] = React.useState(''); // 工作時段
-  const [region1, setRegion1] = React.useState(1); // 工作地區(縣市)
-  const [region2, setRegion2] = React.useState(); // 工作地區(鄉鎮市區)
-  const [salary, setSalary] = React.useState(route.params.resumeObject.salary); // 薪資待遇
+  let nature = route.params.resumeObject.nature; // 工作性質(工讀、正職...)傳值
+  const [resumeNature, setResumeNature] = useState(0); // 工作性質(工讀、正職...)
+  let type = route.params.resumeObject.type; // 應徵工作種類傳值
+  const [resumeType, setResumeType] = useState(); // 應徵工作種類
+  let period = route.params.resumeObject.time; // 工作時段
+  const [period1, setPeriod1] = useState(
+    route.params.resumeObject.time.split('~', 2)[0],
+  ); // 工作時段
+  const [period2, setPeriod2] = useState(
+    route.params.resumeObject.time.split('~', 2)[1],
+  ); // 工作時段
+  let region = route.params.resumeObject.region; // 工作地區(縣市)
+  const [region1, setRegion1] = useState(1); // 工作地區(縣市)
+  const [region2, setRegion2] = useState(); // 工作地區(鄉鎮市區)
+  const [salary, setSalary] = useState(route.params.resumeObject.salary); // 薪資待遇
 
-  const [introduction, onChangeIntroduction] = React.useState(
+  const [introduction, onChangeIntroduction] = useState(
     route.params.resumeObject.introduction,
   ); // 自我簡介
 
@@ -73,12 +77,6 @@ const AddResumes = ({navigation, route}) => {
   const [openBirthday, setOpenBirthday] = useState(false); // datepicker開啟狀態
   const [openTime1, setOpenTime1] = useState(false); // datepicker開啟狀態
   const [openTime2, setOpenTime2] = useState(false); // datepicker開啟狀態
-
-  // 工作種類
-  const [teacher, setTeacher] = React.useState(false);
-  const [engineer, setEngineer] = React.useState(false);
-  const [cleaner, setCleaner] = React.useState(false);
-  const [other, setOther] = React.useState(false);
 
   // redux
 
@@ -175,7 +173,7 @@ const AddResumes = ({navigation, route}) => {
       <View style={{padding: '3%'}}>
         <Text>性別</Text>
         <SwitchSelector
-          initial={0}
+          // initial={}
           onPress={sex => setSex(sex)}
           textColor="gray"
           buttonColor="gray"
@@ -220,11 +218,13 @@ const AddResumes = ({navigation, route}) => {
       <View style={{padding: '3%'}}>
         <Text>學校名稱</Text>
         <SelectList
-          setSelected={setSchoolName}
+          setSelected={schoolName => {
+            setSchoolName(schoolName);
+          }}
           data={schoolData}
-          placeholder={'選擇學校'}
+          placeholder={schoolName}
           save={'value'}
-          defaultOption={{key: '1', value: '國立政治大學'}}
+          // defaultOption={{key: '1', value: '國立政治大學'}}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
@@ -260,21 +260,27 @@ const AddResumes = ({navigation, route}) => {
       <View style={{padding: '3%'}}>
         <Text>工作性質</Text>
         <SelectList
-          setSelected={resumeNature => setResumeNature(resumeNature)}
+          setSelected={resumeNature => {
+            setResumeNature(resumeNature);
+            nature = resumeData[resumeNature].value;
+          }}
           data={resumeData}
-          placeholder={'選擇工作性質'}
-          defaultOption={{key: '0', value: '及時工作'}}
+          placeholder={nature}
+          // defaultOption={{key: '0', value: '及時工作'}}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
         {console.log('nature: ' + resumeNature)}
         <Text>工作種類</Text>
         <SelectList
-          setSelected={type => setType(type)}
+          setSelected={resumeType => {
+            setResumeType(resumeType);
+            type = resumeType;
+          }}
           data={resumeData[resumeNature].type}
-          placeholder={'選擇工作種類'}
+          placeholder={type}
           save={'value'}
-          defaultOption={resumeData[resumeNature].type[0]}
+          // defaultOption={resumeData[resumeNature].type[0]}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
@@ -302,6 +308,12 @@ const AddResumes = ({navigation, route}) => {
             }}>
             <View style={styles.timeView}>
               <TimePicker2 />
+              {/* {
+                (period =
+                  moment(date1).format('HH:mm') +
+                  '~' +
+                  moment(date2).format('HH:mm'))
+              } */}
               <Text style={{fontSize: 15}}>{period2}</Text>
             </View>
           </TouchableOpacity>
@@ -319,23 +331,28 @@ const AddResumes = ({navigation, route}) => {
         <SelectList
           setSelected={setRegion1}
           data={regionData}
-          placeholder={'選擇地區'}
+          placeholder={region}
           save={'key'}
-          defaultOption={{key: '1', value: '台北市'}}
+          // defaultOption={{key: '1', value: '台北市'}}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
         {console.log('縣市: ' + region1)}
         <SelectList
-          setSelected={setRegion2}
-          data={regionData[region1 - 1].districts}
-          placeholder={'選擇地區'}
+          setSelected={region2 => {
+            setRegion2(region2);
+          }}
+          data={
+            region1 != null
+              ? regionData[region1 - 1].districts
+              : regionData[1].districts
+          }
+          placeholder={region}
           save={'value'}
-          defaultOption={regionData[region1 - 1].districts[0]}
+          // defaultOption={regionData[region1 - 1].districts[0]}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
-        {console.log('地區: ' + region2)}
       </View>
       <InputView
         text={'自我簡介'}
@@ -358,74 +375,105 @@ const AddResumes = ({navigation, route}) => {
         <Button
           title="送出"
           style={styles.button}
-          onPress={async () => {{
-            Alert.alert('新增', '確認要新增履歷嗎', [
-              {
-                text: 'Cancel!',
-                onPress: () => {},
-              },
-              {
-                text: 'Ok!',
-                onPress: () => {
-                  const url = 'http://tim.ils.tw:80/project/auth/Resumes';
-                  const options = {
-                    method: 'POST',
-                    headers: {
-                      Accept: 'application/json',
-                      'Content-Type': 'application/json;charset=UTF-8',
-                      Authorization: 'Bearer ' + token.token,
-                    },
-                    body: JSON.stringify({
-                      userID: userId,
-                      title: title,
-                      name: name,
-                      sex: sex,
-                      birth: birthday,
-                      phoneNumber: phone,
-                      email: email,
-                      school: schoolName,
-                      department: department,
-                      status: schoolStatus,
-                      nature: resumeData[resumeNature].value,
-                      type: type,
-                      time: period1 + '~' + period2,
-                      salary: salary,
-                      region: regionData[region1 - 1].value + region2,
-                      introduction: introduction,
-                      shelvesStatus: true,
-                    }),
-                  };
-                  fetch(url, options)
-                    .then(response => response.json())
-                    .then(data => {
-                      console.log('data: ' + data);
-                    });
-                  navigation.replace('ResumelistPage'); // 返回上一页
+          onPress={async () => {
+            period = period1 + '~' + period2;
+            region = regionData[region1 - 1].value + region2;
+            {
+              console.log('地區: ' + region);
+            }
+            {
+              console.log('性質種類: ' + nature + type);
+            }
+            {
+              console.log('時間: ' + period);
+            }
+            {
+              console.log('學校: ' + schoolName);
+            }
+
+            {
+              Alert.alert('新增', '確認要新增履歷嗎', [
+                {
+                  text: 'Cancel!',
+                  onPress: () => {},
                 },
-              },
-            ]);
-            console.log(
-              'userId: ' + userId,
-              'title: ' + title,
-              'name: ' + name,
-              'sex: ' + sex,
-              'birth: ' + birthday,
-              'phoneNumber: ' + phone,
-              'email: ' + email,
-              'school: ' + schoolName,
-              'department: ' + department,
-              'status: ' + schoolStatus,
-              'nature: ' + resumeData[resumeNature].value,
-              'type: ' +  type,
-              'region: ' +
-                (regionData[region1 - 1].value +
-                  region2),
-              'time: ' + period,
-              'salary: ' + salary,
-              'introduction: ' + introduction,
-            );
+                {
+                  text: 'Ok!',
+                  onPress: () => {
+                    const url = 'http://tim.ils.tw:80/project/auth/Resumes';
+                    let httpUrl;
+                    let method;
+                    if (mode == 'add') {
+                      httpUrl = url;
+                    } else {
+                      httpUrl =
+                        url +
+                        '/replace/' +
+                        userId +
+                        '/' +
+                        route.params.resumeObject.createTime;
+                    }
+                    const options = {
+                      method: 'POST',
+                      headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json;charset=UTF-8',
+                        Authorization: 'Bearer ' + token.token,
+                      },
+                      body: JSON.stringify({
+                        userID: userId,
+                        title: title,
+                        name: name,
+                        sex: sex,
+                        birth: birthday,
+                        phoneNumber: phone,
+                        email: email,
+                        school: schoolName,
+                        department: department,
+                        status: schoolStatus,
+                        nature: nature,
+                        type: type,
+                        time: period,
+                        salary: salary,
+                        region: region,
+                        introduction: introduction,
+                      }),
+                    };
+                    console.log('====================================');
+                    console.log('url:  ' + httpUrl);
+                    console.log('method:  ' + method);
+                    console.log('====================================');
+                    fetch(url, options)
+                      .then(response => response.json())
+                      .then(data => {
+                        console.log('data: ' + data);
+                      });
+                    navigation.replace('ResumelistPage'); // 返回上一页
+                  },
+                },
+              ]);
+              // console.log(
+              //   'userId: ' + userId,
+              //   'title: ' + title,
+              //   'name: ' + name,
+              //   'sex: ' + sex,
+              //   'birth: ' + birthday,
+              //   'phoneNumber: ' + phone,
+              //   'email: ' + email,
+              //   'school: ' + schoolName,
+              //   'department: ' + department,
+              //   'status: ' + schoolStatus,
+              //   'nature: ' + resumeData[resumeNature].value,
+              //   'type: ' +  type,
+              //   'region: ' +
+              //     (regionData[region1 - 1].value +
+              //       region2),
+              //   'time: ' + period,
+              //   'salary: ' + salary,
+              //   'introduction: ' + introduction,
+              // );
+            }
           }}
-        }
         />
       </View>
     </ScrollView>
