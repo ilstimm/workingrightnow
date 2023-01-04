@@ -215,12 +215,15 @@ public class ResumeService {
     }
 
     public List<Resume> match(String userID, List<Job> myJobs) {
-        List<Resume> currentList = getAllResumes(userID);
+        List<Resume> list = getAllResumes(userID);
+        List<Resume> currentList = new ArrayList<>();
 
-        for (Job job : myJobs) {
+        for (Resume myResume : list) {
             // 地區、工作種類過濾
-            currentList = currentList.stream().filter((Resume resume) -> resume.getRegion().equals(job.getRegion())
-                    && resume.getNature().equals(job.getNature())).collect(Collectors.toList());
+            if (myJobs.stream().anyMatch((Job job) -> job.getRegion().equals(myResume.getRegion())
+                    && job.getNature().equals(myResume.getNature()))) {
+                currentList.add(myResume);
+            }
         }
 
         return currentList;

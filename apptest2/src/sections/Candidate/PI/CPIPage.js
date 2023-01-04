@@ -25,7 +25,7 @@ const CPIPage = ({navigation}) => {
         <Text style={[styles.userInformationText, {fontWeight: 'bold'}]}>
           {userId}
         </Text>
-        <Text style={styles.userInformationText}>1234567@xxxxxxxx.xxx</Text>
+        {/* <Text style={styles.userInformationText}>1234567@xxxxxxxx.xxx</Text> */}
       </View>
 
       <TouchableOpacity

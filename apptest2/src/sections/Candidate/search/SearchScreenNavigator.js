@@ -23,6 +23,7 @@ const SearchScreenNavigator = ({navigation, route}) => {
         component={CJobDetailPage}
         options={{
           headerShown: true,
+          title: '工作需求說明',
         }}
       />
     </Stack.Navigator>

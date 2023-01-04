@@ -103,7 +103,12 @@ const JobForm = ({job, navigation, token, userId}) => {
   );
 };
 
-export default function CJobItem({navigation, searchText, filter}) {
+export default function CJobItem({
+  navigation,
+  searchText,
+  filter,
+  recommendState,
+}) {
   const [refreshing, setRefreshing] = useState(false);
   const [selectAll, setSelectAll] = useState(true);
   const [returnValue, setReturnValue] = useState('');
@@ -122,19 +127,8 @@ export default function CJobItem({navigation, searchText, filter}) {
   useEffect(() => {
     let url = 'http://tim.ils.tw:80/project/auth/Jobs/';
     let options;
-    if (searchText == '' && filter == '') {
-      url = url + 'getAllJobs/' + userId.userId;
-      options = {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json;charset=UTF-8',
-          Authorization: 'Bearer ' + token.token,
-        },
-      };
-    } else {
-      url = url + 'search/' + userId.userId;
-      console.log('123456789: ' + '關鍵字-' + searchText, '工作種類-' + filter);
+    if (recommendState) {
+      url = url + 'match/' + userId.userId;
       options = {
         method: 'POST',
         headers: {
@@ -142,10 +136,36 @@ export default function CJobItem({navigation, searchText, filter}) {
           'Content-Type': 'application/json;charset=UTF-8',
           Authorization: 'Bearer ' + token.token,
         },
-        body: JSON.stringify({
-          searchCondition: ['關鍵字-' + searchText, '工作種類-' + filter],
-        }),
       };
+    } else {
+      if (searchText == '' && filter == '') {
+        url = url + 'getAllJobs/' + userId.userId;
+        options = {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8',
+            Authorization: 'Bearer ' + token.token,
+          },
+        };
+      } else {
+        url = url + 'search/' + userId.userId;
+        console.log(
+          '123456789: ' + '關鍵字-' + searchText,
+          '工作種類-' + filter,
+        );
+        options = {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8',
+            Authorization: 'Bearer ' + token.token,
+          },
+          body: JSON.stringify({
+            searchCondition: ['關鍵字-' + searchText, '工作種類-' + filter],
+          }),
+        };
+      }
     }
 
     fetch(url, options)
@@ -159,7 +179,7 @@ export default function CJobItem({navigation, searchText, filter}) {
         //     </View>
         //   ));
         // setReturnValue(a);
-        // console.log(data);
+        console.log('jobdata******' + JSON.stringify(data));
         let a = (
           <FlatList
             refreshing={refreshing}
@@ -179,7 +199,7 @@ export default function CJobItem({navigation, searchText, filter}) {
         );
         setReturnValue(a);
       });
-  }, [refreshing, searchText, filter]);
+  }, [refreshing, searchText, filter, recommendState]);
   return returnValue;
 }
 

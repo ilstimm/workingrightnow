@@ -13,7 +13,7 @@ const EPINavigator = ({navigation, route}) => {
       <Stack.Screen
         name="EPIPage"
         component={EPIPage}
-        options={{headerLeft: () => null}}
+        options={{headerLeft: () => null, title: '個人資料'}}
       />
       <Stack.Screen name="EPICollectionPage" component={EPICollectionPage} />
       <Stack.Screen

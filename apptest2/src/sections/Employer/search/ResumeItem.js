@@ -101,7 +101,12 @@ const ResumeForm = ({resume, navigation, token, userId}) => {
   );
 };
 
-export default function ResumeItem({navigation, searchText, filter}) {
+export default function ResumeItem({
+  navigation,
+  searchText,
+  filter,
+  recommendState,
+}) {
   const [refreshing, setRefreshing] = useState(false);
   const [selectAll, setSelectAll] = useState(true);
   const [returnValue, setReturnValue] = useState('');
@@ -118,19 +123,8 @@ export default function ResumeItem({navigation, searchText, filter}) {
   useEffect(() => {
     let url = 'http://tim.ils.tw:80/project/auth/Resumes/';
     let options;
-    if (searchText == '' && filter == '') {
-      url = url + 'getAllResumes/' + userId.userId;
-      options = {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json;charset=UTF-8',
-          Authorization: 'Bearer ' + token.token,
-        },
-      };
-    } else {
-      url = url + 'search/' + userId.userId;
-      console.log('123456789: ' + '關鍵字-' + searchText, '工作種類-' + filter);
+    if (recommendState) {
+      url = url + 'match/' + userId.userId;
       options = {
         method: 'POST',
         headers: {
@@ -138,10 +132,36 @@ export default function ResumeItem({navigation, searchText, filter}) {
           'Content-Type': 'application/json;charset=UTF-8',
           Authorization: 'Bearer ' + token.token,
         },
-        body: JSON.stringify({
-          searchCondition: ['關鍵字-' + searchText, '工作種類-' + filter],
-        }),
       };
+    } else {
+      if (searchText == '' && filter == '') {
+        url = url + 'getAllResumes/' + userId.userId;
+        options = {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8',
+            Authorization: 'Bearer ' + token.token,
+          },
+        };
+      } else {
+        url = url + 'search/' + userId.userId;
+        console.log(
+          '123456789: ' + '關鍵字-' + searchText,
+          '工作種類-' + filter,
+        );
+        options = {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8',
+            Authorization: 'Bearer ' + token.token,
+          },
+          body: JSON.stringify({
+            searchCondition: ['關鍵字-' + searchText, '工作種類-' + filter],
+          }),
+        };
+      }
     }
 
     fetch(url, options)

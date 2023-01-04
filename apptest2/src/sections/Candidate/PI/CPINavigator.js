@@ -7,14 +7,15 @@ import CPIPage from './CPIPage';
 import CJobDetailPage from '../search/CJobDetailPage';
 const CPINavigator = ({navigation, route}) => {
   const Stack = createStackNavigator();
-  TabBarController(navigation, route, 'CJobDetailPage' );
-  
+  TabBarController(navigation, route, 'CJobDetailPage');
+  // TabBarController(navigation, route, 'CPICollectionPage');
+
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="CPIPage"
         component={CPIPage}
-        options={{headerLeft: () => null}}
+        options={{headerLeft: () => null, title: '個人資訊'}}
       />
       <Stack.Screen name="CPICollectionPage" component={CPICollectionPage} />
       <Stack.Screen name="CJobDetailPage" component={CJobDetailPage} />

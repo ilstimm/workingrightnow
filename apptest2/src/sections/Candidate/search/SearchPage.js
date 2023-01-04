@@ -20,6 +20,7 @@ import {useEffect} from 'react';
 import CJobItem from './CJobItem';
 import resumeJobData from '../../../components/data/resumeJobData.json';
 import SelectDropdown from 'react-native-select-dropdown';
+import {Pressable} from 'react-native';
 
 export default function SearchPage({navigation}) {
   const token = useSelector(state => state.token);
@@ -28,6 +29,7 @@ export default function SearchPage({navigation}) {
   const [search, setSearch] = useState('');
   const [nature, setNature] = useState([]);
   const [filter, setFilter] = useState([]);
+  const [recommendState, setRecommendState] = useState(false);
   const [state, setState] = useState(true);
   // console.log('SearchPage = ' + token.token);
   // console.log(
@@ -42,6 +44,10 @@ export default function SearchPage({navigation}) {
   const onPressHandler = () => {
     setState(state => !state);
     // console.log('n: ' + nature);
+  };
+
+  const recommendButton = () => {
+    setRecommendState(recommendState => !recommendState);
   };
 
   useEffect(() => {
@@ -62,6 +68,14 @@ export default function SearchPage({navigation}) {
               onSubmitEditing={onPressHandler}
               value={value}
             />
+            <TouchableOpacity
+              style={{flex: 1, justifyContent: 'center'}}
+              activeOpacity={0.5}
+              onPress={recommendButton}>
+              <Text style={{color: recommendState ? 'orange' : 'gray'}}>
+                {'推薦'}
+              </Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.blockView}>
             <MultipleSelectList
@@ -69,7 +83,6 @@ export default function SearchPage({navigation}) {
               data={resumeJobData}
               save="value"
               placeholder={'選擇工作性質'}
-              defaultOption={{key: '0', value: '及時工作'}}
               boxStyles={styles.selectListBox}
               dropdownStyles={styles.selectListDropdown}
               search={false}
@@ -94,6 +107,7 @@ export default function SearchPage({navigation}) {
               navigation={navigation}
               searchText={search}
               filter={filter}
+              recommendState={recommendState}
             />
           </View>
         </View>
@@ -114,6 +128,7 @@ const styles = StyleSheet.create({
   },
   searchView: {
     flex: 2,
+    flexDirection: 'row',
     backgroundColor: '#eeeeee',
   },
   blockView: {
@@ -121,6 +136,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#bbbbbb',
   },
   searchInput: {
+    flex: 8,
     height: 40,
     wight: '70%',
     fontSize: 15,

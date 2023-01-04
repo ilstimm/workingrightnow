@@ -20,7 +20,7 @@ export default function EmployerSearchScreen({navigation}) {
   const [nature, setNature] = useState([]);
   const [filter, setFilter] = useState([]);
   const [state, setState] = useState(true);
-  const [selectAll, setSelectAll] = useState(true);
+  const [recommendState, setRecommendState] = useState(false);
   console.log('SearchPage = ' + token.token);
 
   const onPressHandler = () => {
@@ -32,6 +32,10 @@ export default function EmployerSearchScreen({navigation}) {
     setFilter(nature);
     setSearch(value);
   }, [state]);
+
+  const recommendButton = () => {
+    setRecommendState(recommendState => !recommendState);
+  };
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -46,6 +50,14 @@ export default function EmployerSearchScreen({navigation}) {
               onSubmitEditing={onPressHandler}
               value={value}
             />
+            <TouchableOpacity
+              style={{flex: 1, justifyContent: 'center'}}
+              activeOpacity={0.5}
+              onPress={recommendButton}>
+              <Text style={{color: recommendState ? 'orange' : 'gray'}}>
+                {'推薦'}
+              </Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.blockView}>
             <MultipleSelectList
@@ -81,6 +93,7 @@ export default function EmployerSearchScreen({navigation}) {
               navigation={navigation}
               searchText={search}
               filter={filter}
+              recommendState={recommendState}
             />
           </View>
         </View>
@@ -101,6 +114,7 @@ const styles = StyleSheet.create({
   },
   searchView: {
     flex: 2,
+    flexDirection: 'row',
     backgroundColor: '#eeeeee',
   },
   blockView: {
@@ -108,6 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#bbbbbb',
   },
   searchInput: {
+    flex: 8,
     height: 40,
     wight: '70%',
     fontSize: 15,

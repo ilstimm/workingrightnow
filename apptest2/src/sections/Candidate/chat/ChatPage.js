@@ -44,7 +44,7 @@ const ChatRoomHeader = props => {
           fontSize: 25,
           fontWeight: 'bold',
         }}>
-        {props.children}
+        {'聊天室'}
       </Text>
     </View>
   );

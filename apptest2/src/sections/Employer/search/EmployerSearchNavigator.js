@@ -17,12 +17,10 @@ const EmployerSearchNavigator = ({navigation, route}) => {
       <Stack.Screen
         name="resumeDetailScreen"
         component={EmployerResumeDetailScreen}
-        options={{headerShown: true}}
+        options={{headerShown: true, title: '履歷詳細說明'}}
       />
     </Stack.Navigator>
   );
 };
 
 export default EmployerSearchNavigator;
-
-const styles = StyleSheet.create({});
