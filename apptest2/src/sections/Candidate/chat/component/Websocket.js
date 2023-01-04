@@ -109,6 +109,7 @@ export function publish(sender, receiver, message, type) {
 }
 
 export function logout() {
-  client.onWebSocketClose();
+  console.log("!!!!!!!!!!!!############");
+  client.deactivate();
 }
 export default websocket;

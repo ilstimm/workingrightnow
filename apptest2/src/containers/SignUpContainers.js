@@ -131,7 +131,7 @@ const SignUpContainer = ({navigation}) => {
       accountWrongState &&
       passwordWrongState &&
       password2WrongState &&
-      vertifyState
+      vertifyState == false
     ) {
       Alert.alert('錯誤!!', '', [
         {text: 'Ok!', onPress: () => console.log('Ok')},
@@ -150,13 +150,12 @@ const SignUpContainer = ({navigation}) => {
           password: md5.b64_md5(password2),
         }),
       };
-      fetch(url + '/register', options).then(response => response.json());
+      fetch(url + '/register', options);
       Alert.alert('', '註冊完成', [
         {
           text: 'Ok!',
           onPress: () => {
             console.log('Ok');
-            setVertifyState(false);
           },
         },
       ]);
