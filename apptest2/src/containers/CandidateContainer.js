@@ -17,11 +17,11 @@ const CandidateContainer = () => {
         tabBarIcon: ({color, size}) => {
           let iconName;
 
-          if (route.name === 'Search') {
+          if (route.name === '搜尋') {
             iconName = 'search-outline';
-          } else if (route.name === 'Chat') {
+          } else if (route.name === '聊天室') {
             iconName = 'chatbubble-ellipses-outline';
-          } else if (route.name === 'ScResume') {
+          } else if (route.name === '我的履歷') {
             iconName = 'document-outline';
           } else if (route.name === '我是應徵者') {
             iconName = 'person';
@@ -30,12 +30,12 @@ const CandidateContainer = () => {
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'orange',
+        tabBarActiveTintColor: 'rgb(130, 180, 169)',
         tabBarInactiveTintColor: 'gray',
       })}>
-      <Tab.Screen name="Search" component={SearchScreenNavigator} />
-      <Tab.Screen name="Chat" component={ChatPage} />
-      <Tab.Screen name="ScResume" component={ScanNavigator} />
+      <Tab.Screen name="搜尋" component={SearchScreenNavigator} />
+      <Tab.Screen name="聊天室" component={ChatPage} />
+      <Tab.Screen name="我的履歷" component={ScanNavigator} />
       <Tab.Screen name="我是應徵者" component={PINavigator} />
     </Tab.Navigator>
   );

@@ -17,12 +17,27 @@ const ChatPage = ({navigation, route}) => {
       <Stack.Screen
         name="ChatRoom"
         component={ChatRoom}
-        options={{headerTitle: ChatRoomHeader}}
+        options={{
+          headerLeft: () => null,
+          title: '聊天室',
+          headerTitleStyle: {
+            color: 'white',
+            fontWeight: 'bold',
+          },
+          headerStyle: {
+            backgroundColor: '#aaaaaa',
+          },
+        }}
       />
       <Stack.Screen
         name="ChatRoomScreen"
         component={ChatRoomScreen}
-        options={{headerTitle: ChatRoomHeader}}
+        options={{
+          headerTitleStyle: {
+            color: 'black',
+            fontWeight: 'bold',
+          },
+        }}
       />
     </Stack.Navigator>
   );

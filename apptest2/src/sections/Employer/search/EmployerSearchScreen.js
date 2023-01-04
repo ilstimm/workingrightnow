@@ -40,7 +40,7 @@ export default function EmployerSearchScreen({navigation}) {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.body}>
-        <ScrollView>
+        <ScrollView style={{backgroundColor: '#ffffff'}}>
           <View style={styles.searchView}>
             <TextInput
               style={styles.searchInput}
@@ -54,7 +54,8 @@ export default function EmployerSearchScreen({navigation}) {
               style={{flex: 1, justifyContent: 'center'}}
               activeOpacity={0.5}
               onPress={recommendButton}>
-              <Text style={{color: recommendState ? 'orange' : 'gray'}}>
+              <Text
+                style={{color: recommendState ? '#rgb(90,148,148)' : 'white'}}>
                 {'推薦'}
               </Text>
             </TouchableOpacity>
@@ -105,7 +106,7 @@ export default function EmployerSearchScreen({navigation}) {
 const styles = StyleSheet.create({
   scrollView: {
     flex: 15,
-    backgroundColor: '#eeeeee',
+    backgroundColor: '#ffffff',
   },
   body: {
     flex: 1,
@@ -115,25 +116,23 @@ const styles = StyleSheet.create({
   searchView: {
     flex: 2,
     flexDirection: 'row',
-    backgroundColor: '#eeeeee',
+    backgroundColor: 'rgb(238,169,112)',
   },
   blockView: {
     flex: 1,
-    backgroundColor: '#bbbbbb',
+    backgroundColor: '#ffffff',
   },
   searchInput: {
     flex: 8,
     height: 40,
     wight: '70%',
     fontSize: 15,
-    borderWidth: 1,
-    borderColor: 'gray',
     paddingLeft: 8,
     color: 'black',
     backgroundColor: 'white',
     justifyContent: 'center',
     margin: 15,
-    borderRadius: 10,
+    borderRadius: 30,
   },
   selectListBox: {
     flex: 1,
@@ -141,21 +140,16 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 0,
     borderBottomEndRadius: 0,
     borderWidth: 0,
-    // borderBottomWidth: 1.5,
-    // borderColor: 'gray',
-    // marginTop: 10,
-    // marginBottom: 1,
-    // padding: '3%',
-    // paddingLeft: 8,
+    backgroundColor: '#ffffff',
   },
   selectListDropdown: {
     borderRadius: 0,
     borderWidth: 0,
+    backgroundColor: '#ffffff',
   },
   opacity: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    borderRadius: 10,
+    backgroundColor: 'rgb(278,219,152)',
   },
   text: {
     fontSize: 20,

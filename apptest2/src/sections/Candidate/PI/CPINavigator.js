@@ -11,13 +11,36 @@ const CPINavigator = ({navigation, route}) => {
   // TabBarController(navigation, route, 'CPICollectionPage');
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="CPIPage">
       <Stack.Screen
         name="CPIPage"
         component={CPIPage}
-        options={{headerLeft: () => null, title: '個人資訊'}}
+        options={{
+          headerLeft: () => null,
+          title: '個人資訊',
+          headerTitleStyle: {
+            color: 'white',
+            fontWeight: 'bold',
+          },
+          headerStyle: {
+            backgroundColor: 'rgb(90,148,148)',
+          },
+        }}
       />
-      <Stack.Screen name="CPICollectionPage" component={CPICollectionPage} />
+      <Stack.Screen
+        name="CPICollectionPage"
+        component={CPICollectionPage}
+        options={{
+          title: '收藏',
+          headerTitleStyle: {
+            color: 'white',
+            fontWeight: 'bold',
+          },
+          headerStyle: {
+            backgroundColor: 'rgb(90,148,148)',
+          },
+        }}
+      />
       <Stack.Screen name="CJobDetailPage" component={CJobDetailPage} />
     </Stack.Navigator>
   );

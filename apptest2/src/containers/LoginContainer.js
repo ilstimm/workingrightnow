@@ -45,21 +45,25 @@ const LoginContainer = ({navigation}) => {
     };
     const url = 'http://tim.ils.tw:80/project/login';
     const tokenResponse = await fetch(url, options);
-    const tokenObject = await tokenResponse.json();
-    console.log('tokenObject: ' + tokenObject);
-    if (tokenObject.token != null) {
-      console.log('token = ' + tokenObject.token);
-      dispatch(setToken({token: tokenObject.token}));
-      userResumeDataInitial(account, tokenObject.token, dispatch);
-      chatDataInitial(account, tokenObject.token);
-      websocket(account);
-      navigation.replace('candidatePage');
-    } else {
-      Alert.alert('錯誤!', '帳號密碼錯誤!', [
+    if(tokenResponse.status == 400){
+      Alert.alert('錯誤!', '密碼錯誤!', [
+            {
+              text: 'Ok',
+            },
+          ]);
+    }else if(tokenResponse.status == 404){
+      Alert.alert('錯誤!', '帳號不存在!', [
         {
           text: 'Ok',
         },
       ]);
+    }else if(tokenResponse.status == 200){
+      const tokenObject = await tokenResponse.json();
+        dispatch(setToken({token: tokenObject.token}));
+        userResumeDataInitial(account, tokenObject.token, dispatch);
+        chatDataInitial(account, tokenObject.token);
+        websocket(account);
+        navigation.replace('candidatePage');
     }
   };
   const onPressRegister = () => {
@@ -120,7 +124,7 @@ const LoginContainer = ({navigation}) => {
       </View>
     </ScrollView>
   );
-};
+};;
 
 const styles = StyleSheet.create({
   page: {

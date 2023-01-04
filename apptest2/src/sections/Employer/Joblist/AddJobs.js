@@ -352,18 +352,16 @@ const AddJobs = ({navigation, route}) => {
                   let method;
                   if (mode == 'add') {
                     httpUrl = url;
-                    method = 'POST';
                   } else {
                     httpUrl =
                       url +
-                      '/' +
+                      '/replace/' +
                       userId +
                       '/' +
                       route.params.jobObject.createTime;
-                    method = 'PUT';
                   }
                   const options = {
-                    method: method,
+                    method: 'POST',
                     headers: {
                       Accept: 'application/json',
                       'Content-Type': 'application/json;charset=UTF-8',
@@ -396,28 +394,6 @@ const AddJobs = ({navigation, route}) => {
                 },
               },
             ]);
-            // console.log(
-            //   'userId: ' + userId.userId,
-            //   'title: ' + title,
-            //   'name: ' + name,
-            //   'sex: ' + sex,
-            //   'phoneNumber: ' + phone,
-            //   'email: ' + email,
-            //   'nature: ' + jobData[jobNature].value,
-            //   'type: ' +
-            //     jobData[jobNature].type.filter(item => item.key == type)[0]
-            //       .value,
-            //   'time: ' + period1 + period2,
-            //   'salary: ' + salary,
-            //   'region: ' +
-            //     regionData[place1 - 1].value +
-            //     regionData[place1 - 1].districts.filter(
-            //       item => item.key == place2,
-            //     )[0].value,
-            //   'salaryMethod: ' + payTypeData[payType].value,
-            //   'salaryDate: ' + payDate,
-            //   'content: ' + content,
-            // );
           }}
         />
       </View>

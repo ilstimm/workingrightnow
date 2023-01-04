@@ -49,10 +49,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(246,247,241)',
   },
   textInputView: {
-    backgroundColor: 'rgb(238,169,112)',
+    backgroundColor: 'rgb(90,148,148)',
 
     flexDirection: 'row',
-    paddingVertical: 8,
+    paddingVertical: 6,
     alignItems: 'center',
     textAlign: 'center',
     justifyContent: 'space-between',

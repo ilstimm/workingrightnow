@@ -1,13 +1,27 @@
 import * as React from 'react';
-import {View, StyleSheet, ScrollView, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Text,
+  Pressable,
+  Alert,
+} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import {useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import chats from '../../../components/data/Chats.json';
+import {publish} from '../../Candidate/chat/component/Websocket';
 
 const EmployerResumeDetailScreen = ({navigation, route}) => {
+  const time = new Date();
+  const user = useSelector(state => state.userId.userId);
+  const otheruser = route.params.userID;
   const name =
     route.params.name != null
       ? route.params.name[0] + route.params.sex
@@ -30,6 +44,63 @@ const EmployerResumeDetailScreen = ({navigation, route}) => {
         <Text style={styles.text2}>{props.content}</Text>
       </View>
     );
+  };
+
+  function storeChatData() {
+    Alert.alert('確認', '確認要聯絡應徵者嗎', [
+      {
+        text: 'Cancel!',
+        onPress: () => {},
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          publish(user, otheruser, 'hello', 'message');
+          if (
+            chats.filter(item => item.users[1].name == otheruser).length != 0
+            // true
+          ) {
+            chats
+              .filter(item => item.users[1].name == otheruser)[0]
+              .messages.unshift({
+                content: 'hello',
+                createdAt: time.getTime(),
+                name: user,
+                type: 'message',
+              });
+          } else {
+            chats.unshift({
+              users: [
+                {
+                  name: user,
+                  imageUri:
+                    'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png',
+                },
+                {
+                  name: otheruser,
+                  imageUri:
+                    'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png',
+                },
+              ],
+              messages: [
+                {
+                  content: 'hello',
+                  createdAt: time.getTime(),
+                  name: user,
+                  type: 'message',
+                },
+              ],
+            });
+          }
+
+          AsyncStorage.setItem('@chatdata', JSON.stringify(chats));
+        },
+      },
+    ]);
+  }
+
+  const openChatRoom = () => {
+    storeChatData();
   };
 
   return (
@@ -114,10 +185,37 @@ const EmployerResumeDetailScreen = ({navigation, route}) => {
             </View>
           </View>
         </ScrollView>
+        <View style={views.submit}>
+          <Pressable style={[styles.button]} onPress={() => openChatRoom()}>
+            <Text style={styles.textStyle}>聯絡應徵者</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );
 };
+
+const views = StyleSheet.create({
+  submit: {
+    height: 50,
+    justifyContent: 'center',
+  },
+  centeredView: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: 'red',
+  },
+  modalView: {
+    width: '90%',
+    height: '80%',
+    margin: 20,
+    backgroundColor: 'rgb(246,247,241)',
+    borderRadius: 5,
+    padding: 5,
+    elevation: 30,
+  },
+});
 
 const styles = StyleSheet.create({
   main: {
@@ -166,6 +264,23 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: 'gray',
     borderStyle: 'dashed',
+  },
+  textStyle: {
+    fontSize: 18,
+    padding: 3,
+    color: 'white',
+    backgroundColor: 'rgb(238,169,112)',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+  button: {
+    flex: 1,
+    padding: 10,
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderColor: 'rgb(238,169,112)',
+    textAlign: 'center',
   },
 });
 export default EmployerResumeDetailScreen;

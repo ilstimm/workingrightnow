@@ -82,6 +82,10 @@ const SignUpContainer = ({navigation}) => {
       }),
     };
     const a = await fetch(url + '/mail', options);
+
+    console.log('====================================');
+    console.log('a:  ' + JSON.stringify(a));
+    console.log('====================================');
   };
 
   const submitButton = async () => {
@@ -99,18 +103,14 @@ const SignUpContainer = ({navigation}) => {
     const a = await fetch(url + '/mail/check', options);
     const b = await a.text();
 
-    // React.useEffect(() => {
-      console.log('status = ' + b);
-      console.log(b === 'success');
-      vertifyState = (b === 'success');
-    // }, []);
+    console.log('status = ' + b);
+    console.log(b === 'success');
+    vertifyState = b === 'success';
 
     Alert.alert('註冊', '確認要註冊嗎', [
       {
         text: 'Cancel!',
-        onPress: () => {
-          // setVertifyState(false);
-        },
+        onPress: () => {},
       },
       {
         text: 'Ok!',
@@ -125,13 +125,13 @@ const SignUpContainer = ({navigation}) => {
     ]);
   };
 
-  const signUpCheck = () => {
+  const signUpCheck = async () => {
     console.log('v: ' + vertifyState);
     if (
-      accountWrongState &&
-      passwordWrongState &&
-      password2WrongState &&
-      vertifyState == false
+      (accountWrongState &&
+        passwordWrongState &&
+        password2WrongState &&
+        vertifyState) == false
     ) {
       Alert.alert('錯誤!!', '', [
         {text: 'Ok!', onPress: () => console.log('Ok')},
@@ -150,16 +150,24 @@ const SignUpContainer = ({navigation}) => {
           password: md5.b64_md5(password2),
         }),
       };
-      fetch(url + '/register', options);
-      Alert.alert('', '註冊完成', [
-        {
-          text: 'Ok!',
-          onPress: () => {
-            console.log('Ok');
-          },
-        },
-      ]);
-      navigation.navigate('loginPage');
+      const signupStatus = await fetch(url + '/register', options);
+      //   if (signupStatus.status == 409) {
+      //     Alert.alert('錯誤!', '帳號重複!', [
+      //       {
+      //         text: 'Ok',
+      //       },
+      //     ]);
+      //   } else if (signupStatus.status == 200) {
+      //     Alert.alert('', '註冊完成', [
+      //       {
+      //         text: 'Ok!',
+      //         onPress: () => {
+      //           console.log('Ok');
+      //         },
+      //       },
+      //     ]);
+      //     navigation.navigate('loginPage');
+      //   }
     }
   };
 

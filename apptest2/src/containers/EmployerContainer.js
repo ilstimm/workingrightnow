@@ -16,11 +16,11 @@ const EmployerContainer = () => {
         tabBarIcon: ({color, size}) => {
           let iconName;
 
-          if (route.name === 'Search') {
+          if (route.name === '搜尋') {
             iconName = 'search-outline';
-          } else if (route.name === 'Chat') {
+          } else if (route.name === '聊天室') {
             iconName = 'chatbubble-ellipses-outline';
-          } else if (route.name === 'Joblist') {
+          } else if (route.name === '工作需求') {
             iconName = 'document-outline';
           } else if (route.name === '我是雇主') {
             iconName = 'person';
@@ -32,9 +32,9 @@ const EmployerContainer = () => {
         tabBarActiveTintColor: 'orange',
         tabBarInactiveTintColor: 'gray',
       })}>
-      <Tab.Screen name="Search" component={EmployerSearchNavigator} />
-      <Tab.Screen name="Chat" component={ChatPage} />
-      <Tab.Screen name="Joblist" component={JoblistNavigator} />
+      <Tab.Screen name="搜尋" component={EmployerSearchNavigator} />
+      <Tab.Screen name="聊天室" component={ChatPage} />
+      <Tab.Screen name="工作需求" component={JoblistNavigator} />
       <Tab.Screen name="我是雇主" component={EPINavigator} />
     </Tab.Navigator>
   );

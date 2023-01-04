@@ -30,7 +30,7 @@ const ChatRoomItem = ({navigation, chatRoom}) => {
       {otheruser != '' ? (
         <Pressable onPress={onPress} style={styles.container}>
           <Image
-            source={require('../assets/userimage.jpg')}
+            source={require('../assets/headimg.png')}
             style={styles.image}
           />
           <View style={styles.rightContainer}>

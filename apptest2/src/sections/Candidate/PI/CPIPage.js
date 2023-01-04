@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   userImage: {
     fontSize: 65,
     marginVertical: 18,
-    color: 'rgb(195,153,103)',
+    color: 'rgb(130, 180, 169)',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     width: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#CFA889',
+    backgroundColor: 'rgb(130, 180, 169)',
   },
   buttonIcon: {
     fontSize: 25,

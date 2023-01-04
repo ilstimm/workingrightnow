@@ -40,7 +40,7 @@ const InformationText = props => {
             {shelvesStatus ? '開啟中' : '關閉中'}
           </Text>
           <Switch
-            trackColor={{false: '#767577', true: 'rgba(238,162,112,0.8)'}}
+            trackColor={{false: '#767577', true: '#81b0ff'}}
             thumbColor={'white'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={statusChange}
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     borderTopWidth: 4,
-    borderColor: '#A0816E',
+    borderColor: 'rgb(130, 180, 169)',
   },
   titleFreshtimeInformation: {
     paddingHorizontal: 5,
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
     borderTopWidth: 1,
-    borderColor: '#A0816E',
+    borderColor: 'rgb(130, 180, 169)',
     textAlign: 'center',
   },
   statusBar: {

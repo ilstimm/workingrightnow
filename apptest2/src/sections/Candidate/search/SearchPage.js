@@ -58,7 +58,7 @@ export default function SearchPage({navigation}) {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.body}>
-        <ScrollView>
+        <ScrollView style={{backgroundColor: '#ffffff'}}>
           <View style={styles.searchView}>
             <TextInput
               style={styles.searchInput}
@@ -72,7 +72,7 @@ export default function SearchPage({navigation}) {
               style={{flex: 1, justifyContent: 'center'}}
               activeOpacity={0.5}
               onPress={recommendButton}>
-              <Text style={{color: recommendState ? 'orange' : 'gray'}}>
+              <Text style={{color: recommendState ? 'orange' : 'white'}}>
                 {'推薦'}
               </Text>
             </TouchableOpacity>
@@ -119,35 +119,31 @@ export default function SearchPage({navigation}) {
 const styles = StyleSheet.create({
   scrollView: {
     flex: 15,
-    backgroundColor: '#eeeeee',
+    backgroundColor: '#ffffff',
   },
   body: {
     flex: 1,
-    alignContent: 'center',
-    justifyContent: 'center',
   },
   searchView: {
-    flex: 2,
+    flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#eeeeee',
+    backgroundColor: '#rgb(90,148,148)',
   },
   blockView: {
     flex: 1,
-    backgroundColor: '#bbbbbb',
+    backgroundColor: '#ffffff',
   },
   searchInput: {
     flex: 8,
     height: 40,
     wight: '70%',
     fontSize: 15,
-    borderWidth: 1,
-    borderColor: 'gray',
     paddingLeft: 8,
     color: 'black',
     backgroundColor: 'white',
     justifyContent: 'center',
-    margin: 15,
-    borderRadius: 10,
+    margin: 10,
+    borderRadius: 30,
   },
   selectListBox: {
     flex: 1,
@@ -155,6 +151,7 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 0,
     borderBottomEndRadius: 0,
     borderWidth: 0,
+    backgroundColor: '#ffffff',
     // borderBottomWidth: 1.5,
     // borderColor: 'gray',
     // marginTop: 10,
@@ -165,11 +162,12 @@ const styles = StyleSheet.create({
   selectListDropdown: {
     borderRadius: 0,
     borderWidth: 0,
+    backgroundColor: '#ffffff',
   },
   opacity: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    borderRadius: 10,
+    backgroundColor: '#rgb(140,198,198)',
+    // borderRadius: 10,
   },
   text: {
     fontSize: 20,

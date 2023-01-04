@@ -405,7 +405,7 @@ const AddResumes = ({navigation, route}) => {
                     let method;
                     if (mode == 'add') {
                       httpUrl = url;
-                    } else {
+                    } else if (mode == 'modify') {
                       httpUrl =
                         url +
                         '/replace/' +
@@ -443,7 +443,7 @@ const AddResumes = ({navigation, route}) => {
                     console.log('url:  ' + httpUrl);
                     console.log('method:  ' + method);
                     console.log('====================================');
-                    fetch(url, options)
+                    fetch(httpUrl, options)
                       .then(response => response.json())
                       .then(data => {
                         console.log('data: ' + data);
@@ -452,26 +452,6 @@ const AddResumes = ({navigation, route}) => {
                   },
                 },
               ]);
-              // console.log(
-              //   'userId: ' + userId,
-              //   'title: ' + title,
-              //   'name: ' + name,
-              //   'sex: ' + sex,
-              //   'birth: ' + birthday,
-              //   'phoneNumber: ' + phone,
-              //   'email: ' + email,
-              //   'school: ' + schoolName,
-              //   'department: ' + department,
-              //   'status: ' + schoolStatus,
-              //   'nature: ' + resumeData[resumeNature].value,
-              //   'type: ' +  type,
-              //   'region: ' +
-              //     (regionData[region1 - 1].value +
-              //       region2),
-              //   'time: ' + period,
-              //   'salary: ' + salary,
-              //   'introduction: ' + introduction,
-              // );
             }
           }}
         />

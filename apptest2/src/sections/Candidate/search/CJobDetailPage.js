@@ -81,6 +81,7 @@ const CJobDetailPage = ({navigation, route}) => {
         text: 'OK',
         onPress: () => {
           console.log('resumeItem:  ' + JSON.stringify(resumeItem));
+          setModalVisible(false);
           publish(userId, otheruser, JSON.stringify(resumeItem), 'resume');
           if (
             chats.filter(item => item.users[1].name == otheruser).length != 0
