@@ -25,7 +25,20 @@ const EPINavigator = ({navigation, route}) => {
           },
         }}
       />
-      <Stack.Screen name="EPICollectionPage" component={EPICollectionPage} />
+      <Stack.Screen
+        name="EPICollectionPage"
+        component={EPICollectionPage}
+        options={{
+          title: '收藏',
+          headerTitleStyle: {
+            color: 'white',
+            fontWeight: 'bold',
+          },
+          headerStyle: {
+            backgroundColor: 'rgb(238,169,112)',
+          },
+        }}
+      />
       <Stack.Screen
         name="EmployerResumeDetailScreen"
         component={EmployerResumeDetailScreen}

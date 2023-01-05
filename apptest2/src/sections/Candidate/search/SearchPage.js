@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   },
   opacity: {
     alignItems: 'center',
-    backgroundColor: '#rgb(140,198,198)',
+    backgroundColor: 'rgb(140,198,198)',
     // borderRadius: 10,
   },
   text: {

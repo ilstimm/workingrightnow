@@ -132,18 +132,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
     borderRadius: 10,
-    backgroundColor: '#5EA888',
+    backgroundColor: 'rgb(278,219,152)',
     paddingVertical: 13,
     paddingHorizontal: 5,
     margin: 3,
   },
-  
-  itemCloseView:{
+
+  itemCloseView: {
     flex: 1,
     borderBottomWidth: 1,
-    borderBottomColor: 'gray',
+    borderBottomColor: '#aaaaaa',
     borderRadius: 10,
-    backgroundColor: '#cccccc',
+    backgroundColor: '#ffffff',
     paddingVertical: 13,
     paddingHorizontal: 5,
     margin: 3,

@@ -56,8 +56,11 @@ export default async function chatDataInitial(userId, token) {
         console.log('chatdata13216546: ' + JSON.stringify(chatData));
       }
     } catch (error) {}
-    offlineChats.map(offlineChatsdata => {
-      chats.map(data => {
+    console.log('====================================');
+    console.log('chats12345679:   ' + JSON.stringify(chats));
+    console.log('====================================');
+    offlineChats.forEach(offlineChatsdata => {
+      chats.forEach(data => {
         if (data.users[1].name === offlineChatsdata.sender) {
           console.log('==========================');
           data.messages.unshift({

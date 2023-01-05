@@ -25,7 +25,7 @@ const ChatPage = ({navigation, route}) => {
             fontWeight: 'bold',
           },
           headerStyle: {
-            backgroundColor: '#aaaaaa',
+            backgroundColor: 'rgb(164, 158, 130)',
           },
         }}
       />

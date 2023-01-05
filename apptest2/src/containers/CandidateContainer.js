@@ -30,8 +30,9 @@ const CandidateContainer = () => {
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'rgb(130, 180, 169)',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: 'white',
+        tabBarActiveBackgroundColor: 'rgb(130, 180, 169)',
+        tabBarInactiveTintColor: 'rgb(130, 180, 169)',
       })}>
       <Tab.Screen name="搜尋" component={SearchScreenNavigator} />
       <Tab.Screen name="聊天室" component={ChatPage} />

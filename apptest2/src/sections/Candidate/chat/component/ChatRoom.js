@@ -49,13 +49,6 @@ const ChatRoom = ({navigation}) => {
 
   return (
     <View style={styles.page}>
-      <TextInput
-        value={chatRoomName}
-        onChangeText={chatRoomName => setChatRoomName(chatRoomName)}
-      />
-      <TouchableOpacity activeOpacity={0.5} onPress={newChatRoom}>
-        <Text style={{backgroundColor: 'gray', fontSize: 30}}>新增聊天室</Text>
-      </TouchableOpacity>
       {chats == undefined ? (
         <></>
       ) : (

@@ -106,7 +106,6 @@ const EmployerResumeDetailScreen = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <View style={styles.main}>
-        <FontAwesome name="star" style={{fontSize: 35, color: 'red'}} />
         <Text style={{fontSize: 28, color: 'black', paddingLeft: 15}}>
           {route.params.title}
         </Text>

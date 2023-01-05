@@ -6,27 +6,73 @@
       {"key": 10, "value": "倒垃圾"},
       {"key": 11, "value": "陪玩"},
       {"key": 12, "value": "搬家"},
-      {"key": 13, "value": "私人健身教練"}
+      {"key": 13, "value": "陪跑步"},
+      {"key": 14, "value": "顧小孩"},
+      {"key": 15, "value": "遛狗"},
+      {"key": 16, "value": "遛貓"},
+      {"key": 17, "value": "機車共乘"},
+      {"key": 18, "value": "修理東西"}
     ]
   },
   {
     "key": 1,
-    "value": "家教",
+    "value": "短期工作",
     "type": [
-      {"key": 20, "value": "陪讀"},
-      {"key": 21, "value": "國語家教"},
-      {"key": 22, "value": "數學家教"},
-      {"key": 23, "value": "英文家教"}
+      {"key": 20, "value": "私人健身教練"},
+      {"key": 21, "value": "顧小孩"}
     ]
   },
   {
     "key": 2,
-    "value": "工讀",
+    "value": "國小家教",
     "type": [
       {"key": 30, "value": "陪讀"},
       {"key": 31, "value": "國語家教"},
-      {"key": 32, "value": "數學家教"},
-      {"key": 33, "value": "英文家教"}
+      {"key": 32, "value": "英文家教"},
+      {"key": 33, "value": "數學家教"},
+      {"key": 34, "value": "自然家教"},
+      {"key": 35, "value": "社會家教"},
+      {"key": 37, "value": "鋼琴家教"},
+      {"key": 38, "value": "吉他家教"},
+      {"key": 39, "value": "畫畫家教"},
+      {"key": 310, "value": "程式家教"}
     ]
+  },
+  {
+    "key": 3,
+    "value": "國中家教",
+    "type": [
+      {"key": 40, "value": "陪讀"},
+      {"key": 41, "value": "國語家教"},
+      {"key": 42, "value": "英文家教"},
+      {"key": 43, "value": "數學家教"},
+      {"key": 44, "value": "自然家教"},
+      {"key": 45, "value": "社會家教"},
+      {"key": 47, "value": "鋼琴家教"},
+      {"key": 48, "value": "吉他家教"},
+      {"key": 49, "value": "畫畫家教"},
+      {"key": 410, "value": "程式家教"}
+    ]
+  },
+  {
+    "key": 4,
+    "value": "高中家教",
+    "type": [
+      {"key": 50, "value": "陪讀"},
+      {"key": 51, "value": "國語家教"},
+      {"key": 52, "value": "英文家教"},
+      {"key": 53, "value": "數學家教"},
+      {"key": 54, "value": "自然家教"},
+      {"key": 55, "value": "社會家教"},
+      {"key": 57, "value": "鋼琴家教"},
+      {"key": 58, "value": "吉他家教"},
+      {"key": 59, "value": "畫畫家教"},
+      {"key": 510, "value": "程式家教"}
+    ]
+  },
+  {
+    "key": 5,
+    "value": "其他",
+    "type": [{"key": 60, "value": "其他"}]
   }
 ]

@@ -1,15 +1,7 @@
 import React, {useState} from 'react';
 import {useEffect} from 'react';
-import {
-  Button,
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  ScrollView,
-  Pressable,
-  Modal,
-} from 'react-native';
+import moment from 'moment';
+import {Text, View, StyleSheet, ScrollView, Image, Modal} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -36,7 +28,6 @@ const Message = ({message}) => {
     console.log('message:  ' + JSON.stringify(content));
     console.log('====================================');
   }, [chats]);
-
   const checkResume = () => {
     console.log('resumedetail');
     setModalVisible(true);
@@ -59,61 +50,83 @@ const Message = ({message}) => {
           styles.resumeContainer,
           isMe ? styles.resumeRight : styles.resumeLeft,
         ]}>
-        <Text style={{color: 'black'}}>
-          {/* {message.content.title} */}
-          {'name:' + content.name + '來應徵囉'}
-        </Text>
-        <View>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible);
-            }}>
-            <View style={modalStyles.centeredView}>
-              <View style={modalStyles.modalView}>
-                <View
-                  style={{alignItems: 'flex-end', justifyContent: 'center'}}>
-                  <AntDesign
-                    name="close"
-                    style={{fontSize: 20}}
-                    onPress={() => {
-                      setModalVisible(!modalVisible);
-                    }}
-                  />
-                </View>
-                <DetailResume content={content} />
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={modalStyles.centeredView}>
+            <View style={modalStyles.modalView}>
+              <View style={{alignItems: 'flex-end', justifyContent: 'center'}}>
+                <AntDesign
+                  name="close"
+                  style={{fontSize: 20}}
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                />
               </View>
+              <DetailResume content={content} />
             </View>
-          </Modal>
-          <Text style={{color: 'orange'}} onPress={checkResume}>
-            {'查看應徵資料'}
+          </View>
+        </Modal>
+        <Text style={{color: isMe ? 'black' : 'white', alignSelf: 'center'}}>
+          {'踢躂踢躂！'}
+        </Text>
+        <Text style={{color: isMe ? 'black' : 'white', alignSelf: 'center'}}>
+          {content.name + '來應徵囉'}
+        </Text>
+
+        <View
+          style={{
+            borderTopWidth: 1,
+            borderColor: isMe ? 'black' : 'white',
+            width: '90%',
+            alignSelf: 'center',
+            marginTop: 4,
+          }}></View>
+        <View style={styles.userInformationContainer}>
+          <Image
+            source={require('../assets/headimg.png')}
+            style={styles.image}
+          />
+          <View style={styles.userInformation}>
+            <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+              <Text
+                style={{
+                  color: isMe ? 'black' : 'white',
+                  fontSize: 20,
+                  marginRight: 5,
+                }}>
+                {content.name}
+              </Text>
+              <Text style={{color: isMe ? 'black' : 'white'}}>
+                {parseInt(moment().format('YYYY')) -
+                  parseInt(content.birth.slice(0, 4)) +
+                  '歲'}
+              </Text>
+            </View>
+            <Text style={{color: '#cc7722'}} onPress={checkResume}>
+              {'查看應徵資料'}
+            </Text>
+          </View>
+        </View>
+        <View>
+          <Text numberOfLines={2} style={{color: isMe ? 'black' : 'white'}}>
+            {'標題:' + content.title}
           </Text>
-          <Text>{'應徵者姓名:' + content.name}</Text>
-          <Text>{'自我介紹:' + content.introduction}</Text>
         </View>
       </View>
     );
-  } else if (type == 'interview') {
   }
-  // else {
-  //   return (
-  //     <View
-  //       style={[
-  //         styles.container,
-  //         isMe ? styles.containerRight : styles.containerLeft,
-  //       ]}>
-  //       <Text style={{color: isMe ? 'black' : 'white'}}>{message.content}</Text>
-  //     </View>
-  //   );
-  // }
 };
 
 const TextView = props => {
   return (
     <View style={{marginVertical: '3%'}}>
-      <Text style={styles.text1}>
+      <Text style={detailResumeStyle.text1}>
         {props.text} : {props.content}
       </Text>
     </View>
@@ -122,7 +135,7 @@ const TextView = props => {
 const Textview = props => {
   return (
     <View style={{marginVertical: '3%'}}>
-      <Text style={styles.text2}>{props.content}</Text>
+      <Text style={detailResumeStyle.text2}>{props.content}</Text>
     </View>
   );
 };
@@ -130,7 +143,6 @@ const DetailResume = props => {
   return (
     <View style={{flex: 1}}>
       <View style={detailResumeStyle.main}>
-        <FontAwesome name="star" style={{fontSize: 35, color: 'red'}} />
         <Text style={{fontSize: 28, color: 'black', paddingLeft: 15}}>
           {props.content.title}
         </Text>
@@ -307,7 +319,7 @@ const styles = StyleSheet.create({
   },
   resumeContainer: {
     backgroundColor: 'gray',
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
     margin: 10,
@@ -325,7 +337,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   resumeLeft: {
-    backgroundColor: '#cccccccc',
+    backgroundColor: blue,
     marginLeft: 10,
     marginRight: 'auto',
   },
@@ -336,6 +348,19 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
+  },
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 30,
+    marginRight: 10,
+    marginVertical: 5,
+  },
+  userInformationContainer: {
+    flexDirection: 'row',
+  },
+  userInformation: {
+    justifyContent: 'center',
   },
 });
 export default Message;

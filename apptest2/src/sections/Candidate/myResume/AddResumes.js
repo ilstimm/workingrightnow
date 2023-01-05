@@ -262,7 +262,6 @@ const AddResumes = ({navigation, route}) => {
         <SelectList
           setSelected={resumeNature => {
             setResumeNature(resumeNature);
-            nature = resumeData[resumeNature].value;
           }}
           data={resumeData}
           placeholder={nature}
@@ -275,7 +274,6 @@ const AddResumes = ({navigation, route}) => {
         <SelectList
           setSelected={resumeType => {
             setResumeType(resumeType);
-            type = resumeType;
           }}
           data={resumeData[resumeNature].type}
           placeholder={type}
@@ -308,12 +306,6 @@ const AddResumes = ({navigation, route}) => {
             }}>
             <View style={styles.timeView}>
               <TimePicker2 />
-              {/* {
-                (period =
-                  moment(date1).format('HH:mm') +
-                  '~' +
-                  moment(date2).format('HH:mm'))
-              } */}
               <Text style={{fontSize: 15}}>{period2}</Text>
             </View>
           </TouchableOpacity>
@@ -349,7 +341,6 @@ const AddResumes = ({navigation, route}) => {
           }
           placeholder={region}
           save={'value'}
-          // defaultOption={regionData[region1 - 1].districts[0]}
           boxStyles={styles.selectListBox}
           dropdownStyles={styles.selectListDropdown}
         />
@@ -378,6 +369,8 @@ const AddResumes = ({navigation, route}) => {
           onPress={async () => {
             period = period1 + '~' + period2;
             region = regionData[region1 - 1].value + region2;
+            nature = resumeData[resumeNature].value;
+            type = resumeType;
             {
               console.log('地區: ' + region);
             }

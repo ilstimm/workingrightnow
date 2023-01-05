@@ -168,7 +168,6 @@ const AddJobs = ({navigation, route}) => {
       <View style={{padding: '3%'}}>
         <Text>性別</Text>
         <SwitchSelector
-          initial={0}
           onPress={sex => setSex(sex)}
           textColor="gray"
           buttonColor="gray"
@@ -258,7 +257,7 @@ const AddJobs = ({navigation, route}) => {
             }}>
             <View style={styles.timeView}>
               <TimePicker />
-              <Text style={{fontSize: 15}}>{period}</Text>
+              <Text style={{fontSize: 15}}>{period1}</Text>
             </View>
           </TouchableOpacity>
           <Text style={{fontSize: 30}}>{'  ~  '}</Text>
@@ -269,7 +268,7 @@ const AddJobs = ({navigation, route}) => {
             }}>
             <View style={styles.timeView}>
               <TimePicker2 />
-              <Text style={{fontSize: 15}}>{period}</Text>
+              <Text style={{fontSize: 15}}>{period2}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -339,6 +338,9 @@ const AddJobs = ({navigation, route}) => {
           style={styles.button}
           onPress={async () => {
             period = period1 + '~' + period2;
+            place = regionData[place1 - 1].value + place2;
+            nature = jobData[jobNature].value;
+            type = jobType;
             Alert.alert('新增', '確認要新增需求嗎', [
               {
                 text: 'Cancel!',
@@ -385,7 +387,7 @@ const AddJobs = ({navigation, route}) => {
                       content: content,
                     }),
                   };
-                  fetch(url, options)
+                  fetch(httpUrl, options)
                     .then(response => response.json())
                     .then(data => {
                       console.log('data: ' + data);

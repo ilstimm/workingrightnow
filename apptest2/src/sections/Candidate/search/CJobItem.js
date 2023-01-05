@@ -31,7 +31,7 @@ const JobForm = ({job, navigation, token, userId}) => {
         <Text style={{color: '#111111', marginRight: 15, fontSize: 13}}>
           {job.region}
         </Text>
-        <Text style={{color: '#FFE141', fontSize: 13}}>{job.salary}</Text>
+        <Text style={{color: '#ccb574', fontSize: 13}}>{job.salary}</Text>
       </>
     );
   };
@@ -168,6 +168,9 @@ export default function CJobItem({
       }
     }
 
+    console.log('====================================');
+    console.log('url:   ' + url);
+    console.log('====================================');
     fetch(url, options)
       .then(response => response.json())
       .then(data => {
@@ -213,11 +216,11 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     marginHorizontal: 7,
     padding: '2%',
-    borderWidth: 1,
+    borderWidth: 4,
     borderRadius: 5,
-    elevation: 5,
-    borderColor: '#fefefe',
+    borderColor: 'rgba(140,198,198, 0.5)',
     backgroundColor: '#FFFefe',
+    borderRadius: 20,
   },
   jobFormTitle: {
     fontSize: 30,

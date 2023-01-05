@@ -28,7 +28,7 @@ const ResumeForm = ({resume, navigation, token, userId}) => {
         <Text style={{color: '#111111', marginRight: 15, fontSize: 13}}>
           {resume.region}
         </Text>
-        <Text style={{color: '#FFE141', fontSize: 13}}>{resume.school}</Text>
+        <Text style={{color: '#ccb574', fontSize: 13}}>{resume.school}</Text>
       </>
     );
   };
@@ -194,7 +194,7 @@ export default function ResumeItem({
         );
         setReturnValue(a);
       });
-  }, [refreshing, searchText, filter]);
+  }, [refreshing, searchText, filter, recommendState]);
   return returnValue;
 }
 
@@ -208,11 +208,11 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     marginHorizontal: 7,
     padding: '2%',
-    borderWidth: 1,
+    borderWidth: 4,
     borderRadius: 5,
-    elevation: 5,
-    borderColor: '#fefefe',
-    backgroundColor: '#FFFefe',
+    borderColor: 'rgba(278,219,152, 0.5)',
+    backgroundColor: '#fffefe',
+    borderRadius: 20,
   },
   resumeFormTitle: {
     fontSize: 30,

@@ -151,23 +151,23 @@ const SignUpContainer = ({navigation}) => {
         }),
       };
       const signupStatus = await fetch(url + '/register', options);
-      //   if (signupStatus.status == 409) {
-      //     Alert.alert('錯誤!', '帳號重複!', [
-      //       {
-      //         text: 'Ok',
-      //       },
-      //     ]);
-      //   } else if (signupStatus.status == 200) {
-      //     Alert.alert('', '註冊完成', [
-      //       {
-      //         text: 'Ok!',
-      //         onPress: () => {
-      //           console.log('Ok');
-      //         },
-      //       },
-      //     ]);
-      //     navigation.navigate('loginPage');
-      //   }
+        if (signupStatus.status == 409) {
+          Alert.alert('錯誤!', '帳號重複!', [
+            {
+              text: 'Ok',
+            },
+          ]);
+        } else if (signupStatus.status == 200) {
+          Alert.alert('', '註冊完成', [
+            {
+              text: 'Ok!',
+              onPress: () => {
+                console.log('Ok');
+              },
+            },
+          ]);
+          navigation.navigate('loginPage');
+        }
     }
   };
 

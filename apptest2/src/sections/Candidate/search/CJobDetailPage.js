@@ -129,7 +129,6 @@ const CJobDetailPage = ({navigation, route}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.main}>
-        <FontAwesome name="star" style={{fontSize: 35, color: 'red'}} />
         <Text style={{fontSize: 28, color: 'black', paddingLeft: 15}}>
           {route.params.title}
         </Text>
@@ -275,12 +274,6 @@ const CJobDetailPage = ({navigation, route}) => {
               <View style={styles.sendResumeButton}>
                 <Pressable
                   // style={[styles.button]}
-                  onPress={() => console.log('新增履歷')}>
-                  <AntDesign name="addfile" style={{fontSize: 30}} />
-                </Pressable>
-                <Text>{isEmpty ? '履歷空空如也~' : null}</Text>
-                <Pressable
-                  // style={[styles.button]}
                   onPress={() => submitResume()}>
                   <Text style={[styles.textStyle]}>送出履歷</Text>
                 </Pressable>
@@ -414,9 +407,7 @@ const styles = StyleSheet.create({
   sendResumeButton: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    alignSelf: 'flex-end',
+    justifyContent: 'center',
     marginTop: 5,
   },
 });

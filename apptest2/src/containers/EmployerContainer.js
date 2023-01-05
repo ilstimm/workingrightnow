@@ -29,8 +29,9 @@ const EmployerContainer = () => {
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'orange',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: 'white',
+        tabBarActiveBackgroundColor: 'rgb(238,169,112)',
+        tabBarInactiveTintColor: 'rgb(238,169,112)',
       })}>
       <Tab.Screen name="搜尋" component={EmployerSearchNavigator} />
       <Tab.Screen name="聊天室" component={ChatPage} />

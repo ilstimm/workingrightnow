@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import JobItem from './JobItem';
-import jobObject from '../../../components/data/resumeJobData.json';
+import jobObject from '../../../components/jobObject';
 import {useDispatch} from 'react-redux';
 
 const JoblistPage = ({navigation}) => {
