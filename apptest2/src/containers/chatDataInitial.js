@@ -59,18 +59,13 @@ export default async function chatDataInitial(userId, token) {
     console.log('====================================');
     console.log('chats12345679:   ' + JSON.stringify(chats));
     console.log('====================================');
-    offlineChats.forEach(offlineChatsdata => {
-      chats.forEach(data => {
-        if (data.users[1].name === offlineChatsdata.sender) {
-          console.log('==========================');
-          data.messages.unshift({
-            content: offlineChatsdata.message,
-            createdAt: offlineChatsdata.createTime,
-            name: offlineChatsdata.sender,
-            type: offlineChatsdata.type,
-          });
-        } else {
-          console.log('**************************');
+    for (let i = 0; i < offlineChats.length; ++i) {
+      for (let j = 0; j < offlineChats.length; ++j) {
+        let offlineChatsdata = offlineChats[j];
+        if (
+          chats.filter(item => item.users[1].name == offlineChatsdata.sender)
+            .length == 0
+        ) {
           chats.unshift({
             users: [
               {
@@ -84,15 +79,25 @@ export default async function chatDataInitial(userId, token) {
                   'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png',
               },
             ],
-            messages: [
-              {
-                content: offlineChatsdata.message,
-                createdAt: offlineChatsdata.createTime,
-                name: offlineChatsdata.sender,
-                type: offlineChatsdata.type,
-              },
-            ],
+            messages: [],
           });
+          break;
+        }
+      }
+    }
+
+    offlineChats.forEach(offlineChatsdata => {
+      chats.forEach(data => {
+        if (data.users[1].name === offlineChatsdata.sender) {
+          console.log('==========================');
+          data.messages.unshift({
+            content: offlineChatsdata.message,
+            createdAt: offlineChatsdata.createTime,
+            name: offlineChatsdata.sender,
+            type: offlineChatsdata.type,
+          });
+        } else {
+          console.log('**************************');
         }
       });
     });

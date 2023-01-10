@@ -102,11 +102,6 @@ const Message = ({message}) => {
                 }}>
                 {content.name}
               </Text>
-              <Text style={{color: isMe ? 'black' : 'white'}}>
-                {parseInt(moment().format('YYYY')) -
-                  parseInt(content.birth.slice(0, 4)) +
-                  '歲'}
-              </Text>
             </View>
             <Text style={{color: '#cc7722'}} onPress={checkResume}>
               {'查看應徵資料'}

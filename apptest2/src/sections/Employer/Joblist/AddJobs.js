@@ -358,7 +358,7 @@ const AddJobs = ({navigation, route}) => {
                     httpUrl =
                       url +
                       '/replace/' +
-                      userId +
+                      userId.userId +
                       '/' +
                       route.params.jobObject.createTime;
                   }
